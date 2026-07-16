@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  /* === Hutan & Siger — Filosofi Warna ===
+     4 lapisan alam Lampung:
+     Embun Pagi  (latar)  →  #edfae9
+     Kanopi      (utama)  →  #26b515
+     Hutan Dalam (depth)  →  #187a0d
+     Tanah Basah (teks)   →  #0f2409
+     + Emas Siger (budaya) →  #D4A853
+  */
+
+  /* Primary — Hijau Alam */
+  --c-terra:       #26b515; /* alias utama (compat lama) */
+  --c-terra-dark:  #187a0d;
+  --c-sage:        #3acf27;
+  --c-sage-light:  #baf5b2;
+
+  /* Siger — Emas Lampung (sparingly: CTA, border foto, ornamen SVG) */
+  --c-siger:       #D4A853;
+  --c-siger-dark:  #a07830;
+  --c-siger-glow:  rgba(212, 168, 83, 0.25);
+
+  /* Neutral */
+  --c-cream:       #edfae9; /* bg utama — mint sangat terang */
+  --c-cream-dark:  #d8f5d2; /* bg kartu */
+  --c-stone:       #0f2409; /* teks utama — dark forest */
+  --c-stone-muted: #3d6138; /* teks sekunder */
+  --c-dark-bg:     #071804; /* background dark section */
+  --c-white:       #ffffff;
+  --c-overlay:     rgba(7, 24, 4, 0.72);
+  --c-glass:       rgba(237, 250, 233, 0.12);
+
+  /* === Typography === */
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans:  'DM Sans', sans-serif;
+
+  /* === Spacing === */
+  --sp-xs: 0.5rem;
+  --sp-sm: 1rem;
+  --sp-md: 2rem;
+  --sp-lg: 4rem;
+  --sp-xl: 7rem;
+
+  /* === Shape === */
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 20px;
+  --shadow-card: 0 4px 24px rgba(15, 36, 9, 0.1);
+  --shadow-lift: 0 12px 40px rgba(15, 36, 9, 0.18);
+  --shadow-siger: 0 0 20px rgba(212, 168, 83, 0.35);
+  --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* === Widths === */
+  --max-w:    1200px;
+  --max-w-sm: 860px;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--c-cream);
+  color: var(--c-stone);
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-serif); line-height: 1.15; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { display: block; max-width: 100%; }
+
+/* === Section Utility === */
+.section-label {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-terra);
+  margin-bottom: 0.75rem;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 600;
+  color: var(--c-stone);
+  line-height: 1.15;
+}
+
+.section-title.on-dark { color: var(--c-cream); }
+
+/* === Scroll Reveal (CSS base, Anime.js trigger) === */
+.js-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.js-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}

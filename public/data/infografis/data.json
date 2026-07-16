@@ -1,0 +1,45 @@
+{
+  "tahun_data": 2025,
+  "maps_embed": "https://maps.google.com/maps?q=Umbul+Limus+Pesawaran+Lampung&t=&z=14&ie=UTF8&iwloc=&output=embed",
+  "maps_label": "Desa Umbul Limus, Kec. Pesawaran, Lampung",
+  
+  "kependudukan": {
+    "total": 2847,
+    "satuan": "Jiwa",
+    "keterangan": "Total penduduk terdaftar di Desa Umbul Limus",
+    "rincian": [
+      { "label": "Laki-laki", "value": 1423 },
+      { "label": "Perempuan", "value": 1424 },
+      { "label": "Kepala Keluarga", "value": 712 }
+    ]
+  },
+  
+  "wilayah": [
+    { "label": "Luas Wilayah", "value": "1.240 Ha", "icon": "🌿" },
+    { "label": "Dusun", "value": 3, "icon": "🏘" },
+    { "label": "RW", "value": 6, "icon": "🔷" },
+    { "label": "RT", "value": 18, "icon": "🔹" }
+  ],
+  
+  "pendidikan": [
+    { "label": "Tidak Sekolah", "value": 120 },
+    { "label": "SD", "value": 680 },
+    { "label": "SMP", "value": 590 },
+    { "label": "SMA", "value": 950 },
+    { "label": "Perguruan Tinggi", "value": 507 }
+  ],
+  
+  "pekerjaan": [
+    { "label": "Petani", "value": 640, "icon": "🌾" },
+    { "label": "Pedagang", "value": 310, "icon": "🏪" },
+    { "label": "Buruh", "value": 450, "icon": "🔧" },
+    { "label": "Peg. Negeri", "value": 180, "icon": "🏛" },
+    { "label": "Wiraswasta", "value": 390, "icon": "💼" }
+  ],
+  
+  "wisata": [
+    { "label": "Pengunjung / Bulan", "value": 320, "suffix": "+" },
+    { "label": "Jalur Trekking", "value": 4, "suffix": " Km" },
+    { "label": "Destinasi Wisata", "value": 3, "suffix": "" }
+  ]
+}

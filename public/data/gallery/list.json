@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "judul": "Umbul Limus — Mata Air Jernih",
+    "deskripsi": "Jernihnya sumber mata air alami menjadi daya tarik utama desa kami.",
+    "gambar": "https://images.unsplash.com/photo-1542385151-efd9000785a0?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "id": 2,
+    "judul": "Hutan Tropis yang Asri",
+    "deskripsi": "Pepohonan rindang menyejukkan sepanjang jalur trekking.",
+    "gambar": "https://images.unsplash.com/photo-1552083375-1447ce886485?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "id": 3,
+    "judul": "Budaya Tapis Lampung",
+    "deskripsi": "Kekayaan tenun tradisional Tapis yang masih hidup di tangan warga desa.",
+    "gambar": "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "id": 4,
+    "judul": "Air Terjun Kanto Lampo",
+    "deskripsi": "Air terjun bertingkat yang tersembunyi di balik lebatnya hutan.",
+    "gambar": "https://images.unsplash.com/photo-1506161474968-3e4299b820a2?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "id": 5,
+    "judul": "Kehidupan Desa yang Damai",
+    "deskripsi": "Harmoni antara alam dan kehidupan masyarakat desa yang ramah.",
+    "gambar": "https://images.unsplash.com/photo-1552089123-2d26224fda81?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "id": 6,
+    "judul": "Wisata Keluarga",
+    "deskripsi": "Destinasi ideal untuk rekreasi dan edukasi alam bagi keluarga.",
+    "gambar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop"
+  }
+]

@@ -1,0 +1,23 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Lokasi penyimpanan gambar yang di-upload via CMS
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "data"
+    label: "Manajemen Data Web"
+    files:
+      - label: "Galeri"
+        name: "gallery"
+        file: "public/data/gallery.json"
+        fields:
+          - label: "Daftar Foto"
+            name: "items"
+            widget: "list"
+            fields:
+              - {label: "Judul", name: "title", widget: "string"}
+              - {label: "Deskripsi", name: "description", widget: "text"}
+              - {label: "URL Gambar (Bisa Upload atau Link)", name: "image", widget: "image"}

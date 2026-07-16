@@ -1,0 +1,72 @@
+{
+  "desa": "Umbul Limus",
+  "kecamatan": "Marga Punduh",
+  "kabupaten": "Pesawaran",
+  "provinsi": "Lampung",
+  "background": "https://images.unsplash.com/photo-1586348943529-beaae6c28db9?q=80&w=1600&auto=format&fit=crop",
+  "kepala_desa": {
+    "nama": "Sudirman, S.Pd",
+    "jabatan": "Kepala Desa",
+    "periode": "2022 – 2028",
+    "bio": "Memimpin desa dengan visi pengembangan pariwisata berbasis masyarakat dan pelestarian budaya lokal Lampung.",
+    "foto": "https://randomuser.me/api/portraits/men/52.jpg"
+  },
+  "sekretaris_desa": {
+    "nama": "Sari Dewi, S.E",
+    "jabatan": "Sekretaris Desa",
+    "periode": "2022 – 2028",
+    "bio": "Bertanggung jawab atas administrasi dan koordinasi antar perangkat desa untuk kelancaran pelayanan publik.",
+    "foto": "https://randomuser.me/api/portraits/women/44.jpg"
+  },
+  "kaur": [
+    {
+      "nama": "Hendra Saputra",
+      "jabatan": "Kaur Umum & Tata Usaha",
+      "foto": "https://randomuser.me/api/portraits/men/32.jpg"
+    },
+    {
+      "nama": "Ratna Wulandari",
+      "jabatan": "Kaur Keuangan",
+      "foto": "https://randomuser.me/api/portraits/women/28.jpg"
+    },
+    {
+      "nama": "Agus Santoso",
+      "jabatan": "Kaur Perencanaan",
+      "foto": "https://randomuser.me/api/portraits/men/41.jpg"
+    }
+  ],
+  "kasi": [
+    {
+      "nama": "Dedi Kurniawan",
+      "jabatan": "Kasi Pemerintahan",
+      "foto": "https://randomuser.me/api/portraits/men/55.jpg"
+    },
+    {
+      "nama": "Lestari Ningrum",
+      "jabatan": "Kasi Kesejahteraan",
+      "foto": "https://randomuser.me/api/portraits/women/61.jpg"
+    },
+    {
+      "nama": "Wahyu Pratama",
+      "jabatan": "Kasi Pelayanan",
+      "foto": "https://randomuser.me/api/portraits/men/27.jpg"
+    }
+  ],
+  "kadus": [
+    {
+      "nama": "Rudi Hartono",
+      "jabatan": "Kepala Dusun I",
+      "foto": "https://randomuser.me/api/portraits/men/68.jpg"
+    },
+    {
+      "nama": "Eko Prasetyo",
+      "jabatan": "Kepala Dusun II",
+      "foto": "https://randomuser.me/api/portraits/men/72.jpg"
+    },
+    {
+      "nama": "Mira Susanti",
+      "jabatan": "Kepala Dusun III",
+      "foto": "https://randomuser.me/api/portraits/women/55.jpg"
+    }
+  ]
+}
