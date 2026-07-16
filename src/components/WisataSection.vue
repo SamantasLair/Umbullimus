@@ -39,8 +39,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
 import anime from 'animejs';
+import { onMounted, ref } from 'vue';
 
 const places = ref([]);
 const loading = ref(true);
@@ -73,7 +73,7 @@ onMounted(async () => {
 
   if (headerEl.value) observer.observe(headerEl.value);
   setTimeout(() => {
-    cardEls.value.forEach(el => el && observer.observe(el));
+    cardEls.value.forEach(el => { if (el) observer.observe(el); });
   }, 100);
 });
 </script>

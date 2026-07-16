@@ -104,8 +104,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
 import anime from 'animejs';
+import { computed, onMounted, ref } from 'vue';
 
 const data = ref({});
 const headerEl = ref(null);
@@ -139,6 +139,8 @@ const maxPendidikan = computed(() => Math.max(...(pendidikanItems.value.map(i =>
 const maxPekerjaan = computed(() => Math.max(...(pekerjaanItems.value.map(i => i.value) || [1])));
 const barWidth = (v) => Math.round((v / maxPendidikan.value) * 100);
 const pekerjaanWidth = (v) => Math.round((v / maxPekerjaan.value) * 100);
+
+defineExpose({ barWidth, pekerjaanWidth });
 
 onMounted(async () => {
   try {

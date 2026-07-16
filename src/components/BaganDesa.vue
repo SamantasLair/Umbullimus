@@ -70,8 +70,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
 import anime from 'animejs';
+import { onMounted, ref } from 'vue';
 
 const data = ref({});
 const headerEl = ref(null);
