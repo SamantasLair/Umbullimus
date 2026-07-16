@@ -85,7 +85,7 @@ img { display: block; max-width: 100%; }
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--c-terra);
+  color: var(--c-terra-dark);
   margin-bottom: 0.75rem;
 }
 

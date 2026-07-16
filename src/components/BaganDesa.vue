@@ -155,7 +155,7 @@ onMounted(async () => {
 }
 
 .node--kepala {
-  background: var(--c-terra);
+  background: var(--c-terra-dark);
   color: var(--c-white);
   min-width: 220px;
   box-shadow: var(--shadow-lift);
@@ -174,7 +174,7 @@ onMounted(async () => {
 }
 
 .node--kadus {
-  background: var(--c-sage);
+  background: var(--c-terra-dark);
   color: var(--c-white);
 }
 

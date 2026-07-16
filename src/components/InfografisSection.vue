@@ -218,7 +218,7 @@ onMounted(async () => {
 /* Kependudukan */
 .kependudukan-stats { display: flex; gap: 2rem; align-items: flex-start; flex-wrap: wrap; }
 .kependudukan-total { display: flex; flex-direction: column; }
-.big-number { font-family: var(--font-serif); font-size: 3rem; font-weight: 700; color: var(--c-terra); line-height: 1; }
+.big-number { font-family: var(--font-serif); font-size: 3rem; font-weight: 700; color: var(--c-terra-dark); line-height: 1; }
 .big-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--c-stone-muted); margin-top: 0.3rem; }
 .kependudukan-detail { display: flex; flex-direction: column; gap: 0.6rem; }
 .detail-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; color: var(--c-stone-muted); }
@@ -245,7 +245,7 @@ onMounted(async () => {
 /* Wilayah */
 .wilayah-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
 .wilayah-item { display: flex; flex-direction: column; text-align: center; padding: 1rem; background: var(--c-cream); border-radius: var(--radius-sm); }
-.wilayah-num { font-family: var(--font-serif); font-size: 2rem; font-weight: 700; color: var(--c-sage); }
+.wilayah-num { font-family: var(--font-serif); font-size: 2rem; font-weight: 700; color: var(--c-terra-dark); }
 .wilayah-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--c-stone-muted); margin-top: 0.25rem; }
 
 @media (max-width: 768px) {

@@ -141,7 +141,7 @@ onMounted(async () => {
 .card-kategori {
   position: absolute;
   top: 1rem; left: 1rem;
-  background: var(--c-terra);
+  background: var(--c-terra-dark);
   color: var(--c-white);
   font-size: 0.7rem;
   font-weight: 600;
@@ -183,7 +183,7 @@ onMounted(async () => {
 }
 .card-fasilitas li {
   background: var(--c-cream);
-  color: var(--c-sage);
+  color: var(--c-terra-dark);
   font-size: 0.72rem;
   font-weight: 600;
   padding: 0.25rem 0.6rem;
