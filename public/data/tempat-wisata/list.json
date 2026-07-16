@@ -4,17 +4,17 @@
     "nama": "Umbul Limus",
     "kategori": "Air Terjun & Pemandian",
     "deskripsi": "Sumber mata air alami dengan kejernihan luar biasa, dikelilingi hutan tropis yang masih asri. Cocok untuk berenang dan refreshing keluarga.",
-    "gambar": "https://images.unsplash.com/photo-1542385151-efd9000785a0?q=80&w=800&auto=format&fit=crop",
+    "gambar": "https://images.unsplash.com/photo-1437482078695-73f5af6ec827?q=80&w=800&auto=format&fit=crop",
     "jam_buka": "07.00 – 17.00 WIB",
     "tiket": "Rp 10.000/orang",
     "fasilitas": ["Parkir Luas", "Warung Makan", "Toilet Umum", "Gazebo"]
   },
   {
-    "id": "air-terjun-kanto-lampo",
-    "nama": "Air Terjun Kanto Lampo",
+    "id": "air-terjun-marga-punduh",
+    "nama": "Air Terjun Marga Punduh",
     "kategori": "Air Terjun",
-    "deskripsi": "Air terjun bertingkat dengan debit air deras sepanjang tahun. Cocok untuk wisata petualangan dan fotografi alam.",
-    "gambar": "https://images.unsplash.com/photo-1506161474968-3e4299b820a2?q=80&w=800&auto=format&fit=crop",
+    "deskripsi": "Air terjun alami dengan debit air segar pegunungan Pesawaran. Cocok untuk wisata petualangan dan fotografi alam.",
+    "gambar": "https://images.unsplash.com/photo-1432405972618-c60b0242231c?q=80&w=800&auto=format&fit=crop",
     "jam_buka": "06.00 – 17.00 WIB",
     "tiket": "Rp 15.000/orang",
     "fasilitas": ["Jalur Trekking", "Pemandu Wisata", "Spot Foto"]
@@ -24,7 +24,7 @@
     "nama": "Sanggar Tapis Lampung",
     "kategori": "Wisata Budaya",
     "deskripsi": "Pusat kerajinan tapis Lampung yang dikelola ibu-ibu PKK desa. Pengunjung dapat melihat proses tenun langsung dan membeli oleh-oleh.",
-    "gambar": "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?q=80&w=800&auto=format&fit=crop",
+    "gambar": "https://images.unsplash.com/photo-1606117331085-57671c65968b?q=80&w=800&auto=format&fit=crop",
     "jam_buka": "08.00 – 16.00 WIB",
     "tiket": "Gratis",
     "fasilitas": ["Workshop Tenun", "Toko Oleh-oleh", "Ruang Pamer"]

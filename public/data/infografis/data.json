@@ -4,37 +4,37 @@
   "maps_label": "Desa Umbul Limus, Kec. Pesawaran, Lampung",
   
   "kependudukan": {
-    "total": 2847,
+    "total": 639,
     "satuan": "Jiwa",
-    "keterangan": "Total penduduk terdaftar di Desa Umbul Limus",
+    "keterangan": "Sumber: BPS Kabupaten Pesawaran (Estimasi)",
     "rincian": [
-      { "label": "Laki-laki", "value": 1423 },
-      { "label": "Perempuan", "value": 1424 },
-      { "label": "Kepala Keluarga", "value": 712 }
+      { "label": "Laki-laki", "value": 330 },
+      { "label": "Perempuan", "value": 309 },
+      { "label": "Kepala Keluarga", "value": 160 }
     ]
   },
   
   "wilayah": [
-    { "label": "Luas Wilayah", "value": "1.240 Ha", "icon": "🌿" },
+    { "label": "Luas Wilayah", "value": "520 Ha", "icon": "🌿" },
     { "label": "Dusun", "value": 3, "icon": "🏘" },
     { "label": "RW", "value": 6, "icon": "🔷" },
     { "label": "RT", "value": 18, "icon": "🔹" }
   ],
   
   "pendidikan": [
-    { "label": "Tidak Sekolah", "value": 120 },
-    { "label": "SD", "value": 680 },
-    { "label": "SMP", "value": 590 },
-    { "label": "SMA", "value": 950 },
-    { "label": "Perguruan Tinggi", "value": 507 }
+    { "label": "Tidak Sekolah", "value": 25 },
+    { "label": "SD", "value": 180 },
+    { "label": "SMP", "value": 150 },
+    { "label": "SMA", "value": 210 },
+    { "label": "Perguruan Tinggi", "value": 74 }
   ],
   
   "pekerjaan": [
-    { "label": "Petani", "value": 640, "icon": "🌾" },
-    { "label": "Pedagang", "value": 310, "icon": "🏪" },
-    { "label": "Buruh", "value": 450, "icon": "🔧" },
-    { "label": "Peg. Negeri", "value": 180, "icon": "🏛" },
-    { "label": "Wiraswasta", "value": 390, "icon": "💼" }
+    { "label": "Petani", "value": 185, "icon": "🌾" },
+    { "label": "Pedagang", "value": 45, "icon": "🏪" },
+    { "label": "Buruh", "value": 60, "icon": "🔧" },
+    { "label": "Peg. Negeri", "value": 20, "icon": "🏛" },
+    { "label": "Wiraswasta", "value": 55, "icon": "💼" }
   ],
   
   "wisata": [
