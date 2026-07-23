@@ -2,7 +2,7 @@
   <div class="bagan-page">
     <div class="page-hero" :style="bgStyle">
       <div class="page-hero__overlay"></div>
-      <div class="page-hero__content">
+      <div class="page-hero__content" ref="heroContent">
         <span class="page-hero__label">Pemerintahan</span>
         <h1 class="page-hero__title">Struktur Organisasi<br><em>Desa Umbul Limus</em></h1>
         <p v-if="data.kecamatan" class="page-hero__sub">
@@ -15,7 +15,7 @@
 
     <div v-else class="bagan-body">
       <!-- Kepala & Sekretaris -->
-      <section class="bagan-leaders">
+      <section class="bagan-leaders" ref="secLeaders">
         <div class="bagan-wrap">
           <div v-if="data.kepala_desa" class="profile-feature profile-feature--terra">
             <img :src="data.kepala_desa.foto || fallbackAvatar(data.kepala_desa.nama)" :alt="data.kepala_desa.nama" class="pf-img" />
@@ -38,10 +38,10 @@
         </div>
       </section>
 
-      <div class="bagan-divider"><div class="div-line"></div><span class="div-label">Perangkat Desa</span><div class="div-line"></div></div>
+      <div class="bagan-divider" ref="secDivider1"><div class="div-line"></div><span class="div-label">Perangkat Desa</span><div class="div-line"></div></div>
 
       <!-- Kaur & Kasi -->
-      <section class="bagan-staff">
+      <section class="bagan-staff" ref="secStaff">
         <div class="bagan-wrap">
           <div class="staff-group">
             <h4 class="group-title">Kepala Urusan (Kaur)</h4>
@@ -70,10 +70,10 @@
         </div>
       </section>
 
-      <div class="bagan-divider"><div class="div-line"></div><span class="div-label">Kepala Dusun</span><div class="div-line"></div></div>
+      <div class="bagan-divider" ref="secDivider2"><div class="div-line"></div><span class="div-label">Kepala Dusun</span><div class="div-line"></div></div>
 
       <!-- Kadus -->
-      <section class="bagan-kadus">
+      <section class="bagan-kadus" ref="secKadus">
         <div class="bagan-wrap bagan-wrap--center">
           <div v-for="p in data.kadus" :key="p.jabatan" class="kadus-card">
             <img :src="p.foto || fallbackAvatar(p.nama)" :alt="p.nama" class="kd-img" />
@@ -87,20 +87,41 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
 import anime from 'animejs'
+import { computed, nextTick, onMounted, ref } from 'vue'
 
 const data = ref({})
 const loading = ref(true)
 
+// Section refs untuk per-section observer
+const secLeaders  = ref(null)
+const secDivider1 = ref(null)
+const secStaff    = ref(null)
+const secDivider2 = ref(null)
+const secKadus    = ref(null)
+const heroContent = ref(null)
+
 const bgStyle = computed(() => ({
   backgroundImage: data.value.background
-    ? `url(${data.value.background})`
-    : 'linear-gradient(135deg, #5c3329, #4a6741)',
+    ? `linear-gradient(135deg, rgba(92,44,22,0.85), rgba(160,120,48,0.85)), url(${data.value.background})`
+    : 'linear-gradient(135deg, #5c2c16, var(--c-siger-dark))',
 }))
 
 const fallbackAvatar = (nama) =>
   `https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=7a4a3a&color=fff&size=200&bold=true`
+
+/**
+ * Buat IntersectionObserver yang re-triggerable (TIDAK unobserve).
+ * Memanggil resetFn sebelum animateFn agar animasi bersih saat re-entry.
+ */
+const makeObserver = (fn, reset, threshold = 0.15) =>
+  new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return
+      reset(e.target)
+      fn(e.target)
+    })
+  }, { threshold })
 
 onMounted(async () => {
   try {
@@ -112,17 +133,141 @@ onMounted(async () => {
     loading.value = false
   }
 
-  setTimeout(() => {
+  await nextTick()
+
+  // ── Hero: teks muncul dari bawah + label badge fade-in ──
+  if (heroContent.value) {
     anime({
-      targets: '.profile-feature, .staff-card, .kadus-card',
-      opacity: [0, 1],
-      translateY: [20, 0],
-      delay: anime.stagger(70, { start: 100 }),
-      duration: 600,
+      targets: heroContent.value.querySelectorAll('.page-hero__label, .page-hero__title, .page-hero__sub'),
+      opacity:    [0, 1],
+      translateY: [28, 0],
+      delay: anime.stagger(120),
+      duration: 700,
       easing: 'easeOutExpo',
     })
-  }, 80)
+  }
+
+  // ── Leaders: Split reveal — kiri dari kiri, kanan dari kanan ──
+  // Signature UNIK: berbeda dari WisataSection (diagonal) dan Gallery (scale+blur)
+  makeObserver(
+    (sec) => {
+      const cards = sec.querySelectorAll('.profile-feature')
+      anime({
+        targets: cards[0],
+        opacity: [0, 1],
+        translateX: [-60, 0],
+        duration: 700,
+        easing: 'easeOutExpo',
+      })
+      anime({
+        targets: cards[1],
+        opacity: [0, 1],
+        translateX: [60, 0],
+        duration: 700,
+        easing: 'easeOutExpo',
+        delay: 80,
+      })
+    },
+    (sec) => {
+      sec.querySelectorAll('.profile-feature').forEach(el => {
+        el.style.opacity = '0'
+        el.style.transform = ''
+      })
+    },
+    0.18
+  ).observe(secLeaders.value)
+
+  // ── Divider 1: Line grow dari tengah ke kiri-kanan ──
+  // Signature UNIK: hanya digunakan di divider
+  makeObserver(
+    (sec) => {
+      anime({
+        targets: sec.querySelectorAll('.div-line'),
+        scaleX: [0, 1],
+        transformOrigin: ['center', 'center'],
+        duration: 600,
+        delay: anime.stagger(60),
+        easing: 'easeOutExpo',
+      })
+      anime({
+        targets: sec.querySelector('.div-label'),
+        opacity: [0, 1],
+        duration: 400,
+        delay: 200,
+        easing: 'easeOutQuart',
+      })
+    },
+    (sec) => {
+      sec.querySelectorAll('.div-line').forEach(el => el.style.transform = 'scaleX(0)')
+      const lbl = sec.querySelector('.div-label')
+      if (lbl) lbl.style.opacity = '0'
+    }
+  ).observe(secDivider1.value)
+
+  // ── Staff: Diagonal cascade kiri-bawah (berbeda dari leaders) ──
+  makeObserver(
+    (sec) => {
+      anime({
+        targets: sec.querySelectorAll('.staff-card'),
+        opacity:    [0, 1],
+        translateX: [-30, 0],
+        translateY: [20, 0],
+        delay: anime.stagger(55),
+        duration: 550,
+        easing: 'easeOutExpo',
+      })
+    },
+    (sec) => {
+      sec.querySelectorAll('.staff-card').forEach(el => {
+        el.style.opacity = '0'
+        el.style.transform = ''
+      })
+    }
+  ).observe(secStaff.value)
+
+  // ── Divider 2 ──
+  if (secDivider2.value) {
+    makeObserver(
+      (sec) => {
+        anime({
+          targets: sec.querySelectorAll('.div-line'),
+          scaleX: [0, 1],
+          transformOrigin: ['center', 'center'],
+          duration: 500,
+          delay: anime.stagger(60),
+          easing: 'easeOutExpo',
+        })
+      },
+      (sec) => {
+        sec.querySelectorAll('.div-line').forEach(el => el.style.transform = 'scaleX(0)')
+      }
+    ).observe(secDivider2.value)
+  }
+
+  // ── Kadus: Scale pop dari bawah ── Signature UNIK
+  makeObserver(
+    (sec) => {
+      anime({
+        targets: sec.querySelectorAll('.kadus-card'),
+        opacity: [0, 1],
+        scale:   [0.82, 1],
+        translateY: [30, 0],
+        delay: anime.stagger(70, { start: 50 }),
+        duration: 600,
+        easing: 'easeOutBack',
+      })
+    },
+    (sec) => {
+      sec.querySelectorAll('.kadus-card').forEach(el => {
+        el.style.opacity = '0'
+        el.style.transform = ''
+      })
+    },
+    0.12
+  ).observe(secKadus.value)
 })
+
+defineExpose({ bgStyle, fallbackAvatar })
 </script>
 
 <style scoped>
@@ -138,7 +283,7 @@ onMounted(async () => {
 }
 .page-hero__overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(30,15,8,.88) 0%, rgba(30,15,8,.45) 55%, rgba(30,15,8,.15) 100%);
+  background: linear-gradient(to top, var(--c-dark-bg) 0%, rgba(20,10,5,.55) 55%, rgba(20,10,5,.15) 100%);
 }
 .page-hero__content {
   position: relative; z-index: 2;

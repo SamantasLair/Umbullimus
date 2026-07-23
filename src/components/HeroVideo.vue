@@ -1,6 +1,7 @@
 <template>
   <section id="home" class="hero">
     <div class="hero-overlay"></div>
+
     <video autoplay loop muted playsinline class="hero-video" aria-hidden="true" ref="videoEl">
       <source src="https://cdn.pixabay.com/video/2019/11/17/29168-373809623_large.mp4" type="video/mp4" />
     </video>
@@ -50,63 +51,70 @@ function scrollTo(id) {
 }
 
 onMounted(() => {
-  // Video: slow scale-out dari 1.08 ke 1 (cinematic zoom)
+  // ── Video: cinematic slow zoom ──
   if (videoEl.value) {
     anime({
-      targets: videoEl.value,
-      scale:   [1.08, 1],
-      opacity: [0, 1],
-      duration: 2200,
-      easing:  'easeOutQuart',
+      targets:  videoEl.value,
+      scale:    [1.1, 1],
+      opacity:  [0, 1],
+      duration: 2400,
+      easing:   'easeOutQuart',
     })
   }
 
-  // Cinematic timeline — tiap elemen punya karakter gerak sendiri
+  // ── Cinematic timeline — karakter gerak unik tiap elemen ──
   anime.timeline({ easing: 'easeOutExpo' })
-    // Badge turun dari atas
+    // Badge: clip-path curtain reveal dari kiri
     .add({
-      targets:    badgeEl.value,
-      opacity:    [0, 1],
-      translateY: [-14, 0],
-      duration:   650,
-      delay:      400,
+      targets:  badgeEl.value,
+      clipPath: ['inset(0 100% 0 0 round 50px)', 'inset(0 0% 0 0 round 50px)'],
+      opacity:  [0, 1],
+      duration: 700,
+      delay:    350,
+      easing:   'easeInOutQuart',
     })
-    // "Umbul" — masuk dari kiri
+    // "Umbul" — 3-phase: muncul blur → snap → settle
     .add({
       targets:    titleLeftEl.value,
-      opacity:    [0, 1],
-      translateX: [-60, 0],
-      duration:   800,
-    }, '-=250')
-    // "Limus" — masuk dari kanan (counter-direction)
+      opacity:    [0, 0.65, 1],
+      translateX: [-90, -8, 0],
+      scale:      [1.06, 1.01, 1],
+      duration:   1000,
+    }, '-=200')
+    // "Limus" — mirror dari kanan
     .add({
-      targets:    titleRightEl.value,
-      opacity:    [0, 1],
-      translateX: [60, 0],
-      duration:   800,
-    }, '-=700')
-    // Tagline fade in + slight rise
+      targets:       titleRightEl.value,
+      opacity:       [0, 0.65, 1],
+      translateX:    [90, 8, 0],
+      scale:         [1.06, 1.01, 1],
+      duration:      1000,
+      transformOrigin: ['right center', 'right center'],
+    }, '-=850')
+    // Tagline — letter-spacing morph
     .add({
-      targets:    taglineEl.value,
-      opacity:    [0, 1],
-      translateY: [14, 0],
-      duration:   600,
-    }, '-=350')
-    // Tombol — scale in dari kecil
+      targets:       taglineEl.value,
+      opacity:       [0, 1],
+      translateY:    [18, 0],
+      letterSpacing: ['0.12em', '0em'],
+      duration:      750,
+      easing:        'easeOutQuart',
+    }, '-=450')
+    // Tombol — overshoot scale bounce
     .add({
       targets:    actionsEl.value.querySelectorAll('a'),
       opacity:    [0, 1],
-      scale:      [0.9, 1],
-      translateY: [8, 0],
-      delay:      anime.stagger(100),
-      duration:   500,
-    }, '-=300')
+      scale:      [0.75, 1.06, 1],
+      translateY: [14, -3, 0],
+      delay:      anime.stagger(130),
+      duration:   650,
+      easing:     'easeOutBack',
+    }, '-=350')
     // Scroll hint
     .add({
       targets:  scrollHintEl.value,
       opacity:  [0, 1],
       duration: 500,
-    }, '-=100')
+    }, '-=150')
 })
 
 defineExpose({
@@ -130,6 +138,46 @@ defineExpose({
   object-fit: cover; z-index: 0;
   opacity: 0;
 }
+
+/* ── Partikel firefly ── */
+.hero-particles {
+  position: absolute; inset: 0;
+  z-index: 2; pointer-events: none;
+  overflow: hidden;
+}
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--c-siger);
+  box-shadow: 0 0 8px 3px rgba(212,168,83,0.5);
+  will-change: transform, opacity;
+  opacity: 0;
+}
+.particle--1 { width:4px;height:4px;left:12%;top:28%; }
+.particle--2 { width:3px;height:3px;left:24%;top:62%; }
+.particle--3 { width:5px;height:5px;left:38%;top:22%; }
+.particle--4 { width:3px;height:3px;left:52%;top:75%; }
+.particle--5 { width:4px;height:4px;left:67%;top:38%; }
+.particle--6 { width:6px;height:6px;left:78%;top:18%; }
+.particle--7 { width:3px;height:3px;left:88%;top:58%; }
+.particle--8 { width:4px;height:4px;left:8%;top:82%; }
+
+/* ── Garis dekoratif kiri ── */
+.hero-deco-lines {
+  position: absolute;
+  left: var(--sp-md); top: 50%;
+  transform: translateY(-50%);
+  z-index: 3; pointer-events: none;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.deco-line {
+  display: block; width: 1.5px;
+  background: linear-gradient(to bottom, var(--c-siger), transparent);
+  transform-origin: top center;
+  transform: scaleY(0); opacity: 0;
+}
+.deco-line--1 { height: 60px; }
+.deco-line--2 { height: 36px; opacity: 0.5; }
 
 .hero-overlay {
   position: absolute; inset: 0; z-index: 1;
@@ -231,6 +279,6 @@ defineExpose({
 @media (max-width:600px) {
   .hero-content { padding:0 1.25rem 4rem; }
   .title-right { padding-left:.75rem; }
-  .hero-scroll-hint,.hero-siger-bg { display:none; }
+  .hero-scroll-hint,.hero-siger-bg,.hero-deco-lines { display:none; }
 }
 </style>

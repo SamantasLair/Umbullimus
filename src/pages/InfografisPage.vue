@@ -163,126 +163,276 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import anime from 'animejs'
+import anime from "animejs";
+import { computed, onMounted, ref } from "vue";
 
-const data = ref({})
-const loading = ref(true)
+const data = ref({});
+const loading = ref(true);
 
-const pendudukNumEl = ref(null)
-const wstatEls = ref([])
+const pendudukNumEl = ref(null);
+const wstatEls = ref([]);
 
-const secPenduduk  = ref(null)
-const secWilayah   = ref(null)
-const secPendidikan = ref(null)
-const secPekerjaan = ref(null)
-const secWisata    = ref(null)
-const secMaps      = ref(null)
+const secPenduduk = ref(null);
+const secWilayah = ref(null);
+const secPendidikan = ref(null);
+const secPekerjaan = ref(null);
+const secWisata = ref(null);
+const secMaps = ref(null);
 
 /* Palet warna dinamis */
-const pillColors = ['sage', 'terra', 'stone']
-const barColors = ['#c4917a', '#a06a55', '#7a4a3a', '#4a6741', '#2e4428']
-const donutColors = ['#7a4a3a', '#4a6741', '#2c2420', '#a06a55', '#3a5234']
+// biome-ignore lint/correctness/noUnusedVariables: Used in template
+const pillColors = ["sage", "terra", "stone"];
+// biome-ignore lint/correctness/noUnusedVariables: Used in template
+const barColors = ["#c4917a", "#a06a55", "#7a4a3a", "#4a6741", "#2e4428"];
+// biome-ignore lint/correctness/noUnusedVariables: Used in template
+const donutColors = ["#7a4a3a", "#4a6741", "#2c2420", "#a06a55", "#3a5234"];
 
 /* Hitung persentase dinamis untuk Pendidikan */
+// biome-ignore lint/correctness/noUnusedVariables: Used in template
 const pendidikanBars = computed(() => {
-  if (!data.value.pendidikan || !data.value.pendidikan.length) return []
-  const max = Math.max(...data.value.pendidikan.map(item => item.value || 0))
-  return data.value.pendidikan.map(item => ({
-    label: item.label,
-    value: item.value,
-    pct: max > 0 ? Math.round((item.value / max) * 100) : 0
-  }))
-})
+	if (!data.value.pendidikan?.length) return [];
+	const max = Math.max(...data.value.pendidikan.map((item) => item.value || 0));
+	return data.value.pendidikan.map((item) => ({
+		label: item.label,
+		value: item.value,
+		pct: max > 0 ? Math.round((item.value / max) * 100) : 0,
+	}));
+});
 
 /* Hitung persentase dinamis untuk Pekerjaan */
+// biome-ignore lint/correctness/noUnusedVariables: Used in template
 const pekerjaanList = computed(() => {
-  if (!data.value.pekerjaan || !data.value.pekerjaan.length) return []
-  const total = data.value.pekerjaan.reduce((sum, item) => sum + (item.value || 0), 0)
-  return data.value.pekerjaan.map(item => ({
-    label: item.label,
-    value: item.value,
-    icon: item.icon,
-    pct: total > 0 ? Math.round((item.value / total) * 100) : 0
-  }))
-})
+	if (!data.value.pekerjaan?.length) return [];
+	const total = data.value.pekerjaan.reduce(
+		(sum, item) => sum + (item.value || 0),
+		0,
+	);
+	return data.value.pekerjaan.map((item) => ({
+		label: item.label,
+		value: item.value,
+		icon: item.icon,
+		pct: total > 0 ? Math.round((item.value / total) * 100) : 0,
+	}));
+});
 
 function runCounter(el, target) {
-  const obj = { val: 0 }
-  anime({
-    targets: obj,
-    val: target,
-    round: 1,
-    duration: 1600,
-    easing: 'easeOutExpo',
-    update() { el.textContent = Math.round(obj.val).toLocaleString('id-ID') },
-  })
-}
-
-function observeOnce(el, fn) {
-  if (!el) return
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return
-      obs.unobserve(e.target)
-      fn(e.target)
-    })
-  }, { threshold: 0.15 })
-  obs.observe(el)
+	const obj = { val: 0 };
+	anime({
+		targets: obj,
+		val: target,
+		round: 1,
+		duration: 1600,
+		easing: "easeOutExpo",
+		update() {
+			el.textContent = Math.round(obj.val).toLocaleString("id-ID");
+		},
+	});
 }
 
 onMounted(async () => {
-  try {
-    const res = await fetch('/data/infografis/data.json')
-    if (res.ok) data.value = await res.json()
-  } catch (e) {
-    console.error('Gagal memuat infografis:', e)
-  } finally {
-    loading.value = false
-  }
+	try {
+		const res = await fetch("/data/infografis/data.json");
+		if (res.ok) data.value = await res.json();
+	} catch (e) {
+		console.error("Gagal memuat infografis:", e);
+	} finally {
+		loading.value = false;
+	}
 
-  setTimeout(() => {
-    // Animasi Counter Kependudukan
-    if (pendudukNumEl.value && data.value.kependudukan) {
-      observeOnce(pendudukNumEl.value, () =>
-        runCounter(pendudukNumEl.value, data.value.kependudukan.total || 0)
-      )
-    }
+	setTimeout(() => {
+		/**
+		 * observeRepeat: Observer yang re-triggerable.
+		 * resetFn dipanggil sebelum animateFn setiap kali section masuk viewport.
+		 */
+		const observeRepeat = (el, animateFn, resetFn, threshold = 0.15) => {
+			if (!el) return;
+			const obs = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((e) => {
+						if (!e.isIntersecting) return;
+						resetFn(e.target);
+						animateFn(e.target);
+					});
+				},
+				{ threshold },
+			);
+			obs.observe(el);
+		};
 
-    // Animasi Counter Wisata
-    wstatEls.value.forEach(({ el, target }) => {
-      if (el) observeOnce(el, () => runCounter(el, target || 0))
-    })
+		// ── 1. Kependudukan: Counter + Pills slide dari kiri ──
+		// Signature: number counter adalah yang PALING UNIK di seluruh website
+		observeRepeat(
+			secPenduduk.value,
+			(sec) => {
+				// Reset counter ke 0 dulu
+				if (pendudukNumEl.value) pendudukNumEl.value.textContent = "0";
+				if (pendudukNumEl.value && data.value.kependudukan)
+					runCounter(pendudukNumEl.value, data.value.kependudukan.total || 0);
+				anime({
+					targets: sec.querySelectorAll(".pill"),
+					opacity: [0, 1],
+					translateX: [-24, 0],
+					delay: anime.stagger(90),
+					duration: 500,
+					easing: "easeOutExpo",
+				});
+			},
+			(sec) => {
+				sec.querySelectorAll(".pill").forEach((el) => {
+					el.style.opacity = "0";
+					el.style.transform = "";
+				});
+			},
+		);
 
-    if (secPenduduk.value) observeOnce(secPenduduk.value, sec => {
-      anime({ targets: sec.querySelectorAll('.pill'), opacity:[0,1], translateX:[-16,0], delay: anime.stagger(80), duration:500, easing:'easeOutExpo' })
-    })
+		// ── 2. Wilayah: 3D Flip dari bawah ──
+		// Signature UNIK: rotateX — tidak dipakai di section mana pun
+		observeRepeat(
+			secWilayah.value,
+			(sec) => {
+				anime({
+					targets: sec.querySelectorAll(".wtile"),
+					opacity: [0, 1],
+					rotateX: [90, 0],
+					translateY: [30, 0],
+					transformOrigin: ["50% 100%", "50% 100%"],
+					delay: anime.stagger(70),
+					duration: 600,
+					easing: "easeOutBack",
+				});
+			},
+			(sec) => {
+				sec.querySelectorAll(".wtile").forEach((el) => {
+					el.style.opacity = "0";
+					el.style.transform = "";
+				});
+			},
+		);
 
-    if (secWilayah.value) observeOnce(secWilayah.value, sec => {
-      anime({ targets: sec.querySelectorAll('.wtile'), opacity:[0,1], translateY:[20,0], delay: anime.stagger(80), duration:500, easing:'easeOutExpo' })
-    })
+		// ── 3. Pendidikan: Bar grow dari kiri + label reveal ──
+		// Signature UNIK: width animation pada bar-fill
+		observeRepeat(
+			secPendidikan.value,
+			(sec) => {
+				anime({
+					targets: sec.querySelectorAll(".bar-row"),
+					opacity: [0, 1],
+					translateX: [-20, 0],
+					delay: anime.stagger(65),
+					duration: 450,
+					easing: "easeOutExpo",
+				});
+				sec.querySelectorAll(".bar-fill").forEach((el) => {
+					const targetW = el.getAttribute("data-width") || "0";
+					anime({
+						targets: el,
+						width: ["0%", `${targetW}%`],
+						duration: 950,
+						delay: 200,
+						easing: "easeOutExpo",
+					});
+				});
+			},
+			(sec) => {
+				sec.querySelectorAll(".bar-row").forEach((el) => {
+					el.style.opacity = "0";
+					el.style.transform = "";
+				});
+				sec.querySelectorAll(".bar-fill").forEach((el) => {
+					el.style.width = "0%";
+				});
+			},
+		);
 
-    if (secPendidikan.value) observeOnce(secPendidikan.value, sec => {
-      anime({ targets: sec.querySelectorAll('.bar-row'), opacity:[0,1], translateY:[16,0], delay:anime.stagger(70), duration:450, easing:'easeOutExpo' })
-      sec.querySelectorAll('.bar-fill').forEach(el => {
-        const targetW = el.getAttribute('data-width') || '0'
-        anime({ targets: el, width: ['0%', targetW + '%'], duration: 900, delay: 200, easing: 'easeOutExpo' })
-      })
-    })
+		// ── 4. Pekerjaan: Scale pop + Ring draw ──
+		// Signature: ring-arc stroke animation — digunakan hanya di sini
+		observeRepeat(
+			secPekerjaan.value,
+			(sec) => {
+				anime({
+					targets: sec.querySelectorAll(".pcard"),
+					opacity: [0, 1],
+					scale: [0.88, 1],
+					translateY: [16, 0],
+					delay: anime.stagger(60),
+					duration: 500,
+					easing: "easeOutExpo",
+				});
+				sec.querySelectorAll(".ring-arc").forEach((el) => {
+					const offset = parseFloat(el.getAttribute("data-offset") || "100");
+					anime({
+						targets: el,
+						strokeDashoffset: [100, offset],
+						duration: 1100,
+						delay: 300,
+						easing: "easeOutExpo",
+					});
+				});
+			},
+			(sec) => {
+				sec.querySelectorAll(".pcard").forEach((el) => {
+					el.style.opacity = "0";
+					el.style.transform = "";
+				});
+				sec.querySelectorAll(".ring-arc").forEach((el) => {
+					el.style.strokeDashoffset = "100";
+				});
+			},
+		);
 
-    if (secPekerjaan.value) observeOnce(secPekerjaan.value, sec => {
-      anime({ targets: sec.querySelectorAll('.pcard'), opacity:[0,1], scale:[0.95,1], delay:anime.stagger(60), duration:450, easing:'easeOutExpo' })
-      sec.querySelectorAll('.ring-arc').forEach(el => {
-        const offset = parseFloat(el.getAttribute('data-offset') || '100')
-        anime({ targets: el, strokeDashoffset: [100, offset], duration: 1100, delay: 300, easing: 'easeOutExpo' })
-      })
-    })
+		// ── 5. Wisata Stats: Count-up + slide dari kanan ──
+		// Signature UNIK: translateX dari kanan (berlawanan dari pills yang dari kiri)
+		observeRepeat(
+			secWisata.value,
+			(sec) => {
+				anime({
+					targets: sec.querySelectorAll(".wstat"),
+					opacity: [0, 1],
+					translateX: [40, 0],
+					delay: anime.stagger(80),
+					duration: 550,
+					easing: "easeOutExpo",
+				});
+				// Reset counter lalu jalankan ulang
+				wstatEls.value.forEach(({ el, target }) => {
+					if (el) {
+						el.textContent = "0";
+						runCounter(el, target || 0);
+					}
+				});
+			},
+			(sec) => {
+				sec.querySelectorAll(".wstat").forEach((el) => {
+					el.style.opacity = "0";
+					el.style.transform = "";
+				});
+			},
+		);
 
-    if (secMaps.value) observeOnce(secMaps.value, sec => {
-      anime({ targets: sec.querySelector('.maps-wrapper'), opacity:[0,1], translateY:[20,0], duration:600, easing:'easeOutExpo' })
-    })
-  }, 100)
-})
+		// ── 6. Maps: Drop-in dari atas + scale ──
+		// Signature UNIK: translateY negatif (dari atas) + scale
+		observeRepeat(
+			secMaps.value,
+			(sec) => {
+				anime({
+					targets: sec.querySelector(".maps-wrapper"),
+					opacity: [0, 1],
+					translateY: [-30, 0],
+					scale: [0.97, 1],
+					duration: 700,
+					easing: "easeOutExpo",
+				});
+			},
+			(sec) => {
+				const w = sec.querySelector(".maps-wrapper");
+				if (w) {
+					w.style.opacity = "0";
+					w.style.transform = "";
+				}
+			},
+		);
+	}, 120);
+});
 </script>
 
 <style scoped>

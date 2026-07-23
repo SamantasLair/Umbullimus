@@ -1,5 +1,5 @@
 <template>
-  <section id="bagan" class="bagan-section">
+  <section id="bagan" class="bagan-section" ref="sectionRef">
     <div class="bagan-container">
       <header class="bagan-header js-reveal" ref="headerEl">
         <span class="section-label">Organisasi</span>
@@ -70,40 +70,174 @@
 </template>
 
 <script setup>
-import anime from 'animejs';
-import { onMounted, ref } from 'vue';
+import anime from "animejs";
+import { nextTick, onMounted, ref } from "vue";
+import { useScrollExit } from "../composables/useScrollExit.js";
 
 const data = ref({});
+const sectionRef = ref(null);
 const headerEl = ref(null);
 const treeEl = ref(null);
 
+const resetElements = () => {
+	if (headerEl.value) {
+		headerEl.value.style.opacity = "0";
+		headerEl.value.style.transform = "";
+	}
+	Array.from(getLevels()).forEach((el) => {
+		el.style.opacity = "0";
+		el.style.transform = "";
+	});
+};
+
+const getLevels = () =>
+	treeEl.value
+		? treeEl.value.querySelectorAll(
+				".bagan-level, .connector-v, .connector-branch",
+			)
+		: [];
+
+const animateIn = () => {
+	if (!treeEl.value) return;
+
+	const connV   = treeEl.value.querySelector('.connector-v');
+	const connB   = treeEl.value.querySelector('.connector-branch');
+	const lvl1    = treeEl.value.querySelector('.bagan-level--1');
+	const lvl2    = treeEl.value.querySelector('.bagan-level--2');
+	const lvl3    = treeEl.value.querySelector('.bagan-level--3');
+	const lvl4    = treeEl.value.querySelector('.bagan-level--4');
+	const nodes   = treeEl.value.querySelectorAll('.bagan-node');
+	const labels  = treeEl.value.querySelectorAll('.group-label');
+
+	// Timeline: Header → Level1 pop → Connector draw → Level2 → Branch → Level3/4
+	anime.timeline({ easing: 'easeOutExpo' })
+		.add({
+			targets:    headerEl.value,
+			opacity:    [0, 1],
+			translateY: [20, 0],
+			duration:   600,
+		})
+		// Kepala desa: scale pop dramatis
+		.add({
+			targets:  lvl1,
+			opacity:  [0, 1],
+			scale:    [0, 1.08, 1],
+			duration: 650,
+			easing:   'easeOutElastic',
+		}, '-=200')
+		// Connector V: tumbuh dari atas (draw)
+		.add({
+			targets:         connV,
+			opacity:         [0, 1],
+			scaleY:          [0, 1],
+			transformOrigin: ['top center', 'top center'],
+			duration:        380,
+			easing:          'easeInOutQuart',
+		}, '-=100')
+		// Level 2 Sekretaris
+		.add({
+			targets:  lvl2,
+			opacity:  [0, 1],
+			scale:    [0.85, 1.04, 1],
+			duration: 550,
+			easing:   'easeOutBack',
+		}, '-=50')
+		// Connector branch: tumbuh dari tengah
+		.add({
+			targets:         connB,
+			opacity:         [0, 1],
+			scaleX:          [0, 1],
+			transformOrigin: ['center center', 'center center'],
+			duration:        420,
+			easing:          'easeInOutQuart',
+		}, '-=100')
+		// Level 3 & 4: cascade dari atas
+		.add({
+			targets:  [lvl3, lvl4].filter(Boolean),
+			opacity:  [0, 1],
+			translateY: [16, 0],
+			scaleY:   [0.88, 1],
+			transformOrigin: ['top center', 'top center'],
+			delay:    anime.stagger(160),
+			duration: 550,
+			easing:   'easeOutBack',
+		}, '-=150')
+		// Labels & nodes: final appear
+		.add({
+			targets:  [...nodes, ...labels],
+			opacity:  [0, 1],
+			translateY: [8, 0],
+			delay:    anime.stagger(40),
+			duration: 400,
+		}, '-=300');
+};
+
+// Scroll-linked PHYSICAL exit — pohon bagan "runtuh" ke atas, level demi level
+// Masuk: tumbuh dari atas (scaleY) — Keluar: runtuh ke atas, dipercepat dari bawah ke atas
+// getLevels() dipanggil LAZY saat scroll agar treeEl.value sudah ada
+useScrollExit(
+	sectionRef,
+	() => {
+		const levels = Array.from(getLevels());
+		return [
+			{ el: headerEl.value, x: 0, y: -80 },
+			// Level paling bawah exit lebih jauh (inverse dari entrance top-to-bottom)
+			...levels.map((el, i) => ({
+				el,
+				x: (i % 2 === 0 ? -1 : 1) * i * 8, // zigzag kiri-kanan ringan
+				y: -60 - i * 30, // semakin dalam levelnya, semakin jauh exitnya
+				rotate: (i % 2 === 0 ? -1 : 1) * 2,
+			})),
+		];
+	},
+	{ exitZone: 190, staggerPx: 16 },
+);
+
+
 onMounted(async () => {
-  try {
-    const res = await fetch('/data/bagan/struktur.json');
-    if (res.ok) data.value = await res.json();
-  } catch (e) {
-    console.error('Gagal memuat data bagan:', e);
-  }
+	try {
+		const res = await fetch("/data/bagan/struktur.json");
+		if (res.ok) data.value = await res.json();
+	} catch (e) {
+		console.error("Gagal memuat data bagan:", e);
+	}
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      observer.unobserve(entry.target);
-      anime({
-        targets: entry.target.querySelectorAll('.bagan-node, .connector-v, .connector-branch, .group-label'),
-        opacity: [0, 1],
-        translateY: [15, 0],
-        delay: anime.stagger(60),
-        duration: 500,
-        easing: 'easeOutExpo'
-      });
-    });
-  }, { threshold: 0.1 });
+	await nextTick();
+	if (headerEl.value) {
+		headerEl.value.style.opacity = "0";
+	}
 
-  if (headerEl.value) {
-    anime({ targets: headerEl.value, opacity: [0,1], translateY: [20,0], duration: 600, easing: 'easeOutExpo', delay: 200 });
-  }
-  setTimeout(() => { if (treeEl.value) observer.observe(treeEl.value); }, 200);
+	const observer = new IntersectionObserver(
+		(entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					resetElements();
+					animateIn();
+					// TIDAK unobserve — animasi harus bisa berulang
+				}
+			});
+		},
+		{ threshold: 0.15 },
+	);
+
+	if (headerEl.value) observer.observe(headerEl.value);
+
+	// Dots — looping gentle float
+	const dots = sectionRef.value?.querySelectorAll('.bg-dot');
+	if (dots?.length) {
+		anime({
+			targets:    dots,
+			translateY: (_, i) => [0, -18 - i * 6],
+			translateX: (_, i) => [0, (i % 2 === 0 ? 10 : -10)],
+			opacity:    [0.15, 0.45],
+			scale:      [1, 1.4],
+			duration:   (_, i) => 2800 + i * 380,
+			delay:      anime.stagger(300, { from: 'random' }),
+			loop:       true,
+			direction:  'alternate',
+			easing:     'easeInOutSine',
+		});
+	}
 });
 </script>
 
@@ -111,11 +245,15 @@ onMounted(async () => {
 .bagan-section {
   background: var(--c-cream-dark);
   padding: var(--sp-xl) var(--sp-md);
+  position: relative;
+  overflow: visible;
+  z-index: 1;
 }
 
 .bagan-container {
   max-width: var(--max-w-sm);
   margin: 0 auto;
+  position: relative; z-index: 1;
 }
 
 .bagan-header { margin-bottom: 3rem; }

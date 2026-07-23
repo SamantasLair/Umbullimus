@@ -1,0 +1,77 @@
+DAFTAR IDE KATEGORI & METRIK INFOGRAFIS DESA UMBUL LIMUS
+==========================================================
+
+1. Demografi & Kependudukan
+   - Total Penduduk (Jiwa)
+   - Kepadatan Penduduk (Jiwa/km²)
+   - Rasio Jenis Kelamin (Pria vs Wanita)
+   - Piramida Kelompok Usia
+   - Pertumbuhan Penduduk per Tahun
+   - Jumlah Kepala Keluarga (KK)
+
+2. Geografi & Penggunaan Lahan
+   - Total Luas Wilayah (Ha)
+   - Ketinggian Wilayah (MDPL)
+   - Pembagian Administratif (Jumlah Dusun, RW, RT)
+   - Rasio Lahan Produktif vs Pemukiman (%)
+   - Batas Wilayah (Utara, Selatan, Barat, Timur)
+
+3. Ekonomi & Kesejahteraan
+   - Mayoritas Mata Pencaharian
+   - Tingkat Pengangguran Terbuka (TPT)
+   - Jumlah UMKM Aktif
+   - Produk Unggulan Desa (One Village One Product)
+   - Rata-rata Pendapatan Keluarga (Opsional)
+
+4. Pertanian, Perkebunan & Peternakan
+   - Komoditas Panen Utama (Tonase Padi, Kopi, dsb)
+   - Luas Lahan Pertanian (Ha)
+   - Populasi Hewan Ternak (Sapi, Kambing, Ayam)
+   - Jumlah Kelompok Tani (Gapoktan)
+   - Kalender Panen Raya
+
+5. Pendidikan & Literasi
+   - Tingkat Kelulusan (SD, SMP, SMA, Sarjana)
+   - Ketersediaan Bangunan Sekolah (PAUD - SMA)
+   - Rasio Guru & Murid
+   - Angka Putus Sekolah
+   - Fasilitas Literasi (Perpustakaan Desa)
+
+6. Kesehatan & Sanitasi Lingkungan
+   - Jumlah Fasilitas Kesehatan (Klinik, Posyandu)
+   - Jumlah Tenaga Medis (Bidan, Dokter)
+   - Angka Stunting Balita
+   - Akses Sanitasi (Persentase Jamban Sehat)
+   - Angka Harapan Hidup
+
+7. Infrastruktur & Fasilitas Umum
+   - Persentase Jalan Teraspal/Beton (%)
+   - Rasio Elektrifikasi Listrik (%)
+   - Sumber Akses Air Bersih
+   - Ketersediaan Fasilitas Ibadah
+   - Fasilitas Olahraga & Ruang Publik
+
+8. Pariwisata & Potensi Alam
+   - Jumlah Titik Wisata/Spot Foto (Misal: Umbul Limus)
+   - Rata-rata Kunjungan Wisatawan per Bulan
+   - Fasilitas Penunjang Wisata (Toilet, Parkir)
+   - Jarak Tempuh ke Pusat Wisata
+   - Event Budaya/Pariwisata Tahunan
+
+9. Sosial, Budaya & Kelembagaan
+   - Dominasi Etnis/Suku (Lampung, Jawa, Sunda, dll)
+   - Organisasi Masyarakat Aktif (Karang Taruna, PKK)
+   - Kesenian Tradisional yang Masih Aktif
+   - Frekuensi Kegiatan Gotong Royong
+
+10. Pemerintahan & Transparansi Keuangan
+    - Status Indeks Desa Membangun (Tertinggal/Maju/Mandiri)
+    - Postur APBDes (Grafik Alokasi Dana)
+    - Total Realisasi Dana Desa
+    - Struktur Perangkat Desa
+    - Jam Operasional Pelayanan Balai Desa
+
+11. Lingkungan & Mitigasi Bencana
+    - Sistem Pengelolaan Sampah (Bank Sampah/TPS)
+    - Luas Ruang Terbuka Hijau (RTH)
+    - Peta Daerah Rawan Bencana (Jika Ada)

@@ -13,24 +13,17 @@
           <h3 class="info-card-title">Kependudukan</h3>
           <div class="kependudukan-stats">
             <div class="kependudukan-total">
-              <span class="big-number">{{ data.kependudukan.jumlah_penduduk.toLocaleString('id-ID') }}</span>
+              <span class="big-number">{{ data.kependudukan.total.toLocaleString('id-ID') }}</span>
               <span class="big-label">Total Jiwa</span>
             </div>
             <div class="kependudukan-detail">
-              <div class="detail-row">
-                <span class="detail-icon">👨</span>
-                <span class="detail-label">Laki-laki</span>
-                <span class="detail-val">{{ data.kependudukan.laki_laki.toLocaleString('id-ID') }}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-icon">👩</span>
-                <span class="detail-label">Perempuan</span>
-                <span class="detail-val">{{ data.kependudukan.perempuan.toLocaleString('id-ID') }}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-icon">🏠</span>
-                <span class="detail-label">Jumlah KK</span>
-                <span class="detail-val">{{ data.kependudukan.jumlah_kk }}</span>
+              <div v-for="(item, idx) in data.kependudukan.rincian" :key="idx" class="detail-row">
+                <span class="detail-icon" v-if="item.label.includes('Laki')">👨</span>
+                <span class="detail-icon" v-else-if="item.label.includes('Perem')">👩</span>
+                <span class="detail-icon" v-else-if="item.label.includes('Keluarga')">🏠</span>
+                <span class="detail-icon" v-else>🔸</span>
+                <span class="detail-label">{{ item.label }}</span>
+                <span class="detail-val">{{ item.value.toLocaleString('id-ID') }}</span>
               </div>
             </div>
           </div>
@@ -77,22 +70,10 @@
         <!-- Wilayah -->
         <div class="info-card info-card--wilayah">
           <h3 class="info-card-title">Wilayah</h3>
-          <div class="wilayah-grid">
-            <div class="wilayah-item">
-              <span class="wilayah-num">{{ data.luas_wilayah_ha?.toLocaleString('id-ID') }}</span>
-              <span class="wilayah-label">Ha Luas Wilayah</span>
-            </div>
-            <div class="wilayah-item">
-              <span class="wilayah-num">{{ data.jumlah_dusun }}</span>
-              <span class="wilayah-label">Dusun</span>
-            </div>
-            <div class="wilayah-item">
-              <span class="wilayah-num">{{ data.jumlah_rw }}</span>
-              <span class="wilayah-label">RW</span>
-            </div>
-            <div class="wilayah-item">
-              <span class="wilayah-num">{{ data.jumlah_rt }}</span>
-              <span class="wilayah-label">RT</span>
+          <div class="wilayah-grid" v-if="data.wilayah">
+            <div v-for="(item, idx) in data.wilayah" :key="idx" class="wilayah-item">
+              <span class="wilayah-num">{{ typeof item.value === 'number' ? item.value.toLocaleString('id-ID') : item.value.replace(/[^0-9.,]/g, '') }}</span>
+              <span class="wilayah-label">{{ item.label }}</span>
             </div>
           </div>
         </div>
@@ -113,26 +94,23 @@ const gridEl = ref(null);
 
 const pendidikanItems = computed(() => {
   if (!data.value.pendidikan) return [];
-  const d = data.value.pendidikan;
-  return [
-    { key: 'tidak_sekolah', label: 'Tidak Sekolah', value: d.tidak_sekolah, color: '#c0856e' },
-    { key: 'sd', label: 'SD', value: d.sd, color: '#a06a55' },
-    { key: 'smp', label: 'SMP', value: d.smp, color: '#7a4a3a' },
-    { key: 'sma', label: 'SMA', value: d.sma, color: '#4a6741' },
-    { key: 'pt', label: 'Perguruan Tinggi', value: d.perguruan_tinggi, color: '#3a5234' }
-  ];
+  const colors = ['#c0856e', '#a06a55', '#7a4a3a', '#4a6741', '#3a5234'];
+  return data.value.pendidikan.map((item, idx) => ({
+    key: item.label,
+    label: item.label,
+    value: item.value,
+    color: colors[idx % colors.length]
+  }));
 });
 
 const pekerjaanItems = computed(() => {
   if (!data.value.pekerjaan) return [];
-  const p = data.value.pekerjaan;
-  return [
-    { key: 'petani', label: 'Petani', value: p.petani, icon: '🌾' },
-    { key: 'pedagang', label: 'Pedagang', value: p.pedagang, icon: '🏪' },
-    { key: 'buruh', label: 'Buruh', value: p.buruh, icon: '🔧' },
-    { key: 'pns', label: 'Pegawai Negeri', value: p.pegawai_negeri, icon: '🏛' },
-    { key: 'wiraswasta', label: 'Wiraswasta', value: p.wiraswasta, icon: '💼' }
-  ];
+  return data.value.pekerjaan.map(item => ({
+    key: item.label,
+    label: item.label,
+    value: item.value,
+    icon: item.icon || '🔸'
+  }));
 });
 
 const maxPendidikan = computed(() => Math.max(...(pendidikanItems.value.map(i => i.value) || [1])));

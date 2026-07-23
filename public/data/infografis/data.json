@@ -2,44 +2,111 @@
   "tahun_data": 2025,
   "maps_embed": "https://maps.google.com/maps?q=Umbul+Limus+Pesawaran+Lampung&t=&z=14&ie=UTF8&iwloc=&output=embed",
   "maps_label": "Desa Umbul Limus, Kec. Pesawaran, Lampung",
-  
   "kependudukan": {
     "total": 639,
     "satuan": "Jiwa",
     "keterangan": "Sumber: BPS Kabupaten Pesawaran (Estimasi)",
     "rincian": [
-      { "label": "Laki-laki", "value": 330 },
-      { "label": "Perempuan", "value": 309 },
-      { "label": "Kepala Keluarga", "value": 160 }
+      {
+        "label": "Laki-laki",
+        "value": 330
+      },
+      {
+        "label": "Perempuan",
+        "value": 309
+      },
+      {
+        "label": "Kepala Keluarga",
+        "value": 172
+      }
     ]
   },
-  
   "wilayah": [
-    { "label": "Luas Wilayah", "value": "520 Ha", "icon": "🌿" },
-    { "label": "Dusun", "value": 3, "icon": "🏘" },
-    { "label": "RW", "value": 6, "icon": "🔷" },
-    { "label": "RT", "value": 18, "icon": "🔹" }
+    {
+      "label": "Luas Wilayah",
+      "value": "520 Ha",
+      "icon": "🌿"
+    },
+    {
+      "label": "Dusun",
+      "value": 3,
+      "icon": "🏘"
+    },
+    {
+      "label": "RW",
+      "value": 3,
+      "icon": "🔷"
+    },
+    {
+      "label": "RT",
+      "value": 7,
+      "icon": "🔹"
+    }
   ],
-  
   "pendidikan": [
-    { "label": "Tidak Sekolah", "value": 25 },
-    { "label": "SD", "value": 180 },
-    { "label": "SMP", "value": 150 },
-    { "label": "SMA", "value": 210 },
-    { "label": "Perguruan Tinggi", "value": 74 }
+    {
+      "label": "Tidak Sekolah",
+      "value": 25
+    },
+    {
+      "label": "SD",
+      "value": 180
+    },
+    {
+      "label": "SMP",
+      "value": 150
+    },
+    {
+      "label": "SMA",
+      "value": 210
+    },
+    {
+      "label": "Perguruan Tinggi",
+      "value": 74
+    }
   ],
-  
   "pekerjaan": [
-    { "label": "Petani", "value": 185, "icon": "🌾" },
-    { "label": "Pedagang", "value": 45, "icon": "🏪" },
-    { "label": "Buruh", "value": 60, "icon": "🔧" },
-    { "label": "Peg. Negeri", "value": 20, "icon": "🏛" },
-    { "label": "Wiraswasta", "value": 55, "icon": "💼" }
+    {
+      "label": "Petani",
+      "value": 185,
+      "icon": "🌾"
+    },
+    {
+      "label": "Pedagang",
+      "value": 45,
+      "icon": "🏪"
+    },
+    {
+      "label": "Buruh",
+      "value": 60,
+      "icon": "🔧"
+    },
+    {
+      "label": "Peg. Negeri",
+      "value": 20,
+      "icon": "🏛"
+    },
+    {
+      "label": "Wiraswasta",
+      "value": 55,
+      "icon": "💼"
+    }
   ],
-  
   "wisata": [
-    { "label": "Pengunjung / Bulan", "value": 320, "suffix": "+" },
-    { "label": "Jalur Trekking", "value": 4, "suffix": " Km" },
-    { "label": "Destinasi Wisata", "value": 3, "suffix": "" }
+    {
+      "label": "Pengunjung / Bulan",
+      "value": 320,
+      "suffix": "+"
+    },
+    {
+      "label": "Jalur Trekking",
+      "value": 4,
+      "suffix": " Km"
+    },
+    {
+      "label": "Destinasi Wisata",
+      "value": 3,
+      "suffix": ""
+    }
   ]
 }

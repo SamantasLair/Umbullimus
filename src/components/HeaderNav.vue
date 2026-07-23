@@ -21,7 +21,6 @@
 
         <!-- Anchor Navigation -->
         <div class="nav-group nav-group--anchors">
-          <a href="/#wisata" class="nav-link nav-link--anchor" @click.prevent="scrollTo('wisata')">Wisata</a>
           <a href="/#galeri" class="nav-link nav-link--anchor" @click.prevent="scrollTo('galeri')">Galeri</a>
         </div>
       </nav>
@@ -61,7 +60,6 @@
           <RouterLink to="/bagan" class="ov-link ov-link--page" @click="closeMenu" active-class="ov-link--active">Struktur Desa</RouterLink>
           <RouterLink to="/infografis" class="ov-link ov-link--page" @click="closeMenu" active-class="ov-link--active">Infografis</RouterLink>
           <div class="ov-sep"></div>
-          <a href="/#wisata" class="ov-link ov-link--anchor" @click.prevent="scrollAndClose('wisata')">Wisata</a>
           <a href="/#galeri" class="ov-link ov-link--anchor" @click.prevent="scrollAndClose('galeri')">Galeri</a>
         </nav>
         <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="ov-cta" @click="closeMenu">
