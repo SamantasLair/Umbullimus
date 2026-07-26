@@ -1,6 +1,12 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: SamantasLair/Umbullimus
   branch: main
+  # PENTING: ganti dengan domain Vercel/IDwebhost asli setelah deploy.
+  # Harus persis sama dengan "Authorization callback URL" di GitHub OAuth App
+  # (tanpa trailing slash), contoh: https://umbullimus.vercel.app atau https://umbullimus.id
+  base_url: https://REPLACE-WITH-YOUR-DOMAIN
+  auth_endpoint: api/auth
 
 # Lokasi penyimpanan gambar yang di-upload via CMS
 media_folder: "public/uploads"
@@ -10,17 +16,23 @@ collections:
   - name: "data"
     label: "Manajemen Data Web"
     files:
-      - label: "Galeri"
-        name: "gallery"
-        file: "public/data/gallery.json"
+      - label: "Profil Desa"
+        name: "profil"
+        file: "public/data/profil/data.json"
         fields:
-          - label: "Daftar Foto"
-            name: "items"
-            widget: "list"
-            fields:
-              - {label: "Judul", name: "title", widget: "string"}
-              - {label: "Deskripsi", name: "description", widget: "text"}
-              - {label: "URL Gambar (Bisa Upload atau Link)", name: "image", widget: "image"}
+          - {label: "Nama Desa", name: "nama", widget: "string"}
+          - {label: "Kecamatan", name: "kecamatan", widget: "string"}
+          - {label: "Kabupaten", name: "kabupaten", widget: "string"}
+          - {label: "Provinsi", name: "provinsi", widget: "string"}
+          - {label: "Tahun Berdiri", name: "tahun_berdiri", widget: "string"}
+          - {label: "Luas Wilayah", name: "luas_wilayah", widget: "string"}
+          - {label: "Jumlah Penduduk", name: "jumlah_penduduk", widget: "string"}
+          - {label: "Jumlah RT", name: "jumlah_rt", widget: "number"}
+          - {label: "Jumlah RW", name: "jumlah_rw", widget: "number"}
+          - {label: "Nama Kepala Desa", name: "kepala_desa", widget: "string"}
+          - {label: "Tagline", name: "tagline", widget: "string"}
+          - {label: "Sejarah Desa", name: "sejarah", widget: "text"}
+
       - label: "Visi & Misi Desa"
         name: "visi_misi"
         file: "public/data/visi-misi/data.json"
@@ -30,3 +42,147 @@ collections:
             name: "misi"
             widget: "list"
             field: {label: "Butir Misi", name: "misi_item", widget: "string"}
+
+      - label: "Struktur Organisasi Desa"
+        name: "bagan"
+        file: "public/data/bagan/struktur.json"
+        fields:
+          - {label: "Nama Desa", name: "desa", widget: "string"}
+          - {label: "Kecamatan", name: "kecamatan", widget: "string"}
+          - {label: "Kabupaten", name: "kabupaten", widget: "string"}
+          - {label: "Provinsi", name: "provinsi", widget: "string"}
+          - {label: "Foto Latar Header", name: "background", widget: "image", required: false}
+          - label: "Kepala Desa"
+            name: "kepala_desa"
+            widget: "object"
+            fields:
+              - {label: "Nama", name: "nama", widget: "string"}
+              - {label: "Jabatan", name: "jabatan", widget: "string"}
+              - {label: "Periode", name: "periode", widget: "string", required: false}
+              - {label: "Bio Singkat", name: "bio", widget: "text", required: false}
+              - {label: "Foto", name: "foto", widget: "image", required: false}
+          - label: "Sekretaris Desa"
+            name: "sekretaris_desa"
+            widget: "object"
+            fields:
+              - {label: "Nama", name: "nama", widget: "string"}
+              - {label: "Jabatan", name: "jabatan", widget: "string"}
+              - {label: "Periode", name: "periode", widget: "string", required: false}
+              - {label: "Bio Singkat", name: "bio", widget: "text", required: false}
+              - {label: "Foto", name: "foto", widget: "image", required: false}
+          - label: "Kepala Urusan (Kaur)"
+            name: "kaur"
+            widget: "list"
+            fields:
+              - {label: "Nama", name: "nama", widget: "string"}
+              - {label: "Jabatan", name: "jabatan", widget: "string"}
+              - {label: "Foto", name: "foto", widget: "image", required: false}
+          - label: "Kepala Seksi (Kasi)"
+            name: "kasi"
+            widget: "list"
+            fields:
+              - {label: "Nama", name: "nama", widget: "string"}
+              - {label: "Jabatan", name: "jabatan", widget: "string"}
+              - {label: "Foto", name: "foto", widget: "image", required: false}
+          - label: "Kepala Dusun (Kadus)"
+            name: "kadus"
+            widget: "list"
+            fields:
+              - {label: "Nama", name: "nama", widget: "string"}
+              - {label: "Jabatan", name: "jabatan", widget: "string"}
+              - {label: "Foto", name: "foto", widget: "image", required: false}
+          - label: "Tokoh Adat (di luar struktur formal)"
+            name: "tokoh_adat"
+            widget: "list"
+            required: false
+            fields:
+              - {label: "Nama", name: "nama", widget: "string"}
+              - {label: "Peran/Sebutan", name: "peran", widget: "string"}
+              - {label: "Foto", name: "foto", widget: "image", required: false}
+
+      - label: "Tempat Wisata"
+        name: "tempat_wisata"
+        file: "public/data/tempat-wisata/list.json"
+        fields:
+          - label: "Daftar Tempat Wisata"
+            name: "items"
+            widget: "list"
+            summary: "{{nama}}"
+            fields:
+              - {label: "ID (unik, tanpa spasi)", name: "id", widget: "string"}
+              - {label: "Nama Tempat", name: "nama", widget: "string"}
+              - {label: "Kategori", name: "kategori", widget: "string"}
+              - {label: "Deskripsi", name: "deskripsi", widget: "text"}
+              - {label: "Gambar", name: "gambar", widget: "image"}
+              - {label: "Jam Buka", name: "jam_buka", widget: "string"}
+              - {label: "Harga Tiket", name: "tiket", widget: "string"}
+              - label: "Fasilitas"
+                name: "fasilitas"
+                widget: "list"
+                field: {label: "Fasilitas", name: "fasilitas_item", widget: "string"}
+
+      - label: "Infografis Data Desa"
+        name: "infografis"
+        file: "public/data/infografis/data.json"
+        fields:
+          - {label: "Tahun Data", name: "tahun_data", widget: "number"}
+          - {label: "Link Embed Google Maps", name: "maps_embed", widget: "string", required: false}
+          - {label: "Label Lokasi Maps", name: "maps_label", widget: "string", required: false}
+          - label: "Kependudukan"
+            name: "kependudukan"
+            widget: "object"
+            fields:
+              - {label: "Total Jiwa", name: "total", widget: "number"}
+              - {label: "Satuan", name: "satuan", widget: "string"}
+              - {label: "Keterangan Sumber Data", name: "keterangan", widget: "string", required: false}
+              - label: "Rincian"
+                name: "rincian"
+                widget: "list"
+                summary: "{{label}}: {{value}}"
+                fields:
+                  - {label: "Label", name: "label", widget: "string"}
+                  - {label: "Nilai", name: "value", widget: "number"}
+          - label: "Wilayah"
+            name: "wilayah"
+            widget: "list"
+            summary: "{{label}}: {{value}}"
+            fields:
+              - {label: "Label", name: "label", widget: "string"}
+              - {label: "Nilai", name: "value", widget: "string"}
+              - {label: "Ikon (emoji)", name: "icon", widget: "string", required: false}
+          - label: "Tingkat Pendidikan"
+            name: "pendidikan"
+            widget: "list"
+            summary: "{{label}}: {{value}}"
+            fields:
+              - {label: "Label", name: "label", widget: "string"}
+              - {label: "Nilai", name: "value", widget: "number"}
+          - label: "Mata Pencaharian"
+            name: "pekerjaan"
+            widget: "list"
+            summary: "{{label}}: {{value}}"
+            fields:
+              - {label: "Label", name: "label", widget: "string"}
+              - {label: "Nilai", name: "value", widget: "number"}
+              - {label: "Ikon (emoji)", name: "icon", widget: "string", required: false}
+          - label: "Statistik Wisata"
+            name: "wisata"
+            widget: "list"
+            summary: "{{label}}: {{value}}"
+            fields:
+              - {label: "Label", name: "label", widget: "string"}
+              - {label: "Nilai", name: "value", widget: "number"}
+              - {label: "Suffix (contoh: +, Km)", name: "suffix", widget: "string", required: false}
+
+      - label: "Galeri Foto"
+        name: "galeri"
+        file: "public/images/galeri/manifest.json"
+        fields:
+          - label: "Daftar Foto"
+            name: "images"
+            widget: "list"
+            summary: "{{alt}}"
+            fields:
+              - {label: "Gambar", name: "src", widget: "image"}
+              - {label: "Judul / Keterangan", name: "alt", widget: "string"}
+              - {label: "Kategori (untuk filter)", name: "kategori", widget: "string"}

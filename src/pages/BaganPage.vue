@@ -11,30 +11,64 @@
       </div>
     </div>
 
-    <div v-if="loading" class="state-loading"><div class="loading-dot"></div></div>
+    <div v-if="loading" class="bagan-skeleton" aria-hidden="true">
+      <div class="skeleton-box skel-node skel-node--lead"></div>
+      <div class="skeleton-box skel-connector"></div>
+      <div class="skel-row skel-row--2">
+        <div class="skeleton-box skel-node skel-node--staff" v-for="n in 2" :key="n"></div>
+      </div>
+      <div class="skeleton-box skel-connector"></div>
+      <div class="skel-row skel-row--3">
+        <div class="skeleton-box skel-node skel-node--small" v-for="n in 3" :key="n"></div>
+      </div>
+    </div>
 
     <div v-else class="bagan-body">
-      <!-- Kepala & Sekretaris -->
+      <!-- Kepala & Sekretaris: hierarki vertikal (Kepala Desa di atas) + Tokoh Adat di luar struktur -->
       <section class="bagan-leaders" ref="secLeaders">
-        <div class="bagan-wrap">
-          <div v-if="data.kepala_desa" class="profile-feature profile-feature--terra">
-            <img :src="data.kepala_desa.foto || fallbackAvatar(data.kepala_desa.nama)" :alt="data.kepala_desa.nama" class="pf-img" />
-            <div class="pf-info">
-              <span class="pf-jabatan">{{ data.kepala_desa.jabatan }}</span>
-              <h3 class="pf-nama">{{ data.kepala_desa.nama }}</h3>
-              <p v-if="data.kepala_desa.periode" class="pf-periode">{{ data.kepala_desa.periode }}</p>
-              <p v-if="data.kepala_desa.bio" class="pf-bio">{{ data.kepala_desa.bio }}</p>
+        <div class="bagan-wrap bagan-wrap--hierarchy">
+          <!-- Kolom hierarki formal -->
+          <div class="hierarchy-column">
+            <div v-if="data.kepala_desa" class="profile-feature profile-feature--lead">
+              <span class="pf-crown">Pimpinan Tertinggi Desa</span>
+              <img :src="data.kepala_desa.foto || fallbackAvatar(data.kepala_desa.nama)" :alt="data.kepala_desa.nama" class="pf-img pf-img--lead" />
+              <div class="pf-info pf-info--center">
+                <span class="pf-jabatan">{{ data.kepala_desa.jabatan }}</span>
+                <h3 class="pf-nama pf-nama--lead">{{ data.kepala_desa.nama }}</h3>
+                <p v-if="data.kepala_desa.periode" class="pf-periode">{{ data.kepala_desa.periode }}</p>
+                <p v-if="data.kepala_desa.bio" class="pf-bio">{{ data.kepala_desa.bio }}</p>
+              </div>
+            </div>
+
+            <div v-if="data.kepala_desa && data.sekretaris_desa" class="hierarchy-connector" aria-hidden="true"></div>
+
+            <div v-if="data.sekretaris_desa" class="profile-feature profile-feature--sage profile-feature--second">
+              <img :src="data.sekretaris_desa.foto || fallbackAvatar(data.sekretaris_desa.nama)" :alt="data.sekretaris_desa.nama" class="pf-img" />
+              <div class="pf-info">
+                <span class="pf-jabatan pf-jabatan--sage">{{ data.sekretaris_desa.jabatan }}</span>
+                <h3 class="pf-nama">{{ data.sekretaris_desa.nama }}</h3>
+                <p v-if="data.sekretaris_desa.periode" class="pf-periode">{{ data.sekretaris_desa.periode }}</p>
+                <p v-if="data.sekretaris_desa.bio" class="pf-bio">{{ data.sekretaris_desa.bio }}</p>
+              </div>
             </div>
           </div>
-          <div v-if="data.sekretaris_desa" class="profile-feature profile-feature--sage">
-            <img :src="data.sekretaris_desa.foto || fallbackAvatar(data.sekretaris_desa.nama)" :alt="data.sekretaris_desa.nama" class="pf-img" />
-            <div class="pf-info">
-              <span class="pf-jabatan pf-jabatan--sage">{{ data.sekretaris_desa.jabatan }}</span>
-              <h3 class="pf-nama">{{ data.sekretaris_desa.nama }}</h3>
-              <p v-if="data.sekretaris_desa.periode" class="pf-periode">{{ data.sekretaris_desa.periode }}</p>
-              <p v-if="data.sekretaris_desa.bio" class="pf-bio">{{ data.sekretaris_desa.bio }}</p>
+
+          <!-- Di luar struktur formal: Tokoh Adat / Tokoh Masyarakat -->
+          <aside v-if="data.tokoh_adat && data.tokoh_adat.length" class="tokoh-adat-panel">
+            <div class="tap-header">
+              <span class="tap-label">Di Luar Struktur Formal</span>
+              <h4 class="tap-title">Tokoh Adat</h4>
             </div>
-          </div>
+            <div class="tap-list">
+              <div v-for="t in data.tokoh_adat" :key="t.nama" class="tap-card">
+                <img :src="t.foto || fallbackAvatar(t.nama)" :alt="t.nama" class="tap-img" />
+                <div class="tap-info">
+                  <span class="tap-nama">{{ t.nama }}</span>
+                  <span class="tap-peran">{{ t.peran }}</span>
+                </div>
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
 
@@ -147,32 +181,63 @@ onMounted(async () => {
     })
   }
 
-  // Leaders: Split reveal: kiri dari kiri, kanan dari kanan
+  // Leaders: hierarki vertikal — Kepala Desa pop dari atas, connector tumbuh,
+  // Sekretaris naik dari bawah, panel Tokoh Adat masuk dari samping kanan.
   // Signature UNIK: berbeda dari WisataSection (diagonal) dan Gallery (scale+blur)
   makeObserver(
     (sec) => {
-      const cards = sec.querySelectorAll('.profile-feature')
-      anime({
-        targets: cards[0],
-        opacity: [0, 1],
-        translateX: [-60, 0],
-        duration: 700,
-        easing: 'easeOutExpo',
-      })
-      anime({
-        targets: cards[1],
-        opacity: [0, 1],
-        translateX: [60, 0],
-        duration: 700,
-        easing: 'easeOutExpo',
-        delay: 80,
-      })
+      const lead = sec.querySelector('.profile-feature--lead')
+      const connector = sec.querySelector('.hierarchy-connector')
+      const second = sec.querySelector('.profile-feature--second')
+      const tokohPanel = sec.querySelector('.tokoh-adat-panel')
+
+      anime.timeline({ easing: 'easeOutExpo' })
+        .add({
+          targets: lead,
+          opacity: [0, 1],
+          translateY: [-30, 0],
+          scale: [0.94, 1],
+          duration: 650,
+        })
+        .add({
+          targets: connector,
+          opacity: [0, 1],
+          scaleY: [0, 1],
+          duration: 350,
+          easing: 'easeInOutQuart',
+        }, '-=150')
+        .add({
+          targets: second,
+          opacity: [0, 1],
+          translateY: [40, 0],
+          duration: 600,
+        }, '-=100')
+
+      if (tokohPanel) {
+        anime({
+          targets: tokohPanel,
+          opacity: [0, 1],
+          translateX: [50, 0],
+          duration: 700,
+          delay: 150,
+          easing: 'easeOutExpo',
+        })
+      }
     },
     (sec) => {
-      sec.querySelectorAll('.profile-feature').forEach(el => {
+      const lead = sec.querySelector('.profile-feature--lead')
+      const connector = sec.querySelector('.hierarchy-connector')
+      const second = sec.querySelector('.profile-feature--second')
+      const tokohPanel = sec.querySelector('.tokoh-adat-panel')
+      ;[lead, second, tokohPanel].forEach(el => {
+        if (!el) return
         el.style.opacity = '0'
         el.style.transform = ''
       })
+      if (connector) {
+        connector.style.opacity = '0'
+        connector.style.transform = 'scaleY(0)'
+      }
     },
     0.18
   ).observe(secLeaders.value)
@@ -307,14 +372,44 @@ defineExpose({ bgStyle, fallbackAvatar })
 .page-hero__title em { font-style: italic; color: rgba(245,240,232,.65); }
 .page-hero__sub { font-size: .85rem; color: rgba(245,240,232,.5); letter-spacing: .06em; }
 
-/* Loading */
-.state-loading { display:flex; justify-content:center; padding:6rem; }
-.loading-dot { width:12px;height:12px;background:var(--c-terra);border-radius:50%;animation:pulse 1s ease infinite; }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)} }
+/* ─── Skeleton: mengikuti bentuk bagan/tree organisasi (unik, bukan spinner generik) ── */
+.bagan-skeleton {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0; padding: var(--sp-lg) var(--sp-md);
+  max-width: var(--max-w-sm); margin: 0 auto;
+}
+.skel-node { border-radius: var(--radius-md); }
+.skel-node--lead { width: 220px; height: 74px; }
+.skel-connector { width: 2px; height: 2rem; }
+.skel-row { display: flex; gap: 1.25rem; margin-top: 0.5rem; flex-wrap: wrap; justify-content: center; }
+.skel-row--2 .skel-node--staff { width: 190px; height: 62px; }
+.skel-row--3 { margin-top: 1.5rem; }
+.skel-row--3 .skel-node--small { width: 150px; height: 68px; }
+
+@media (max-width: 600px) {
+  .skel-node--lead { width: 180px; }
+  .skel-row { flex-direction: column; align-items: center; }
+}
 
 /* Wrap */
 .bagan-wrap { max-width:var(--max-w); margin:0 auto; display:flex; gap:1.5rem; flex-wrap:wrap; }
 .bagan-wrap--center { justify-content: center; }
+
+/* Hierarki: kolom kepala/sekretaris di kiri, Tokoh Adat (di luar struktur) di kanan */
+.bagan-wrap--hierarchy { align-items: flex-start; flex-wrap: nowrap; }
+.hierarchy-column {
+  flex: 1 1 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hierarchy-connector {
+  width: 2px;
+  height: 2.5rem;
+  background: linear-gradient(to bottom, var(--c-terra), var(--c-sage));
+  opacity: 0;
+  transform-origin: top center;
+}
 
 /* Sections */
 .bagan-leaders, .bagan-staff, .bagan-kadus { padding: var(--sp-lg) var(--sp-md); }
@@ -339,6 +434,42 @@ defineExpose({ bgStyle, fallbackAvatar })
 .profile-feature--sage { border-top-color: var(--c-sage); }
 .profile-feature:hover { box-shadow: var(--shadow-lift); transform: translateY(-3px); }
 
+/* Kepala Desa: kartu unggulan paling atas, lebih besar & terpusat */
+.profile-feature--lead {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 440px;
+  padding: 2.25rem 2rem;
+  border-top-width: 5px;
+  box-shadow: var(--shadow-lift);
+  gap: 0.5rem;
+}
+.pf-crown {
+  display: inline-block;
+  font-size: .62rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--c-white);
+  background: var(--c-terra-dark);
+  padding: .3rem .8rem;
+  border-radius: 50px;
+  margin-bottom: .5rem;
+}
+.pf-img--lead { width: 120px; height: 120px; border-width: 4px; }
+.pf-info--center { align-items: center; }
+.pf-nama--lead { font-size: 1.65rem; }
+
+/* Sekretaris: tier kedua, lebih ringkas dari kepala desa */
+.profile-feature--second {
+  max-width: 400px;
+  width: 100%;
+  padding: 1.4rem 1.5rem;
+  border-top-width: 3px;
+}
+.profile-feature--second .pf-img { width: 72px; height: 72px; }
+.profile-feature--second .pf-nama { font-size: 1.15rem; }
+
 .pf-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 3px solid var(--c-cream-dark); }
 .pf-info { display:flex;flex-direction:column;gap:.2rem; }
 .pf-jabatan { font-size:.65rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--c-terra); }
@@ -346,6 +477,32 @@ defineExpose({ bgStyle, fallbackAvatar })
 .pf-nama { font-family:var(--font-serif);font-size:1.35rem;font-weight:600;color:var(--c-stone);line-height:1.2; }
 .pf-periode { font-size:.72rem;color:var(--c-stone-muted);margin-top:.1rem; }
 .pf-bio { font-size:.85rem;color:var(--c-stone-muted);line-height:1.6;margin-top:.4rem; }
+
+/* Tokoh Adat: eksplisit di luar struktur formal (border putus-putus + label) */
+.tokoh-adat-panel {
+  flex: 0 0 280px;
+  align-self: stretch;
+  background: rgba(122, 74, 58, 0.05);
+  border: 1.5px dashed var(--c-terra);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  opacity: 0;
+}
+.tap-header { margin-bottom: 1.25rem; }
+.tap-label {
+  display: block;
+  font-size: .62rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--c-terra);
+  margin-bottom: .35rem;
+}
+.tap-title { font-family: var(--font-serif); font-size: 1.15rem; color: var(--c-stone); }
+.tap-list { display: flex; flex-direction: column; gap: .9rem; }
+.tap-card { display: flex; align-items: center; gap: .8rem; }
+.tap-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid var(--c-cream-dark); }
+.tap-info { display: flex; flex-direction: column; gap: .1rem; }
+.tap-nama { font-family: var(--font-serif); font-size: .92rem; font-weight: 600; color: var(--c-stone); }
+.tap-peran { font-size: .68rem; color: var(--c-stone-muted); }
 
 /* Staff group */
 .staff-group { flex:1;min-width:280px; }
@@ -386,6 +543,12 @@ defineExpose({ bgStyle, fallbackAvatar })
 .kd-img { width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--c-cream-dark); }
 .kd-jabatan { font-size:.64rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c-stone-muted); }
 .kd-nama { font-family:var(--font-serif);font-size:.95rem;font-weight:600;color:var(--c-stone); }
+
+@media (max-width:900px) {
+  .bagan-wrap--hierarchy { flex-wrap: wrap; }
+  .hierarchy-column { flex: 1 1 100%; }
+  .tokoh-adat-panel { flex: 1 1 100%; }
+}
 
 @media (max-width:680px) {
   .bagan-wrap { flex-direction:column; }

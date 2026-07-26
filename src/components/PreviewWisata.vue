@@ -1,5 +1,5 @@
 <template>
-  <section id="wisata-preview" class="preview-wisata" ref="sectionRef">
+  <section id="wisata" class="preview-wisata" ref="sectionRef">
     <div class="pw-container">
       <header class="pw-header" ref="headerEl">
         <div class="pw-header-text">
@@ -11,12 +11,6 @@
             Jelajahi keindahan alam dan kekayaan budaya yang menanti di Umbul Limus.
           </p>
         </div>
-        <RouterLink to="/wisata" class="cta-link desktop-cta" ref="ctaEl">
-          Lihat Semua Wisata
-          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
-            <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"/>
-          </svg>
-        </RouterLink>
       </header>
 
       <div class="pw-skeleton" v-if="loading" aria-hidden="true">
@@ -40,15 +34,6 @@
           </div>
         </article>
       </div>
-
-      <div class="pw-cta-mobile">
-        <RouterLink to="/wisata" class="cta-link">
-          Lihat Semua Wisata
-          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
-            <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"/>
-          </svg>
-        </RouterLink>
-      </div>
     </div>
   </section>
 </template>
@@ -66,7 +51,6 @@ const labelEl    = ref(null)
 const titleEl    = ref(null)
 const highlightEl = ref(null)
 const descEl     = ref(null)
-const ctaEl      = ref(null)
 const cardEls    = ref([])
 let hasEntered   = false
 
@@ -96,10 +80,9 @@ const animateIn = async () => {
       easing: 'easeOutQuart',
     }, '-=450')
     .add({
-      targets: [descEl.value, ctaEl.value].filter(Boolean),
+      targets: descEl.value,
       opacity: [0, 1],
       translateY: [12, 0],
-      delay: anime.stagger(80),
       duration: 600,
     }, '-=350')
     .add({
@@ -117,8 +100,8 @@ onMounted(async () => {
   try {
     const res = await fetch('/data/tempat-wisata/list.json')
     if (res.ok) {
-      const all = await res.json()
-      places.value = all.slice(0, 3)
+      const json = await res.json()
+      places.value = json.items || []
     }
   } catch (e) {
     console.error('Gagal memuat wisata:', e)
@@ -169,26 +152,6 @@ onMounted(async () => {
   font-size: 1rem;
   color: var(--c-stone-muted);
   margin-top: 0.75rem;
-}
-
-.cta-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--c-terra);
-  border: 1.5px solid var(--c-terra);
-  padding: 0.65rem 1.35rem;
-  border-radius: 50px;
-  transition: var(--transition);
-  white-space: nowrap;
-  text-decoration: none;
-}
-.cta-link:hover {
-  background: var(--c-terra);
-  color: var(--c-white);
-  transform: translateX(3px);
 }
 
 .pw-grid {
@@ -251,18 +214,11 @@ onMounted(async () => {
   overflow: hidden;
 }
 
-.pw-cta-mobile { display: none; text-align: center; margin-top: 2rem; }
-.pw-cta-mobile .cta-link { opacity: 1; }
-
-.desktop-cta { display: inline-flex; }
-
 @media (max-width: 900px) {
   .pw-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 600px) {
   .preview-wisata { padding: var(--sp-lg) 1.25rem; }
   .pw-grid { grid-template-columns: 1fr; }
-  .desktop-cta { display: none; }
-  .pw-cta-mobile { display: block; }
 }
 </style>

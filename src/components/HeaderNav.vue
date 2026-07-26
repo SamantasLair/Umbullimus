@@ -176,19 +176,7 @@ watch(menuOpen, (val) => {
   }
 })
 
-function scrollTo(id) {
-  const el = document.getElementById(id)
-  if (el) el.scrollIntoView({ behavior: 'smooth' })
-}
-function scrollAndClose(id) {
-  closeMenu()
-  setTimeout(() => {
-    scrollTo(id)
-  }, 120)
-}
-
 defineExpose({
-  scrollAndClose,
   toggleMenu
 })
 </script>

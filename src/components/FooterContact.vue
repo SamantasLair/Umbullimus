@@ -18,7 +18,7 @@
         <div class="footer-nav">
           <h4>Navigasi</h4>
           <RouterLink to="/" @click="scrollToTopIfHome">Beranda</RouterLink>
-          <RouterLink to="/#wisata" @click="handleAnchor('wisata')">Tempat Wisata</RouterLink>
+          <a href="/#wisata" @click.prevent="goToWisata">Tempat Wisata</a>
           <RouterLink to="/galeri" @click="handleAnchor('galeri')">Galeri</RouterLink>
           <RouterLink to="/bagan">Struktur Desa</RouterLink>
           <RouterLink to="/infografis">Infografis</RouterLink>
@@ -56,9 +56,10 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 // biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const currentYear = new Date().getFullYear()
 
@@ -76,6 +77,19 @@ function handleAnchor(id) {
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' })
     }
+  }
+}
+
+// Wisata bukan halaman tersendiri: dari beranda langsung scroll,
+// dari halaman lain pindah ke beranda dulu baru scroll.
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
+function goToWisata() {
+  if (route.path === '/') {
+    document.getElementById('wisata')?.scrollIntoView({ behavior: 'smooth' })
+  } else {
+    router.push('/').then(() => {
+      setTimeout(() => document.getElementById('wisata')?.scrollIntoView({ behavior: 'smooth' }), 150)
+    })
   }
 }
 </script>

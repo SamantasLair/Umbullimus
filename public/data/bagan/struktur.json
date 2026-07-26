@@ -68,5 +68,17 @@
       "jabatan": "Kepala Dusun III",
       "foto": "https://ui-avatars.com/api/?name=Mira+Susanti&background=2d5a3f&color=fff&size=200"
     }
+  ],
+  "tokoh_adat": [
+    {
+      "nama": "H. Zainal Abidin",
+      "peran": "Tokoh Adat Lampung",
+      "foto": "https://ui-avatars.com/api/?name=Zainal+Abidin&background=7a4a3a&color=fff&size=200"
+    },
+    {
+      "nama": "Hj. Rohana",
+      "peran": "Sesepuh Desa",
+      "foto": "https://ui-avatars.com/api/?name=Rohana&background=7a4a3a&color=fff&size=200"
+    }
   ]
 }

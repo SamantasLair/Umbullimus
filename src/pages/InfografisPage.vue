@@ -14,7 +14,31 @@
       </div>
     </div>
 
-    <div v-if="loading" class="state-loading"><div class="loading-dot"></div></div>
+    <div v-if="loading" class="info-skeleton" aria-hidden="true">
+      <div class="skel-section">
+        <div class="skel-penduduk">
+          <div class="skeleton-box skel-spotlight-num"></div>
+          <div class="skel-pills">
+            <div class="skeleton-box skel-pill" v-for="n in 3" :key="n"></div>
+          </div>
+        </div>
+      </div>
+      <div class="skel-section skel-section--dark">
+        <div class="skel-tiles">
+          <div class="skeleton-box skel-tile" v-for="n in 4" :key="n"></div>
+        </div>
+      </div>
+      <div class="skel-section">
+        <div class="skel-bars">
+          <div class="skeleton-box skel-bar" v-for="n in 5" :key="n" :style="{ width: (38 + n * 11) + '%' }"></div>
+        </div>
+      </div>
+      <div class="skel-section skel-section--cream-dark">
+        <div class="skel-rings">
+          <div class="skeleton-box skel-ring" v-for="n in 5" :key="n"></div>
+        </div>
+      </div>
+    </div>
 
     <div v-else class="info-body">
 
@@ -437,9 +461,30 @@ onMounted(async () => {
 
 <style scoped>
 .info-page { background: var(--c-cream); min-height: 100vh; }
-.state-loading { display:flex;justify-content:center;padding:6rem; }
-.loading-dot { width:12px;height:12px;background:var(--c-terra);border-radius:50%;animation:pulse 1s ease infinite; }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)} }
+
+/* ─── Skeleton: mengikuti bentuk konten Infografis (unik, bukan spinner generik) ── */
+.skel-section { padding: var(--sp-lg) var(--sp-md); }
+.skel-section--dark { background: var(--c-stone); }
+.skel-section--cream-dark { background: var(--c-cream-dark); }
+
+.skel-penduduk { max-width: var(--max-w); margin: 0 auto; display: flex; gap: 3rem; flex-wrap: wrap; align-items: center; }
+.skel-spotlight-num { width: 200px; height: 96px; border-radius: var(--radius-md); flex-shrink: 0; }
+.skel-pills { display: flex; flex-direction: column; gap: 0.7rem; flex: 1; min-width: 220px; }
+.skel-pill { height: 56px; border-radius: var(--radius-md); }
+
+.skel-tiles { max-width: var(--max-w); margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; }
+.skel-tile { height: 108px; border-radius: var(--radius-md); }
+
+.skel-bars { max-width: var(--max-w); margin: 0 auto; display: flex; flex-direction: column; gap: 0.9rem; }
+.skel-bar { height: 20px; border-radius: 99px; }
+
+.skel-rings { max-width: var(--max-w); margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; }
+.skel-ring { height: 148px; border-radius: var(--radius-md); }
+
+@media (max-width: 600px) {
+  .skel-penduduk { flex-direction: column; align-items: flex-start; }
+  .skel-spotlight-num { width: 160px; height: 80px; }
+}
 
 /* Hero */
 .page-hero { position:relative;overflow:hidden;background:var(--c-stone);padding:9rem var(--sp-md) 5rem; }
