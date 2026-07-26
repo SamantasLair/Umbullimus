@@ -9,8 +9,6 @@ import VisiMisiSection from '../components/VisiMisiSection.vue'
 import PreviewWisata from '../components/PreviewWisata.vue'
 // biome-ignore lint/correctness/noUnusedImports: Used in Vue template
 import PreviewGaleri from '../components/PreviewGaleri.vue'
-// biome-ignore lint/correctness/noUnusedImports: Used in Vue template
-import PagePreviewDual from '../components/PagePreviewDual.vue'
 </script>
 
 <template>
@@ -19,5 +17,4 @@ import PagePreviewDual from '../components/PagePreviewDual.vue'
   <VisiMisiSection />
   <PreviewWisata />
   <PreviewGaleri />
-  <PagePreviewDual />
 </template>

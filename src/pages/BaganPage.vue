@@ -72,10 +72,19 @@
         </div>
       </section>
 
-      <div class="bagan-divider" ref="secDivider1"><div class="div-line"></div><span class="div-label">Perangkat Desa</span><div class="div-line"></div></div>
-
-      <!-- Kaur & Kasi -->
+      <!-- Kaur & Kasi: bercabang dari Sekretaris di atas -->
       <section class="bagan-staff" ref="secStaff">
+        <div class="tree-branch">
+          <span class="tree-branch-label">Perangkat Desa</span>
+          <div class="tree-branch-shape">
+            <div class="tree-branch-trunk"></div>
+            <div class="tree-branch-line"></div>
+            <div class="tree-branch-drops tree-branch-drops--2">
+              <span class="drop"></span>
+              <span class="drop"></span>
+            </div>
+          </div>
+        </div>
         <div class="bagan-wrap">
           <div class="staff-group">
             <h4 class="group-title">Kepala Urusan (Kaur)</h4>
@@ -104,10 +113,18 @@
         </div>
       </section>
 
-      <div class="bagan-divider" ref="secDivider2"><div class="div-line"></div><span class="div-label">Kepala Dusun</span><div class="div-line"></div></div>
-
-      <!-- Kadus -->
+      <!-- Kadus: bercabang dari Perangkat Desa di atas -->
       <section class="bagan-kadus" ref="secKadus">
+        <div class="tree-branch">
+          <span class="tree-branch-label">Kepala Dusun</span>
+          <div class="tree-branch-shape">
+            <div class="tree-branch-trunk"></div>
+            <div class="tree-branch-line"></div>
+            <div class="tree-branch-drops" :class="`tree-branch-drops--${data.kadus?.length || 3}`">
+              <span class="drop" v-for="n in (data.kadus?.length || 3)" :key="n"></span>
+            </div>
+          </div>
+        </div>
         <div class="bagan-wrap bagan-wrap--center">
           <div v-for="p in data.kadus" :key="p.jabatan" class="kadus-card">
             <img :src="p.foto || fallbackAvatar(p.nama)" :alt="p.nama" class="kd-img" />
@@ -129,9 +146,7 @@ const loading = ref(true)
 
 // Section refs untuk per-section observer
 const secLeaders  = ref(null)
-const secDivider1 = ref(null)
 const secStaff    = ref(null)
-const secDivider2 = ref(null)
 const secKadus    = ref(null)
 const heroContent = ref(null)
 
@@ -242,49 +257,49 @@ onMounted(async () => {
     0.18
   ).observe(secLeaders.value)
 
-  // ── Divider 1: Line grow dari tengah ke kiri-kanan ──
-  // Signature UNIK: hanya digunakan di divider
+  // ── Staff: cabang tree tumbuh dari atas, lalu kartu cascade diagonal ──
   makeObserver(
     (sec) => {
-      anime({
-        targets: sec.querySelectorAll('.div-line'),
-        scaleX: [0, 1],
-        transformOrigin: ['center', 'center'],
-        duration: 600,
-        delay: anime.stagger(60),
-        easing: 'easeOutExpo',
-      })
-      anime({
-        targets: sec.querySelector('.div-label'),
-        opacity: [0, 1],
-        duration: 400,
-        delay: 200,
-        easing: 'easeOutQuart',
-      })
+      anime.timeline({ easing: 'easeOutExpo' })
+        .add({
+          targets: sec.querySelector('.tree-branch-trunk'),
+          opacity: [0, 1],
+          scaleY: [0, 1],
+          duration: 300,
+          easing: 'easeInOutQuart',
+        })
+        .add({
+          targets: sec.querySelector('.tree-branch-line'),
+          opacity: [0, 1],
+          scaleX: [0, 1],
+          duration: 350,
+          easing: 'easeInOutQuart',
+        }, '-=80')
+        .add({
+          targets: sec.querySelectorAll('.tree-branch-drops .drop'),
+          opacity: [0, 1],
+          scaleY: [0, 1],
+          delay: anime.stagger(60),
+          duration: 300,
+          easing: 'easeInOutQuart',
+        }, '-=150')
+        .add({
+          targets: sec.querySelector('.tree-branch-label'),
+          opacity: [0, 1],
+          duration: 350,
+        }, '-=200')
+        .add({
+          targets: sec.querySelectorAll('.staff-card'),
+          opacity:    [0, 1],
+          translateX: [-30, 0],
+          translateY: [20, 0],
+          delay: anime.stagger(55),
+          duration: 550,
+        }, '-=150')
     },
     (sec) => {
-      sec.querySelectorAll('.div-line').forEach(el => {
-        el.style.transform = 'scaleX(0)'
-      })
-      const lbl = sec.querySelector('.div-label')
-      if (lbl) lbl.style.opacity = '0'
-    }
-  ).observe(secDivider1.value)
-
-  // ── Staff: Diagonal cascade kiri-bawah (berbeda dari leaders) ──
-  makeObserver(
-    (sec) => {
-      anime({
-        targets: sec.querySelectorAll('.staff-card'),
-        opacity:    [0, 1],
-        translateX: [-30, 0],
-        translateY: [20, 0],
-        delay: anime.stagger(55),
-        duration: 550,
-        easing: 'easeOutExpo',
-      })
-    },
-    (sec) => {
+      const branchParts = sec.querySelectorAll('.tree-branch-trunk, .tree-branch-line, .tree-branch-drops .drop, .tree-branch-label')
+      branchParts.forEach(el => { el.style.opacity = '0'; el.style.transform = '' })
       sec.querySelectorAll('.staff-card').forEach(el => {
         el.style.opacity = '0'
         el.style.transform = ''
@@ -292,41 +307,50 @@ onMounted(async () => {
     }
   ).observe(secStaff.value)
 
-  // ── Divider 2 ──
-  if (secDivider2.value) {
-    makeObserver(
-      (sec) => {
-        anime({
-          targets: sec.querySelectorAll('.div-line'),
-          scaleX: [0, 1],
-          transformOrigin: ['center', 'center'],
-          duration: 500,
-          delay: anime.stagger(60),
-          easing: 'easeOutExpo',
-        })
-      },
-      (sec) => {
-        sec.querySelectorAll('.div-line').forEach(el => {
-          el.style.transform = 'scaleX(0)'
-        })
-      }
-    ).observe(secDivider2.value)
-  }
-
-  // ── Kadus: Scale pop dari bawah ── Signature UNIK
+  // ── Kadus: cabang tree tumbuh dari atas, lalu kartu scale pop ── Signature UNIK
   makeObserver(
     (sec) => {
-      anime({
-        targets: sec.querySelectorAll('.kadus-card'),
-        opacity: [0, 1],
-        scale:   [0.82, 1],
-        translateY: [30, 0],
-        delay: anime.stagger(70, { start: 50 }),
-        duration: 600,
-        easing: 'easeOutBack',
-      })
+      anime.timeline({ easing: 'easeOutExpo' })
+        .add({
+          targets: sec.querySelector('.tree-branch-trunk'),
+          opacity: [0, 1],
+          scaleY: [0, 1],
+          duration: 300,
+          easing: 'easeInOutQuart',
+        })
+        .add({
+          targets: sec.querySelector('.tree-branch-line'),
+          opacity: [0, 1],
+          scaleX: [0, 1],
+          duration: 350,
+          easing: 'easeInOutQuart',
+        }, '-=80')
+        .add({
+          targets: sec.querySelectorAll('.tree-branch-drops .drop'),
+          opacity: [0, 1],
+          scaleY: [0, 1],
+          delay: anime.stagger(60),
+          duration: 300,
+          easing: 'easeInOutQuart',
+        }, '-=150')
+        .add({
+          targets: sec.querySelector('.tree-branch-label'),
+          opacity: [0, 1],
+          duration: 350,
+        }, '-=200')
+        .add({
+          targets: sec.querySelectorAll('.kadus-card'),
+          opacity: [0, 1],
+          scale:   [0.82, 1],
+          translateY: [30, 0],
+          delay: anime.stagger(70),
+          duration: 600,
+          easing: 'easeOutBack',
+        }, '-=150')
     },
     (sec) => {
+      const branchParts = sec.querySelectorAll('.tree-branch-trunk, .tree-branch-line, .tree-branch-drops .drop, .tree-branch-label')
+      branchParts.forEach(el => { el.style.opacity = '0'; el.style.transform = '' })
       sec.querySelectorAll('.kadus-card').forEach(el => {
         el.style.opacity = '0'
         el.style.transform = ''
@@ -411,13 +435,32 @@ defineExpose({ bgStyle, fallbackAvatar })
   transform-origin: top center;
 }
 
-/* Sections */
+/* Sections: alternating background supaya tiap tier org chart terlihat sebagai section terpisah */
 .bagan-leaders, .bagan-staff, .bagan-kadus { padding: var(--sp-lg) var(--sp-md); }
+.bagan-leaders { background: var(--c-cream); }
+.bagan-staff   { background: var(--c-cream-dark); }
+.bagan-kadus   { background: var(--c-cream); }
 
-/* Divider */
-.bagan-divider { display:flex;align-items:center;gap:1rem;max-width:var(--max-w);margin:0 auto;padding:0 var(--sp-md); }
-.div-line { flex:1;height:1px;background:var(--c-cream-dark); }
-.div-label { font-size:.66rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--c-stone-muted);white-space:nowrap; }
+/* Tree branch: connector yang menyambungkan tier di atas ke grup di bawahnya */
+.tree-branch {
+  max-width: var(--max-w);
+  margin: 0 auto 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tree-branch-label {
+  font-size: .66rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--c-stone-muted);
+  margin-bottom: .5rem;
+  opacity: 0;
+}
+.tree-branch-shape { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 360px; }
+.tree-branch-trunk { width: 2px; height: 1.5rem; background: var(--c-stone-muted); opacity: 0; transform-origin: top center; }
+.tree-branch-line { width: 70%; height: 2px; background: var(--c-stone-muted); opacity: 0; transform-origin: center center; }
+.tree-branch-drops { width: 70%; display: flex; justify-content: space-between; }
+.tree-branch-drops--3 { justify-content: space-around; }
+.drop { width: 2px; height: 1.25rem; background: var(--c-stone-muted); opacity: 0; transform-origin: top center; }
 
 /* Feature cards (Kades & Sekdes) */
 .profile-feature {

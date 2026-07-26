@@ -36,6 +36,13 @@
               <p class="misi-text">{{ getMisiText(item) }}</p>
             </article>
           </div>
+
+          <RouterLink to="/bagan" class="visimisi-cta" ref="ctaEl">
+            Cari Tahu Struktur Desa Lengkap
+            <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
+              <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"/>
+            </svg>
+          </RouterLink>
         </div>
       </div>
     </div>
@@ -70,6 +77,7 @@ const descEl = ref(null)
 const visiCardEl = ref(null)
 const misiHeadingEl = ref(null)
 const misiEls = ref([])
+const ctaEl = ref(null)
 
 // biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const formatNumber = (num) => String(num).padStart(2, '0')
@@ -95,7 +103,8 @@ const animateIn = () => {
     descEl.value,
     visiCardEl.value,
     misiHeadingEl.value,
-    ...misiEls.value.filter(Boolean)
+    ...misiEls.value.filter(Boolean),
+    ctaEl.value,
   ].filter(Boolean)
 
   if (!targets.length) return
@@ -327,6 +336,27 @@ onMounted(async () => {
   line-height: 1.6;
   margin: 0;
   padding-top: 0.2rem;
+}
+
+.visimisi-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-terra);
+  border: 1.5px solid var(--c-terra);
+  padding: 0.65rem 1.35rem;
+  border-radius: 50px;
+  margin-top: 2rem;
+  transition: var(--transition);
+  text-decoration: none;
+  opacity: 0;
+}
+.visimisi-cta:hover {
+  background: var(--c-terra);
+  color: var(--c-white);
+  transform: translateX(3px);
 }
 
 @media (max-width: 600px) {

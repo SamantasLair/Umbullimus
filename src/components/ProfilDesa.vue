@@ -13,6 +13,12 @@
             Desa Umbul Limus adalah destinasi wisata alam yang terletak di Pesawaran, Lampung.
             Dikenal dengan sumber mata air alaminya, hutan tropis yang lebat, dan kearifan budaya Lampung yang lestari.
           </p>
+          <RouterLink to="/infografis" class="profil-cta" ref="ctaEl">
+            Cari Tahu Data Infografis Lengkap
+            <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
+              <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"/>
+            </svg>
+          </RouterLink>
         </div>
 
         <!-- Right: Stats Grid -->
@@ -46,6 +52,7 @@ const labelEl    = ref(null)
 const titleEl    = ref(null)
 const highlightEl = ref(null)
 const textEl     = ref(null)
+const ctaEl      = ref(null)
 // biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const statsEl    = ref(null)
 const statEls    = ref([])
@@ -92,6 +99,12 @@ const animateIn = async () => {
       opacity: [0, 1],
       translateY: [16, 0],
       duration: 600,
+    }, '-=350')
+    .add({
+      targets: ctaEl.value,
+      opacity: [0, 1],
+      translateY: [10, 0],
+      duration: 500,
     }, '-=350')
     .add({
       targets: statEls.value.filter(Boolean),
@@ -174,6 +187,27 @@ onMounted(async () => {
   color: rgba(237, 250, 233, 0.65);
   line-height: 1.8;
   margin-top: 1.5rem;
+}
+
+.profil-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-siger);
+  border: 1.5px solid rgba(212, 168, 83, 0.4);
+  padding: 0.65rem 1.35rem;
+  border-radius: 50px;
+  margin-top: 1.75rem;
+  transition: var(--transition);
+  text-decoration: none;
+  opacity: 0;
+}
+.profil-cta:hover {
+  border-color: var(--c-siger);
+  background: var(--c-siger-glow);
+  transform: translateX(3px);
 }
 
 /* Stats */
