@@ -148,9 +148,11 @@ onUnmounted(() => {
   document.documentElement.style.overflow = ''
 })
 
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 function toggleMenu() {
   menuOpen.value = !menuOpen.value
 }
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 function closeMenu() {
   menuOpen.value = false
 }
