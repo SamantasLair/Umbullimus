@@ -177,7 +177,8 @@ watch(menuOpen, (val) => {
 })
 
 defineExpose({
-  toggleMenu
+  toggleMenu,
+  closeMenu
 })
 </script>
 

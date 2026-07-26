@@ -121,7 +121,8 @@ onMounted(async () => {
 <style scoped>
 .preview-wisata {
   position: relative;
-  background: var(--c-cream);
+  /* cream-dark, bukan cream: VisiMisiSection di atasnya sudah cream, supaya tidak terlihat menyatu */
+  background: var(--c-cream-dark);
   padding: var(--sp-xl) var(--sp-md);
   z-index: 1;
 }
