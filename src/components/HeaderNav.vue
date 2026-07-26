@@ -8,7 +8,7 @@
       </RouterLink>
 
       <!-- Desktop Nav -->
-      <nav class="nav-links" role="navigation" aria-label="Menu utama">
+      <nav class="nav-links" role="navigation" aria-label="Menu utama" ref="navLinksEl">
         <!-- Page Navigation -->
         <div class="nav-group nav-group--pages">
           <RouterLink to="/" class="nav-link" exact-active-class="nav-link--active">Beranda</RouterLink>
@@ -19,9 +19,9 @@
         <!-- Visual separator -->
         <div class="nav-sep" aria-hidden="true"></div>
 
-        <!-- Anchor Navigation -->
+        <!-- Page Navigation extra -->
         <div class="nav-group nav-group--anchors">
-          <a href="/#galeri" class="nav-link nav-link--anchor" @click.prevent="scrollTo('galeri')">Galeri</a>
+          <RouterLink to="/galeri" class="nav-link nav-link--anchor">Galeri</RouterLink>
         </div>
       </nav>
 
@@ -60,7 +60,7 @@
           <RouterLink to="/bagan" class="ov-link ov-link--page" @click="closeMenu" active-class="ov-link--active">Struktur Desa</RouterLink>
           <RouterLink to="/infografis" class="ov-link ov-link--page" @click="closeMenu" active-class="ov-link--active">Infografis</RouterLink>
           <div class="ov-sep"></div>
-          <a href="/#galeri" class="ov-link ov-link--anchor" @click.prevent="scrollAndClose('galeri')">Galeri</a>
+          <RouterLink to="/galeri" class="ov-link ov-link--anchor" @click="closeMenu">Galeri</RouterLink>
         </nav>
         <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="ov-cta" @click="closeMenu">
           Hubungi Kami via WhatsApp
@@ -77,26 +77,37 @@ import { onMounted, onUnmounted, ref, watch } from 'vue'
 const isScrolled = ref(false)
 const menuOpen   = ref(false)
 const ctaEl      = ref(null)
+const navLinksEl     = ref(null)
 const overlayLinksEl = ref(null)
 
 const onScroll = () => { isScrolled.value = window.scrollY > 60 }
+
+let shimmerLoop = null
+
 onMounted(() => {
   window.addEventListener('scroll', onScroll)
 
-  // Nav links reveal on load
+  // Nav links reveal on load: target within navLinksEl ref only, never touch hamburger
   setTimeout(() => {
-    anime({
-      targets: '.nav-link, .nav-cta',
-      opacity: [0, 1],
-      translateY: [-6, 0],
-      delay: anime.stagger(55, { start: 500 }),
-      duration: 500,
-      easing: 'easeOutExpo',
-    })
+    const linkTargets = navLinksEl.value
+      ? navLinksEl.value.querySelectorAll('.nav-link')
+      : []
+    const ctaTarget = ctaEl.value
+    const targets = [...linkTargets, ctaTarget].filter(Boolean)
+    if (targets.length) {
+      anime({
+        targets,
+        opacity: [0, 1],
+        translateY: [-6, 0],
+        delay: anime.stagger(55, { start: 200 }),
+        duration: 500,
+        easing: 'easeOutExpo',
+      })
+    }
   }, 100)
 
-  // Shimmer CTA + Outline Gleam — tiap 4.5 detik
-  const shimmerLoop = setInterval(() => {
+  // Shimmer CTA + Outline Gleam: tiap 4.5 detik
+  shimmerLoop = setInterval(() => {
     if (!ctaEl.value) return
     const shimmer = ctaEl.value.querySelector('.cta-shimmer')
     
@@ -106,6 +117,7 @@ onMounted(() => {
       duration: 750,
       easing: 'easeInOutSine',
       complete: () => {
+        if (!ctaEl.value) return
         // Matikan CSS transition sementara agar tidak bentrok dengan Anime.js
         ctaEl.value.style.transition = 'none'
         
@@ -118,6 +130,7 @@ onMounted(() => {
             { value: '0 0 0 6px rgba(255, 255, 255, 0)', duration: 350, easing: 'easeOutQuad' }
           ],
           complete: () => {
+            if (!ctaEl.value) return
             // Kembalikan ke state semula
             ctaEl.value.style.transition = ''
             ctaEl.value.style.boxShadow = ''
@@ -126,10 +139,14 @@ onMounted(() => {
       }
     })
   }, 4500)
-
-  onUnmounted(() => clearInterval(shimmerLoop))
 })
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
+  if (shimmerLoop) clearInterval(shimmerLoop)
+  document.body.style.overflow = ''
+  document.documentElement.style.overflow = ''
+})
 
 function toggleMenu() {
   menuOpen.value = !menuOpen.value
@@ -138,17 +155,24 @@ function closeMenu() {
   menuOpen.value = false
 }
 
-// Animate overlay links saat buka
+// Animate overlay links & lock body scroll saat menu buka
 watch(menuOpen, (val) => {
-  if (val && overlayLinksEl.value) {
-    anime({
-      targets: overlayLinksEl.value.querySelectorAll('.ov-link, .ov-sep'),
-      opacity: [0, 1],
-      translateY: [20, 0],
-      delay: anime.stagger(60, { start: 150 }),
-      duration: 450,
-      easing: 'easeOutExpo',
-    })
+  if (val) {
+    document.body.style.overflow = 'hidden'
+    document.documentElement.style.overflow = 'hidden'
+    if (overlayLinksEl.value) {
+      anime({
+        targets: overlayLinksEl.value.querySelectorAll('.ov-link, .ov-sep'),
+        opacity: [0, 1],
+        translateY: [20, 0],
+        delay: anime.stagger(60, { start: 150 }),
+        duration: 450,
+        easing: 'easeOutExpo',
+      })
+    }
+  } else {
+    document.body.style.overflow = ''
+    document.documentElement.style.overflow = ''
   }
 })
 
@@ -157,8 +181,10 @@ function scrollTo(id) {
   if (el) el.scrollIntoView({ behavior: 'smooth' })
 }
 function scrollAndClose(id) {
-  scrollTo(id)
   closeMenu()
+  setTimeout(() => {
+    scrollTo(id)
+  }, 120)
 }
 
 defineExpose({
@@ -193,7 +219,7 @@ defineExpose({
 }
 
 /* Wordmark */
-.nav-wordmark { display:flex;flex-direction:column;line-height:1;flex-shrink:0;text-decoration:none; }
+.nav-wordmark { display:flex;flex-direction:column;line-height:1;flex-shrink:0;text-decoration:none;z-index:300;position:relative; }
 .wordmark-main { font-family:var(--font-serif);font-size:1.3rem;font-weight:600;color:var(--c-white);transition:var(--transition); }
 .nav--scrolled .wordmark-main { color:var(--c-stone); }
 .wordmark-sub { font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:2px;transition:var(--transition); }
@@ -234,12 +260,12 @@ defineExpose({
 .nav--scrolled .nav-link:hover,
 .nav--scrolled .nav-link--active { color:var(--c-stone); }
 
-/* Anchor links — italic, softer */
+/* Anchor links: italic, softer */
 .nav-link--anchor { font-style:italic;font-weight:400;color:rgba(255,255,255,.55); }
 .nav-link--anchor::after { background:var(--c-siger); }
 .nav--scrolled .nav-link--anchor { color:var(--c-stone-muted); }
 
-/* CTA — Siger Gold */
+/* CTA: Siger Gold */
 .nav-cta {
   position:relative;overflow:hidden;
   display:inline-flex;align-items:center;gap:.4rem;
@@ -263,9 +289,20 @@ defineExpose({
 }
 
 /* Hamburger */
-.nav-hamburger { display:none;background:none;border:none;cursor:pointer;padding:6px;margin-left:auto;z-index:300; }
+.nav-hamburger {
+  display:none;
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:8px;
+  margin-left:auto;
+  position:relative;
+  z-index:300;
+}
 .hb-bar {
-  display:block;width:22px;height:2px;
+  display:block;
+  width:24px;
+  height:2px;
   background:var(--c-white);
   border-radius:2px;
   transition:var(--transition);
@@ -280,14 +317,24 @@ defineExpose({
 .nav--open .hb-bar--2 { opacity:0;transform:scaleX(0); }
 .nav--open .hb-bar--3 { transform:translateY(-8px) rotate(-45deg); }
 
+/* Mandatory high-contrast white elements when mobile menu overlay is open */
+.nav--open .hb-bar { background: var(--c-white) !important; }
+.nav--open .wordmark-main { color: var(--c-white) !important; }
+.nav--open .wordmark-sub { color: rgba(255, 255, 255, 0.75) !important; }
+
 /* Full-Screen Overlay */
 .nav-overlay {
-  position:fixed;inset:0;
+  position:fixed;
+  inset:0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   background:var(--c-dark-bg);
   z-index:250;
   display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;
   transition:opacity .4s ease;
+  overflow-y:auto;
 }
 .nav-overlay--open { opacity:1;pointer-events:all; }
 
@@ -328,6 +375,6 @@ defineExpose({
 @media (max-width:960px) {
   .nav-links { display:none; }
   .nav-cta { display:none; }
-  .nav-hamburger { display:block; }
+  .nav-hamburger { display:flex; flex-direction:column; justify-content:center; align-items:center; }
 }
 </style>

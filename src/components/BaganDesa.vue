@@ -172,8 +172,8 @@ const animateIn = () => {
 		}, '-=300');
 };
 
-// Scroll-linked PHYSICAL exit — pohon bagan "runtuh" ke atas, level demi level
-// Masuk: tumbuh dari atas (scaleY) — Keluar: runtuh ke atas, dipercepat dari bawah ke atas
+// Scroll-linked PHYSICAL exit: pohon bagan "runtuh" ke atas, level demi level
+// Masuk: tumbuh dari atas (scaleY) | Keluar: runtuh ke atas, dipercepat dari bawah ke atas
 // getLevels() dipanggil LAZY saat scroll agar treeEl.value sudah ada
 useScrollExit(
 	sectionRef,
@@ -213,7 +213,7 @@ onMounted(async () => {
 				if (entry.isIntersecting) {
 					resetElements();
 					animateIn();
-					// TIDAK unobserve — animasi harus bisa berulang
+					// TIDAK unobserve: animasi harus bisa berulang
 				}
 			});
 		},
@@ -222,7 +222,7 @@ onMounted(async () => {
 
 	if (headerEl.value) observer.observe(headerEl.value);
 
-	// Dots — looping gentle float
+	// Dots: looping gentle float
 	const dots = sectionRef.value?.querySelectorAll('.bg-dot');
 	if (dots?.length) {
 		anime({

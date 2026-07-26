@@ -54,7 +54,7 @@ const highlightEl = ref(null);
 const bentoEls = ref([]);
 const captionEls = ref([]);
 
-// Dwell reward: image saturation enhances after 2.5s hover — discovered naturally
+// Dwell reward: image saturation enhances after 2.5s hover: discovered naturally
 const dwellTimers = {};
 
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
@@ -67,7 +67,7 @@ const bentoClass = (i) => {
 const onBentoEnter = (e, index) => {
 	const img = e.currentTarget.querySelector("img");
 	anime.remove([img, captionEls.value[index]]);
-	// Entry: scale + caption slide — signature animation (berbeda dari wisata)
+	// Entry: scale + caption slide: signature animation (berbeda dari wisata)
 	anime({ targets: img, scale: 1.07, duration: 900, easing: "easeOutExpo" });
 	anime({
 		targets: captionEls.value[index],
@@ -159,7 +159,7 @@ const animateIn = () => {
 			duration:       700,
 			easing:         'easeOutQuart',
 		}, '-=450')
-		// Bento: "Stones Surfacing" — grid ripple dari tengah ke tepi
+		// Bento: "Stones Surfacing": grid ripple dari tengah ke tepi
 		.add({
 			targets:  bentoEls.value,
 			opacity:  isFirst ? [0, 1] : 1,
@@ -176,16 +176,16 @@ const animateIn = () => {
 useScrollExit(
 	sectionRef,
 	() => [
-		{ el: labelEl.value,     x: 0,    y: -60  },
-		{ el: titleEl.value,     x: 0,    y: -80  },
-		{ el: bentoEls.value[0], x: -100, y: -140, rotate: -10, rotateX: 15,  skewX: -6, scale: 0.90 },
-		{ el: bentoEls.value[1], x: 120,  y: -160, rotate: 12,  rotateY: -18, skewY: 6,  scale: 0.90 },
-		{ el: bentoEls.value[2], x: -60,  y: -180, rotate: -8,  rotateX: 20,  skewX: -4, scale: 0.88 },
-		{ el: bentoEls.value[3], x: 80,   y: -160, rotate: 10,  rotateY: 15,  skewX: 4,  scale: 0.88 },
-		{ el: bentoEls.value[4], x: 0,    y: -200, rotate: -4,  rotateX: 25,  skewY: -4, scale: 0.88 },
-		{ el: bentoEls.value[5], x: -80,  y: -150, rotate: -12, rotateY: -20, skewX: -5, scale: 0.90 },
+		{ el: labelEl.value,     y: -50 },
+		{ el: titleEl.value,     y: -70 },
+		{ el: bentoEls.value[0], x: -40, y: -100, scale: 0.93 },
+		{ el: bentoEls.value[1], x:  40, y: -110, scale: 0.93 },
+		{ el: bentoEls.value[2], x: -20, y: -120, scale: 0.91 },
+		{ el: bentoEls.value[3], x:  20, y: -100, scale: 0.91 },
+		{ el: bentoEls.value[4], x:   0, y: -130, scale: 0.91 },
+		{ el: bentoEls.value[5], x: -30, y: -100, scale: 0.93 },
 	],
-	{ exitZone: 320, staggerPx: 15 },
+	{ exitZone: 280, staggerPx: 12 },
 );
 
 onMounted(async () => {
@@ -212,7 +212,7 @@ onMounted(async () => {
 				if (entry.isIntersecting) {
 					resetElements();
 					animateIn();
-					// TIDAK unobserve — animasi harus bisa berulang
+					// TIDAK unobserve: animasi harus bisa berulang
 				}
 			});
 		},

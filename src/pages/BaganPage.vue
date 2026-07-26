@@ -147,7 +147,7 @@ onMounted(async () => {
     })
   }
 
-  // ── Leaders: Split reveal — kiri dari kiri, kanan dari kanan ──
+  // Leaders: Split reveal: kiri dari kiri, kanan dari kanan
   // Signature UNIK: berbeda dari WisataSection (diagonal) dan Gallery (scale+blur)
   makeObserver(
     (sec) => {
@@ -198,7 +198,9 @@ onMounted(async () => {
       })
     },
     (sec) => {
-      sec.querySelectorAll('.div-line').forEach(el => el.style.transform = 'scaleX(0)')
+      sec.querySelectorAll('.div-line').forEach(el => {
+        el.style.transform = 'scaleX(0)'
+      })
       const lbl = sec.querySelector('.div-label')
       if (lbl) lbl.style.opacity = '0'
     }
@@ -239,7 +241,9 @@ onMounted(async () => {
         })
       },
       (sec) => {
-        sec.querySelectorAll('.div-line').forEach(el => el.style.transform = 'scaleX(0)')
+        sec.querySelectorAll('.div-line').forEach(el => {
+          el.style.transform = 'scaleX(0)'
+        })
       }
     ).observe(secDivider2.value)
   }

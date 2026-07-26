@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "judul": "Umbul Limus — Mata Air Jernih",
+    "judul": "Umbul Limus: Mata Air Jernih",
     "deskripsi": "Jernihnya sumber mata air alami yang menjadi kebanggaan desa kami, dikelilingi pepohonan tropis yang rindang.",
     "gambar": "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=90&w=800&auto=format&fit=crop"
   },
@@ -13,7 +13,7 @@
   },
   {
     "id": 3,
-    "judul": "Tenun Tapis — Warisan Budaya",
+    "judul": "Tenun Tapis: Warisan Budaya",
     "deskripsi": "Setiap helai benang tapis mengandung filosofi dan kearifan lokal yang diwariskan turun-temurun.",
     "gambar": "https://images.unsplash.com/photo-1509833903111-9cb142f0e297?q=90&w=800&auto=format&fit=crop"
   },
@@ -26,13 +26,13 @@
   {
     "id": 5,
     "judul": "Panorama Desa di Pagi Hari",
-    "deskripsi": "Embun pagi menyelimuti persawahan desa — suasana damai yang hanya bisa dirasakan langsung.",
+    "deskripsi": "Embun pagi menyelimuti persawahan desa, suasana damai yang hanya bisa dirasakan langsung.",
     "gambar": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=90&w=800&auto=format&fit=crop"
   },
   {
     "id": 6,
     "judul": "Keluarga Berwisata Alam",
-    "deskripsi": "Umbul Limus menjadi destinasi favorit keluarga — alam yang aman, bersih, dan penuh kenangan.",
+    "deskripsi": "Umbul Limus menjadi destinasi favorit keluarga, alam yang aman, bersih, dan penuh kenangan.",
     "gambar": "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=90&w=800&auto=format&fit=crop"
   }
 ]

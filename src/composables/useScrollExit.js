@@ -1,90 +1,56 @@
 /**
- * useScrollExit — Playful Physical Scroll-Linked Exit (STRICTLY NO OPACITY MODIFICATION)
+ * useScrollExit: Clean Scroll-Linked Exit Animation
  *
- * Elemen bergerak KELUAR secara fisik mengikuti kecepatan scroll dengan fisika
- * miring/membal (playful spring arc, 3D tilt, skew).
- * Tidak ada opacity (100% opaque, opacity = 1). 100% terikat ke posisi scroll.
+ * Elemen bergerak keluar secara halus mengikuti scroll.
+ * Hanya translateX/Y, scale, dan rotateZ (flat): NO 3D transforms.
+ * Opacity tidak dimodifikasi (tetap 1).
  *
  * Formula:
- *   rawP  = clamp((-rect.top - i * staggerPx) / exitZone, 0, 1)
- *   easeP = sin(rawP * PI / 2)
- *   arcP  = sin(rawP * PI)  <-- peaks in middle for spring bounce/skew
- *
- * Ref: Val Head "Designing with Motion" (2016) — Spatial Continuity & Playful Physics
- * Ref: web.dev/articles/scroll-driven-animations
- *
- * @param {import('vue').Ref<HTMLElement|null>} sectionRef
- * @param {() => Array<{el:HTMLElement, x?:number, y?:number, scale?:number, scaleBounce?:number, rotate?:number, rotateX?:number, rotateY?:number, skewX?:number, skewY?:number}>} getItems
- * @param {{ exitZone?:number, staggerPx?:number }} opts
+ *   easeP = sin(rawP * PI / 2)   ← smooth ease-out progression
+ *   curY  = y * easeP²           ← quadratic acceleration upward
  */
 import { onMounted, onUnmounted } from "vue";
 
 export function useScrollExit(sectionRef, getItems, opts = {}) {
-	const { exitZone = 450, staggerPx = 25 } = opts;
-
+	const { exitZone = 320, staggerPx = 18 } = opts;
 	let ticking = false;
 
 	const applyTransform = (el, item, rawP) => {
 		const {
 			x = 0,
-			y = -140,
+			y = -100,
 			scale = 1,
-			scaleBounce = 0,
 			rotate = 0,
-			rotateX = 0,
-			rotateY = 0,
-			skewX = 0,
-			skewY = 0,
 		} = item;
 
-		// Smooth sinusoidal progression (0 to 1)
+		// Smooth sinusoidal ease-out (0 → 1)
 		const easeP = Math.sin((rawP * Math.PI) / 2);
-		// Arc progression (peaks at middle of exit zone for dynamic spring wobble)
-		const arcP = Math.sin(rawP * Math.PI);
 
 		const parts = [];
 
-		if (rotateX !== 0 || rotateY !== 0) {
-			parts.push("perspective(800px)");
-		}
-
-		// Translation (smooth quadratic acceleration upward)
+		// Translation: quadratic acceleration upward feels natural
 		const curX = x * easeP;
 		const curY = y * (easeP * easeP);
 		if (curX !== 0 || curY !== 0) {
 			parts.push(`translate3d(${curX.toFixed(2)}px, ${curY.toFixed(2)}px, 0)`);
 		}
 
-		// 3D Rotations
-		if (rotateX !== 0) {
-			parts.push(`rotateX(${(rotateX * easeP).toFixed(2)}deg)`);
-		}
-		if (rotateY !== 0) {
-			parts.push(`rotateY(${(rotateY * easeP).toFixed(2)}deg)`);
-		}
-
-		// Playful spring arc rotation
-		const curRotZ = rotate * easeP + rotate * 0.35 * arcP;
-		if (curRotZ !== 0) {
+		// Gentle flat rotation only (no 3D tilt)
+		const curRotZ = rotate * easeP;
+		if (Math.abs(curRotZ) > 0.01) {
 			parts.push(`rotateZ(${curRotZ.toFixed(2)}deg)`);
 		}
 
-		// Elastic Skew
-		const curSkewX = skewX * arcP + skewX * 0.4 * easeP;
-		const curSkewY = skewY * arcP + skewY * 0.4 * easeP;
-		if (curSkewX !== 0 || curSkewY !== 0) {
-			parts.push(`skew(${curSkewX.toFixed(2)}deg, ${curSkewY.toFixed(2)}deg)`);
-		}
-
-		// Dynamic scale bounce
-		const curScale = (1 - (1 - scale) * easeP) + scaleBounce * arcP;
-		if (curScale !== 1) {
+		// Scale down slightly
+		const curScale = 1 - (1 - scale) * easeP;
+		if (Math.abs(curScale - 1) > 0.001) {
 			parts.push(`scale(${curScale.toFixed(3)})`);
 		}
 
-		el.style.transform = parts.join(" ");
+		el.style.transform = parts.length ? parts.join(" ") : "";
 		el.style.willChange = "transform";
 	};
+
 
 	const clearTransform = (el) => {
 		if (!el) return;

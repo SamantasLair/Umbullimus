@@ -21,3 +21,12 @@ collections:
               - {label: "Judul", name: "title", widget: "string"}
               - {label: "Deskripsi", name: "description", widget: "text"}
               - {label: "URL Gambar (Bisa Upload atau Link)", name: "image", widget: "image"}
+      - label: "Visi & Misi Desa"
+        name: "visi_misi"
+        file: "public/data/visi-misi/data.json"
+        fields:
+          - {label: "Visi Desa", name: "visi", widget: "text"}
+          - label: "Daftar Misi Desa"
+            name: "misi"
+            widget: "list"
+            field: {label: "Butir Misi", name: "misi_item", widget: "string"}

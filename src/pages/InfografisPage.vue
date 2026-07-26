@@ -285,8 +285,8 @@ onMounted(async () => {
 			},
 		);
 
-		// ── 2. Wilayah: 3D Flip dari bawah ──
-		// Signature UNIK: rotateX — tidak dipakai di section mana pun
+		// Wilayah: 3D Flip dari bawah
+		// Signature UNIK: rotateX: tidak dipakai di section mana pun
 		observeRepeat(
 			secWilayah.value,
 			(sec) => {
@@ -344,8 +344,8 @@ onMounted(async () => {
 			},
 		);
 
-		// ── 4. Pekerjaan: Scale pop + Ring draw ──
-		// Signature: ring-arc stroke animation — digunakan hanya di sini
+		// Pekerjaan: Scale pop + Ring draw
+		// Signature: ring-arc stroke animation: digunakan hanya di sini
 		observeRepeat(
 			secPekerjaan.value,
 			(sec) => {

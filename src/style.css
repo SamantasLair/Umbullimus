@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap");
 
 :root {
-	/* === Hutan & Siger — Filosofi Warna ===
+	/* === Hutan & Siger: Filosofi Warna ===
      Gradien alam Lampung, mengalir dari terang ke gelap:
      Embun Pagi  (latar wisata) → #edf8e9
      Kanopi      (aksen)       → #26b515
@@ -16,7 +16,7 @@
 	--c-sage: #1a5c10;
 	--c-sage-light: #baf5b2;
 
-	/* Siger — Emas Lampung */
+	/* Siger: Emas Lampung */
 	--c-siger: #d4a853;
 	--c-siger-dark: #a07830;
 	--c-siger-glow: rgba(212, 168, 83, 0.22);
@@ -163,7 +163,7 @@ img {
 }
 
 /* === Scroll Progress Bar ===
-   Sangat tipis (2px), warna emas — terlihat seperti dekorasi header.
+   Sangat tipis (2px), warna emas: terlihat seperti dekorasi header.
    Ref: Progressive Disclosure, NNG (nngroup.com/articles/progressive-disclosure) */
 #scroll-progress {
 	position: fixed;
@@ -202,7 +202,7 @@ img {
 }
 
 /* === Hidden Reward: Siger Image Glow ===
-   Triggers only after user dwells 2.5s — discovered naturally.
+   Triggers only after user dwells 2.5s: discovered naturally.
    Based on Fogg Behavior Model: trigger + ability + motivation.
    Ref: behaviormodel.org (B.J. Fogg, Stanford, 2009) */
 @keyframes siger-dwell {

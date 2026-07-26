@@ -146,7 +146,7 @@ const resetElements = () => {
 		highlightEl.value.style.backgroundSize = "0% 100%";
 };
 
-// Rotasi & pivot unik per kartu — "Falling Leaves" signature
+// Rotasi & pivot unik per kartu: "Falling Leaves" signature
 const CARD_PROPS = [
 	{ rotateZ: -8, tx: -70, ty: 60, origin: 'bottom right' },
 	{ rotateZ:  0, tx:   0, ty: 90, origin: 'top center'   },
@@ -185,7 +185,7 @@ const animateIn = () => {
 			duration:   600,
 		}, '-=400');
 
-	// Tiap kartu punya rotasi & pivot sendiri — "Falling Leaves"
+	// Tiap kartu punya rotasi & pivot sendiri: "Falling Leaves"
 	cardEls.value.forEach((card, i) => {
 		if (!card) return;
 		const p = CARD_PROPS[i] ?? CARD_PROPS[0];
@@ -209,14 +209,14 @@ const animateIn = () => {
 useScrollExit(
 	sectionRef,
 	() => [
-		{ el: labelEl.value,    x: 0,    y: -60  },
-		{ el: titleEl.value,    x: 0,    y: -80  },
-		{ el: descEl.value,     x: 0,    y: -50  },
-		{ el: cardEls.value[0], x: -120, y: -140, rotate: -16, rotateY: 18,  skewY: -8, scale: 0.92 },
-		{ el: cardEls.value[1], x: 0,    y: -180, rotate: 0,   rotateX: 24,  skewX: 0,  scale: 0.90 },
-		{ el: cardEls.value[2], x: 120,  y: -140, rotate: 16,  rotateY: -18, skewY: 8,  scale: 0.92 },
+		{ el: labelEl.value,    y: -50 },
+		{ el: titleEl.value,    y: -70 },
+		{ el: descEl.value,     y: -40 },
+		{ el: cardEls.value[0], x: -50, y: -100, rotate: -4, scale: 0.94 },
+		{ el: cardEls.value[1], x:   0, y: -120,             scale: 0.92 },
+		{ el: cardEls.value[2], x:  50, y: -100, rotate:  4, scale: 0.94 },
 	],
-	{ exitZone: 320, staggerPx: 20 },
+	{ exitZone: 280, staggerPx: 15 },
 );
 
 onMounted(async () => {
@@ -244,7 +244,7 @@ onMounted(async () => {
 				if (entry.isIntersecting) {
 					resetElements();
 					animateIn();
-					// TIDAK unobserve — animasi harus bisa berulang
+					// TIDAK unobserve: animasi harus bisa berulang
 				}
 			});
 		},

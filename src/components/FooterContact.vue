@@ -17,11 +17,11 @@
 
         <div class="footer-nav">
           <h4>Navigasi</h4>
-          <a href="#home">Beranda</a>
-          <a href="#wisata">Tempat Wisata</a>
-          <a href="#galeri">Galeri</a>
-          <a href="#bagan">Struktur Desa</a>
-          <a href="#infografis">Infografis</a>
+          <RouterLink to="/" @click="scrollToTopIfHome">Beranda</RouterLink>
+          <RouterLink to="/#wisata" @click="handleAnchor('wisata')">Tempat Wisata</RouterLink>
+          <RouterLink to="/galeri" @click="handleAnchor('galeri')">Galeri</RouterLink>
+          <RouterLink to="/bagan">Struktur Desa</RouterLink>
+          <RouterLink to="/infografis">Infografis</RouterLink>
         </div>
 
         <div class="footer-kontak">
@@ -56,7 +56,28 @@
 </template>
 
 <script setup>
-const currentYear = new Date().getFullYear();
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
+const currentYear = new Date().getFullYear()
+
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
+function scrollToTopIfHome() {
+  if (route.path === '/') {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+}
+
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
+function handleAnchor(id) {
+  if (route.path === '/') {
+    const el = document.getElementById(id)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -116,9 +137,17 @@ const currentYear = new Date().getFullYear();
 .footer-nav a {
   font-size: 0.88rem;
   color: rgba(245, 240, 232, 0.6);
-  transition: color 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  transition: color 0.25s ease, transform 0.25s ease;
 }
-.footer-nav a:hover { color: var(--c-cream); }
+.footer-nav a:hover,
+.footer-nav a.router-link-exact-active {
+  color: var(--c-cream);
+  transform: translateX(4px);
+}
 
 .footer-kontak p { font-size: 0.85rem; line-height: 1.65; margin-bottom: 0.5rem; }
 .footer-kontak a { color: var(--c-terra); }

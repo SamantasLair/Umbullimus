@@ -5,13 +5,15 @@ import App from './App.vue'
 import HomePage from './pages/HomePage.vue'
 import BaganPage from './pages/BaganPage.vue'
 import InfografisPage from './pages/InfografisPage.vue'
+import GaleriPage from './pages/GaleriPage.vue'
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', component: HomePage },
-    { path: '/bagan', component: BaganPage },
+    { path: '/',          component: HomePage },
+    { path: '/bagan',     component: BaganPage },
     { path: '/infografis', component: InfografisPage },
+    { path: '/galeri',    component: GaleriPage },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) return savedPosition
