@@ -1,7 +1,7 @@
 <template>
   <div class="if-page">
     <!-- Hero -->
-    <header class="if-hero" ref="heroEl">
+    <header class="if-hero">
       <div class="if-hero-container">
         <span class="if-hero-label" ref="heroLabelEl">Profil Desa · {{ data.provinsi }}</span>
         <h1 class="if-hero-title" ref="heroTitleEl">Infografis <em>{{ data.desa }}</em></h1>
@@ -203,14 +203,11 @@
 <script setup>
 import anime from 'animejs'
 import { computed, nextTick, onMounted, ref } from 'vue'
-import { useCardHover } from '../composables/useCardHover.js'
 import { useScrollExit } from '../composables/useScrollExit.js'
 
-const { onEnter, onLeave } = useCardHover({ lift: -6, scale: 1.03 })
 const data = ref({})
 const loading = ref(true)
 
-const heroEl = ref(null)
 const heroLabelEl = ref(null)
 const heroTitleEl = ref(null)
 const heroSubEl = ref(null)
@@ -223,10 +220,15 @@ const secPenduduk = ref(null)
 const secBudaya = ref(null)
 const secInfra = ref(null)
 const secClosing = ref(null)
+
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const statNumEls = ref([])
 
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const batas = computed(() => data.value.wilayah?.batas || {})
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const komposisi = computed(() => data.value.penduduk_ekonomi?.komposisi || {})
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const pekerjaan = computed(() => data.value.penduduk_ekonomi?.pekerjaan || {})
 
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
