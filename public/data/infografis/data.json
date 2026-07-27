@@ -38,14 +38,14 @@
   ],
   "wilayah": {
     "luas": "922 HA",
-    "luas_catatan": "*Perlu konfirmasi satuan luas wilayah kepada perangkat desa.",
+    "luas_catatan": "",
     "batas": {
       "utara": "Tajur & Kekatang",
       "selatan": "Kunyaian",
       "timur": "Pekon Ampai",
       "barat": "Penyandingan & Banding Agung"
     },
-    "deskripsi": "Desa Umbul Limus terbagi ke dalam 3 dusun, 3 RW, dan 7 RT, dengan luas wilayah sekitar 922 HA*. Bentang alamnya didominasi perbukitan yang menjadi lahan perkebunan dan persawahan, sementara permukiman warga berada di area yang relatif datar."
+    "deskripsi": "Desa Umbul Limus terbagi ke dalam 3 dusun, 3 RW, dan 7 RT, dengan luas wilayah sekitar 922 HA. Bentang alamnya didominasi perbukitan yang menjadi lahan perkebunan dan persawahan, sementara permukiman warga berada di area yang relatif datar."
   },
   "jarak": [
     {

@@ -80,7 +80,7 @@
           </div>
           <div class="if-wilayah-text">
             <p>{{ data.wilayah?.deskripsi }}</p>
-            <p class="if-note">{{ data.wilayah?.luas_catatan }}</p>
+            <p v-if="data.wilayah?.luas_catatan" class="if-note">{{ data.wilayah?.luas_catatan }}</p>
           </div>
         </div>
       </section>
@@ -659,7 +659,9 @@ onMounted(async () => {
   .if-quote-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-  .if-hero { padding: 3rem 1.25rem 2.25rem; }
+  /* Nav global position:fixed tinggi ~80px (tanpa background di state awal/belum discroll) —
+     padding-top harus cukup supaya badge/judul hero tidak tertindih nav. */
+  .if-hero { padding: 6.5rem 1.25rem 2.25rem; }
   .if-section, .if-closing { padding: var(--sp-lg) 1.25rem; }
   .if-stats { padding: 1.5rem 1.25rem; }
   .if-stat { flex: 1 1 40%; border-right: none; margin-bottom: 1rem; }

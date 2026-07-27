@@ -8,12 +8,24 @@
  * Formula:
  *   easeP = sin(rawP * PI / 2)   ← smooth ease-out progression
  *   curY  = y * easeP²           ← quadratic acceleration upward
+ *
+ * Nonaktif di layar sempit (<=768px): offset per-index diasumsikan untuk 1 baris
+ * (layout desktop). Begitu grid wrap jadi beberapa baris di mobile, tiap item
+ * beda jauh posisinya tapi tetap diberi offset yang sama → animasi tidak
+ * sinkron dan terlihat tabrakan/terputus. Daripada menambal per halaman,
+ * dimatikan terpusat di sini untuk semua pemakai composable ini.
  */
 import { onMounted, onUnmounted } from "vue";
+
+const MOBILE_BREAKPOINT = "(max-width: 768px)";
 
 export function useScrollExit(sectionRef, getItems, opts = {}) {
 	const { exitZone = 320, staggerPx = 18 } = opts;
 	let ticking = false;
+	const mq =
+		typeof window !== "undefined" && window.matchMedia
+			? window.matchMedia(MOBILE_BREAKPOINT)
+			: null;
 
 	const applyTransform = (el, item, rawP) => {
 		const {
@@ -67,6 +79,12 @@ export function useScrollExit(sectionRef, getItems, opts = {}) {
 			if (!sectionRef.value) return;
 
 			const items = getItems().filter((it) => it?.el);
+
+			// Di mobile: pastikan semua item selalu dalam posisi natural (tanpa transform)
+			if (mq?.matches) {
+				items.forEach((item) => clearTransform(item.el));
+				return;
+			}
 			const viewportHeight = window.innerHeight || 800;
 			// Threshold: Animasi exit HANYA mulai saat elemen masuk ke 35% area atas viewport (saat keluar layar ke atas)
 			const exitThreshold = viewportHeight * 0.35;

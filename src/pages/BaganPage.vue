@@ -25,53 +25,60 @@
 
     <section v-else class="bagan-tree-section" ref="secTree">
       <div class="tree-outer">
-        <!-- Tree di-scroll horizontal sendiri (bukan flex-wrap) agar garis penghubung tetap utuh di mobile -->
-        <div class="org-tree-scroll">
-          <ul class="org-tree" v-if="data.kepala_desa">
-            <li>
-              <div class="org-box org-box--kepala">
-                <span class="pf-crown">Pimpinan Tertinggi Desa</span>
-                <img :src="data.kepala_desa.foto || fallbackAvatar(data.kepala_desa.nama)" :alt="data.kepala_desa.nama" class="org-img org-img--lead" />
-                <span class="org-jabatan">{{ data.kepala_desa.jabatan }}</span>
-                <span class="org-nama org-nama--lead">{{ data.kepala_desa.nama }}</span>
-                <span v-if="data.kepala_desa.periode" class="org-periode">{{ data.kepala_desa.periode }}</span>
-                <p v-if="data.kepala_desa.bio" class="org-bio">{{ data.kepala_desa.bio }}</p>
-              </div>
+        <ul class="org-tree" v-if="data.kepala_desa">
+          <li>
+            <div class="org-box org-box--kepala">
+              <span class="pf-crown">Pimpinan Tertinggi Desa</span>
+              <img :src="data.kepala_desa.foto || fallbackAvatar(data.kepala_desa.nama)" :alt="data.kepala_desa.nama" class="org-img org-img--lead" />
+              <span class="org-jabatan">{{ data.kepala_desa.jabatan }}</span>
+              <span class="org-nama org-nama--lead">{{ data.kepala_desa.nama }}</span>
+              <span v-if="data.kepala_desa.periode" class="org-periode">{{ data.kepala_desa.periode }}</span>
+              <p v-if="data.kepala_desa.bio" class="org-bio">{{ data.kepala_desa.bio }}</p>
+            </div>
 
-              <ul>
-                <li v-if="data.sekretaris_desa">
-                  <div class="org-box org-box--sekretaris">
-                    <img :src="data.sekretaris_desa.foto || fallbackAvatar(data.sekretaris_desa.nama)" :alt="data.sekretaris_desa.nama" class="org-img" />
-                    <span class="org-jabatan">{{ data.sekretaris_desa.jabatan }}</span>
-                    <span class="org-nama">{{ data.sekretaris_desa.nama }}</span>
-                    <span v-if="data.sekretaris_desa.periode" class="org-periode">{{ data.sekretaris_desa.periode }}</span>
-                  </div>
+            <ul>
+              <li v-if="data.sekretaris_desa">
+                <!-- Kaur & Kasi ditampilkan MENYATU di dalam kartu Sekretaris (bukan cabang tree terpisah),
+                     supaya di tampilan bertumpuk (mobile) tidak terbaca seolah Kadus ada di bawah rantai
+                     Kaur/Kasi. Sekretaris & Kadus tetap sama-sama daun langsung dari Kepala Desa. -->
+                <div class="org-box org-box--sekretaris">
+                  <img :src="data.sekretaris_desa.foto || fallbackAvatar(data.sekretaris_desa.nama)" :alt="data.sekretaris_desa.nama" class="org-img" />
+                  <span class="org-jabatan">{{ data.sekretaris_desa.jabatan }}</span>
+                  <span class="org-nama">{{ data.sekretaris_desa.nama }}</span>
+                  <span v-if="data.sekretaris_desa.periode" class="org-periode">{{ data.sekretaris_desa.periode }}</span>
 
-                  <ul v-if="staffCombined.length">
-                    <li v-for="p in staffCombined" :key="p.jabatan">
-                      <div class="org-box org-box--staff" :class="p.group === 'kasi' ? 'org-box--kasi' : 'org-box--kaur'">
-                        <img :src="p.foto || fallbackAvatar(p.nama)" :alt="p.nama" class="org-img org-img--sm" />
-                        <span class="org-jabatan org-jabatan--sm">{{ p.jabatan }}</span>
-                        <span class="org-nama org-nama--sm">{{ p.nama }}</span>
+                  <div class="org-substaff" v-if="staffGroups.length">
+                    <div class="org-substaff-group" v-for="g in staffGroups" :key="g.key">
+                      <span class="org-group-title" :class="`org-group-title--${g.key}`">{{ g.label }}</span>
+                      <div class="org-group-list">
+                        <div class="org-group-person" v-for="p in g.people" :key="p.jabatan">
+                          <img :src="p.foto || fallbackAvatar(p.nama)" :alt="p.nama" class="org-img org-img--xs" />
+                          <div class="org-group-person-text">
+                            <span class="org-jabatan org-jabatan--sm">{{ p.jabatan }}</span>
+                            <span class="org-nama org-nama--sm">{{ p.nama }}</span>
+                          </div>
+                        </div>
                       </div>
-                    </li>
-                  </ul>
-                </li>
-
-                <li v-for="k in data.kadus" :key="k.jabatan">
-                  <div class="org-box org-box--kadus">
-                    <img :src="k.foto || fallbackAvatar(k.nama)" :alt="k.nama" class="org-img org-img--sm" />
-                    <span class="org-jabatan org-jabatan--sm">{{ k.jabatan }}</span>
-                    <span class="org-nama org-nama--sm">{{ k.nama }}</span>
+                    </div>
                   </div>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+                </div>
+              </li>
 
-        <!-- Di luar struktur formal: Tokoh Adat / Tokoh Masyarakat -->
-        <aside v-if="data.tokoh_adat && data.tokoh_adat.length" class="tokoh-adat-panel">
+              <li v-for="k in data.kadus" :key="k.jabatan">
+                <div class="org-box org-box--kadus">
+                  <img :src="k.foto || fallbackAvatar(k.nama)" :alt="k.nama" class="org-img org-img--sm" />
+                  <span class="org-jabatan org-jabatan--sm">{{ k.jabatan }}</span>
+                  <span class="org-nama org-nama--sm">{{ k.nama }}</span>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Di luar struktur formal: Tokoh Adat / Tokoh Masyarakat — selalu di bawah tree -->
+      <div v-if="data.tokoh_adat && data.tokoh_adat.length" class="tokoh-adat-wrap">
+        <aside class="tokoh-adat-panel">
           <div class="tap-header">
             <span class="tap-label">Di Luar Struktur Formal</span>
             <h4 class="tap-title">Tokoh Adat</h4>
@@ -151,12 +158,12 @@ const bgStyle = computed(() => ({
     : 'linear-gradient(135deg, #5c2c16, var(--c-siger-dark))',
 }))
 
-// Kaur & Kasi digabung jadi satu tier di bawah Sekretaris (tag "group" untuk pewarnaan)
-const staffCombined = computed(() => {
-  const kaur = (data.value.kaur || []).map(p => ({ ...p, group: 'kaur' }))
-  const kasi = (data.value.kasi || []).map(p => ({ ...p, group: 'kasi' }))
-  return [...kaur, ...kasi]
-})
+// Kaur & Kasi ditampilkan sebagai 2 kotak grup (bukan tiap orang jadi daun tree sendiri)
+// supaya tier ini tidak melebar terlalu jauh dan tetap muat tanpa scroll horizontal.
+const staffGroups = computed(() => [
+  { key: 'kaur', label: 'Kepala Urusan (Kaur)', people: data.value.kaur || [] },
+  { key: 'kasi', label: 'Kepala Seksi (Kasi)', people: data.value.kasi || [] },
+].filter(g => g.people.length))
 
 const fallbackAvatar = (nama) =>
   `https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=7a4a3a&color=fff&size=200&bold=true`
@@ -265,20 +272,6 @@ defineExpose({ bgStyle, fallbackAvatar })
 .tree-outer {
   max-width: var(--max-w);
   margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 2rem;
-  justify-content: center;
-}
-
-/* Tree itu sendiri TIDAK flex-wrap (akan merusak garis penghubung),
-   jadi kalau lebar konten melebihi container, di-scroll horizontal saja */
-.org-tree-scroll {
-  flex: 1 1 560px;
-  max-width: 100%;
-  overflow-x: auto;
-  padding-bottom: .5rem;
 }
 
 /* ─── Pure-CSS Org Chart (nested list + right-angle connectors) ───
@@ -378,20 +371,47 @@ defineExpose({ bgStyle, fallbackAvatar })
   margin-bottom: .6rem;
 }
 
-/* Sekretaris: tier kedua */
-.org-box--sekretaris { border-top: 3px solid var(--c-sage); }
+/* Sekretaris: tier kedua, lebih lebar karena memuat daftar Kaur & Kasi di dalamnya */
+.org-box--sekretaris { border-top: 3px solid var(--c-sage); min-width: 280px; max-width: 340px; }
 
-/* Kaur/Kasi: tier ketiga, dibedakan warna */
-.org-box--staff { border-top: 3px solid var(--c-terra); }
-.org-box--kasi { border-top-color: var(--c-sage); }
+/* Kaur & Kasi: bagian DI DALAM kartu Sekretaris (bukan node tree terpisah), supaya
+   hierarki Sekretaris vs Kadus (sama-sama anak langsung Kepala Desa) tidak rancu
+   saat tampilan bertumpuk di mobile. */
+.org-substaff {
+  width: 100%;
+  margin-top: 1.1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--c-cream-dark);
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
+  text-align: left;
+}
+.org-group-title {
+  display: block;
+  font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+.org-group-title--kaur { color: var(--c-terra); }
+.org-group-title--kasi { color: var(--c-sage); }
+.org-group-list { display: flex; flex-direction: column; gap: .5rem; }
+.org-group-person { display: flex; align-items: center; gap: .5rem; }
+.org-group-person-text { display: flex; flex-direction: column; }
+.org-img--xs { width: 32px; height: 32px; margin-bottom: 0; flex-shrink: 0; }
 
 /* Kadus: cabang sejajar Sekretaris, langsung dari Kepala Desa */
 .org-box--kadus { border-top: 3px solid var(--c-stone); }
 
-/* Tokoh Adat: eksplisit di luar struktur formal (border putus-putus + label) */
+/* Tokoh Adat: eksplisit di luar struktur formal (border putus-putus + label), selalu di bawah tree */
+.tokoh-adat-wrap {
+  max-width: var(--max-w);
+  margin: 3rem auto 0;
+  display: flex;
+  justify-content: center;
+}
 .tokoh-adat-panel {
-  flex: 0 0 260px;
-  align-self: flex-start;
+  width: 100%;
+  max-width: 480px;
   background: rgba(122, 74, 58, 0.05);
   border: 1.5px dashed var(--c-terra);
   border-radius: var(--radius-md);
@@ -413,15 +433,39 @@ defineExpose({ bgStyle, fallbackAvatar })
 .tap-nama { font-family: var(--font-serif); font-size: .92rem; font-weight: 600; color: var(--c-stone); }
 .tap-peran { font-size: .68rem; color: var(--c-stone-muted); }
 
-@media (max-width: 1024px) {
-  .tree-outer { flex-direction: column; align-items: center; }
-  .org-tree-scroll { width: 100%; }
-  .tokoh-adat-panel { flex: 1 1 100%; max-width: 480px; }
+/* Di layar sempit (tablet potret ke bawah), tree jadi tumpukan vertikal:
+   bus-line horizontal ala desktop diganti garis vertikal sederhana yang
+   tetap menyambung tiap kotak yang ditumpuk (supaya tidak "terputus-putus")
+   — dan tidak pernah perlu scroll kiri-kanan. */
+@media (max-width: 768px) {
+  .org-tree, .org-tree ul {
+    flex-direction: column;
+    align-items: center;
+  }
+  .org-tree li {
+    padding: 1.5rem 0 0 0;
+  }
+  /* Matikan bus-line horizontal desktop */
+  .org-tree li::before,
+  .org-tree li::after {
+    display: none;
+  }
+  /* Ganti: garis vertikal pendek penyambung antar kotak yang ditumpuk */
+  .org-tree li:not(:first-child)::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0; left: 50%;
+    width: 0; height: 1.5rem;
+    border-left: 2px solid var(--c-stone-muted);
+    transform: translateX(-50%);
+  }
 }
 
-@media (max-width: 680px) {
-  .org-box { min-width: 130px; padding: .9rem .75rem; }
-  .org-box--kepala { min-width: 200px; padding: 1.5rem 1.25rem; }
+@media (max-width: 480px) {
+  .org-box { min-width: 0; width: 100%; max-width: 260px; padding: .9rem .75rem; }
+  .org-box--kepala { max-width: 280px; padding: 1.5rem 1.25rem; }
+  .org-box--sekretaris { max-width: 300px; }
 }
 
 /* ─── Tugas & Fungsi / Lembaga Kemasyarakatan ── */
