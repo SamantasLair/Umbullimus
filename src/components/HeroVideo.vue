@@ -182,7 +182,9 @@ defineExpose({ SigerDecor })
 .hero {
   position: relative;
   width: 100%; height: 100vh; min-height: 620px;
-  display: flex; align-items: flex-end;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding-top: clamp(6.5rem, 12vh, 8.5rem);
+  box-sizing: border-box;
   overflow: hidden;
   background: var(--c-dark-bg);
 }
@@ -226,8 +228,9 @@ defineExpose({ SigerDecor })
 .hero-content {
   position: relative; z-index: 3;
   max-width: var(--max-w); width: 100%;
-  margin: 0 auto;
-  padding: clamp(6.5rem, 12vh, 8.5rem) var(--sp-md) clamp(3rem, 6vh, 5rem);
+  margin: auto auto 0;
+  padding: 0 var(--sp-md) clamp(3rem, 6vh, 5rem);
+  box-sizing: border-box;
 }
 
 /* Badge */
