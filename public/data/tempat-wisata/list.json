@@ -11,14 +11,14 @@
       "fasilitas": ["Parkir Luas", "Warung Makan", "Toilet Umum", "Gazebo"]
     },
     {
-      "id": "air-terjun-marga-punduh",
-      "nama": "Air Terjun Marga Punduh",
+      "id": "air-terjun-way-curup",
+      "nama": "Air Terjun Way Curup",
       "kategori": "Air Terjun",
-      "deskripsi": "Air terjun alami dengan debit air segar pegunungan Pesawaran. Jalur trekking melewati hutan lebat menjadikannya destinasi favorit pecinta alam dan fotografi.",
+      "deskripsi": "Tersembunyi di antara perbukitan Marga Punduh, Way Curup adalah daya tarik alam desa yang hingga kini belum memiliki pengelola wisata resmi — sebuah potensi yang masih menanti untuk dikembangkan.",
       "gambar": "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=90&w=900&auto=format&fit=crop",
-      "jam_buka": "06.00 – 17.00 WIB",
-      "tiket": "Rp 15.000/orang",
-      "fasilitas": ["Jalur Trekking", "Pemandu Wisata", "Spot Foto"]
+      "jam_buka": "Belum ada jam operasional resmi",
+      "tiket": "Belum ada pengelola resmi",
+      "fasilitas": ["Jalur Alami", "Spot Foto"]
     },
     {
       "id": "wisata-budaya",

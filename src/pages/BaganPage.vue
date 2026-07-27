@@ -25,47 +25,50 @@
 
     <section v-else class="bagan-tree-section" ref="secTree">
       <div class="tree-outer">
-        <ul class="org-tree" v-if="data.kepala_desa">
-          <li>
-            <div class="org-box org-box--kepala">
-              <span class="pf-crown">Pimpinan Tertinggi Desa</span>
-              <img :src="data.kepala_desa.foto || fallbackAvatar(data.kepala_desa.nama)" :alt="data.kepala_desa.nama" class="org-img org-img--lead" />
-              <span class="org-jabatan">{{ data.kepala_desa.jabatan }}</span>
-              <span class="org-nama org-nama--lead">{{ data.kepala_desa.nama }}</span>
-              <span v-if="data.kepala_desa.periode" class="org-periode">{{ data.kepala_desa.periode }}</span>
-              <p v-if="data.kepala_desa.bio" class="org-bio">{{ data.kepala_desa.bio }}</p>
-            </div>
+        <!-- Tree di-scroll horizontal sendiri (bukan flex-wrap) agar garis penghubung tetap utuh di mobile -->
+        <div class="org-tree-scroll">
+          <ul class="org-tree" v-if="data.kepala_desa">
+            <li>
+              <div class="org-box org-box--kepala">
+                <span class="pf-crown">Pimpinan Tertinggi Desa</span>
+                <img :src="data.kepala_desa.foto || fallbackAvatar(data.kepala_desa.nama)" :alt="data.kepala_desa.nama" class="org-img org-img--lead" />
+                <span class="org-jabatan">{{ data.kepala_desa.jabatan }}</span>
+                <span class="org-nama org-nama--lead">{{ data.kepala_desa.nama }}</span>
+                <span v-if="data.kepala_desa.periode" class="org-periode">{{ data.kepala_desa.periode }}</span>
+                <p v-if="data.kepala_desa.bio" class="org-bio">{{ data.kepala_desa.bio }}</p>
+              </div>
 
-            <ul>
-              <li v-if="data.sekretaris_desa">
-                <div class="org-box org-box--sekretaris">
-                  <img :src="data.sekretaris_desa.foto || fallbackAvatar(data.sekretaris_desa.nama)" :alt="data.sekretaris_desa.nama" class="org-img" />
-                  <span class="org-jabatan">{{ data.sekretaris_desa.jabatan }}</span>
-                  <span class="org-nama">{{ data.sekretaris_desa.nama }}</span>
-                  <span v-if="data.sekretaris_desa.periode" class="org-periode">{{ data.sekretaris_desa.periode }}</span>
-                </div>
+              <ul>
+                <li v-if="data.sekretaris_desa">
+                  <div class="org-box org-box--sekretaris">
+                    <img :src="data.sekretaris_desa.foto || fallbackAvatar(data.sekretaris_desa.nama)" :alt="data.sekretaris_desa.nama" class="org-img" />
+                    <span class="org-jabatan">{{ data.sekretaris_desa.jabatan }}</span>
+                    <span class="org-nama">{{ data.sekretaris_desa.nama }}</span>
+                    <span v-if="data.sekretaris_desa.periode" class="org-periode">{{ data.sekretaris_desa.periode }}</span>
+                  </div>
 
-                <ul v-if="staffCombined.length">
-                  <li v-for="p in staffCombined" :key="p.jabatan">
-                    <div class="org-box org-box--staff" :class="p.group === 'kasi' ? 'org-box--kasi' : 'org-box--kaur'">
-                      <img :src="p.foto || fallbackAvatar(p.nama)" :alt="p.nama" class="org-img org-img--sm" />
-                      <span class="org-jabatan org-jabatan--sm">{{ p.jabatan }}</span>
-                      <span class="org-nama org-nama--sm">{{ p.nama }}</span>
-                    </div>
-                  </li>
-                </ul>
-              </li>
+                  <ul v-if="staffCombined.length">
+                    <li v-for="p in staffCombined" :key="p.jabatan">
+                      <div class="org-box org-box--staff" :class="p.group === 'kasi' ? 'org-box--kasi' : 'org-box--kaur'">
+                        <img :src="p.foto || fallbackAvatar(p.nama)" :alt="p.nama" class="org-img org-img--sm" />
+                        <span class="org-jabatan org-jabatan--sm">{{ p.jabatan }}</span>
+                        <span class="org-nama org-nama--sm">{{ p.nama }}</span>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
 
-              <li v-for="k in data.kadus" :key="k.jabatan">
-                <div class="org-box org-box--kadus">
-                  <img :src="k.foto || fallbackAvatar(k.nama)" :alt="k.nama" class="org-img org-img--sm" />
-                  <span class="org-jabatan org-jabatan--sm">{{ k.jabatan }}</span>
-                  <span class="org-nama org-nama--sm">{{ k.nama }}</span>
-                </div>
-              </li>
-            </ul>
-          </li>
-        </ul>
+                <li v-for="k in data.kadus" :key="k.jabatan">
+                  <div class="org-box org-box--kadus">
+                    <img :src="k.foto || fallbackAvatar(k.nama)" :alt="k.nama" class="org-img org-img--sm" />
+                    <span class="org-jabatan org-jabatan--sm">{{ k.jabatan }}</span>
+                    <span class="org-nama org-nama--sm">{{ k.nama }}</span>
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
 
         <!-- Di luar struktur formal: Tokoh Adat / Tokoh Masyarakat -->
         <aside v-if="data.tokoh_adat && data.tokoh_adat.length" class="tokoh-adat-panel">
@@ -83,6 +86,50 @@
             </div>
           </div>
         </aside>
+      </div>
+    </section>
+
+    <!-- Tugas & Fungsi Perangkat Desa -->
+    <section class="info-section">
+      <div class="info-wrap">
+        <span class="info-label">Pemerintahan Desa</span>
+        <h2 class="info-title">Tugas &amp; Fungsi Perangkat Desa</h2>
+        <div class="role-grid">
+          <article class="role-card">
+            <h3>Kepala Desa</h3>
+            <p>Memimpin penyelenggaraan pemerintahan desa, melaksanakan pembangunan, pembinaan kemasyarakatan, dan pemberdayaan masyarakat desa sebagai penanggung jawab utama.</p>
+          </article>
+          <article class="role-card">
+            <h3>Sekretaris Desa</h3>
+            <p>Membantu Kepala Desa dalam bidang administrasi pemerintahan, mengoordinasikan tugas Kaur dan Kasi, serta menyusun laporan penyelenggaraan pemerintahan desa.</p>
+          </article>
+          <article class="role-card">
+            <h3>Kepala Urusan &amp; Kepala Seksi</h3>
+            <p>Kaur membantu Sekretaris Desa dalam pelayanan administratif (umum, keuangan, perencanaan). Kasi menjadi unsur pelaksana teknis di lapangan (pemerintahan, kesejahteraan, pelayanan) seperti urusan kependudukan, sosial budaya, dan keagamaan.</p>
+          </article>
+          <article class="role-card">
+            <h3>Kepala Dusun</h3>
+            <p>Unsur satuan tugas kewilayahan yang membantu Kepala Desa di wilayah dusun masing-masing: menjaga ketenteraman dan ketertiban, penanggulangan bencana, mobilitas kependudukan, serta penataan wilayah.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lembaga Kemasyarakatan Desa -->
+    <section class="info-section info-section--dark">
+      <div class="info-wrap">
+        <span class="info-label info-label--on-dark">Mitra Pemerintah Desa</span>
+        <h2 class="info-title info-title--on-dark">Lembaga Kemasyarakatan Desa</h2>
+        <div class="role-grid role-grid--2">
+          <article class="role-card role-card--dark">
+            <h3>BPD (Badan Permusyawaratan Desa)</h3>
+            <p>Lembaga yang membahas dan menyepakati Rancangan Peraturan Desa bersama Kepala Desa, menampung serta menyalurkan aspirasi masyarakat, dan mengawasi kinerja Kepala Desa. BPD juga menyelenggarakan musyawarah desa dan membentuk panitia pemilihan Kepala Desa.</p>
+          </article>
+          <article class="role-card role-card--dark">
+            <h3>PKK (Pemberdayaan Kesejahteraan Keluarga)</h3>
+            <p>Organisasi penggerak pemberdayaan perempuan dalam pembangunan desa, menjalankan 10 Program Pokok PKK — mulai dari gotong royong, pangan, pendidikan, hingga kesehatan keluarga — melalui kelompok dasa wisma di tingkat RT/dusun.</p>
+          </article>
+        </div>
       </div>
     </section>
   </div>
@@ -151,62 +198,6 @@ onMounted(async () => {
     })
   }
 
-  // ── Tree: reveal per tingkat hierarki (root → sekretaris+kadus → kaur/kasi) ──
-  // Signature UNIK: cascade top-down mengikuti kedalaman tree, bukan diagonal/scale seperti section lain
-  makeObserver(
-    (sec) => {
-      const rootBox   = sec.querySelector('.org-tree > li > .org-box')
-      const tier2Boxes = sec.querySelectorAll('.org-tree > li > ul > li > .org-box')
-      const tier3Boxes = sec.querySelectorAll('.org-tree > li > ul > li > ul > li > .org-box')
-      const tokohPanel = sec.querySelector('.tokoh-adat-panel')
-
-      anime.timeline({ easing: 'easeOutExpo' })
-        .add({
-          targets: rootBox,
-          opacity: [0, 1],
-          translateY: [-30, 0],
-          scale: [0.94, 1],
-          duration: 650,
-        })
-        .add({
-          targets: tier2Boxes,
-          opacity: [0, 1],
-          translateY: [30, 0],
-          delay: anime.stagger(80),
-          duration: 550,
-        }, '-=250')
-        .add({
-          targets: tier3Boxes,
-          opacity: [0, 1],
-          translateY: [24, 0],
-          scale: [0.92, 1],
-          delay: anime.stagger(55),
-          duration: 500,
-          easing: 'easeOutBack',
-        }, '-=200')
-
-      if (tokohPanel) {
-        anime({
-          targets: tokohPanel,
-          opacity: [0, 1],
-          translateX: [50, 0],
-          duration: 700,
-          delay: 200,
-          easing: 'easeOutExpo',
-        })
-      }
-    },
-    (sec) => {
-      const boxes = sec.querySelectorAll('.org-box')
-      const tokohPanel = sec.querySelector('.tokoh-adat-panel')
-      boxes.forEach(el => { el.style.opacity = '0'; el.style.transform = '' })
-      if (tokohPanel) {
-        tokohPanel.style.opacity = '0'
-        tokohPanel.style.transform = ''
-      }
-    },
-    0.12
-  ).observe(secTree.value)
 })
 
 defineExpose({ bgStyle, fallbackAvatar })
@@ -268,15 +259,26 @@ defineExpose({ bgStyle, fallbackAvatar })
 .bagan-tree-section {
   background: var(--c-cream-dark);
   padding: var(--sp-xl) var(--sp-md);
+  overflow-x: hidden;
 }
 
 .tree-outer {
   max-width: var(--max-w);
   margin: 0 auto;
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   gap: 2rem;
   justify-content: center;
+}
+
+/* Tree itu sendiri TIDAK flex-wrap (akan merusak garis penghubung),
+   jadi kalau lebar konten melebihi container, di-scroll horizontal saja */
+.org-tree-scroll {
+  flex: 1 1 560px;
+  max-width: 100%;
+  overflow-x: auto;
+  padding-bottom: .5rem;
 }
 
 /* ─── Pure-CSS Org Chart (nested list + right-angle connectors) ───
@@ -341,10 +343,9 @@ defineExpose({ bgStyle, fallbackAvatar })
   box-shadow: var(--shadow-card);
   padding: 1.1rem 1rem;
   min-width: 150px;
-  opacity: 0;
-  transition: box-shadow .25s, transform .25s;
+  transition: box-shadow .25s;
 }
-.org-box:hover { box-shadow: var(--shadow-lift); transform: translateY(-2px); }
+.org-box:hover { box-shadow: var(--shadow-lift); }
 
 .org-img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; margin-bottom: .5rem; border: 2px solid var(--c-cream-dark); }
 .org-img--lead { width: 96px; height: 96px; border-width: 3px; }
@@ -395,7 +396,6 @@ defineExpose({ bgStyle, fallbackAvatar })
   border: 1.5px dashed var(--c-terra);
   border-radius: var(--radius-md);
   padding: 1.5rem;
-  opacity: 0;
 }
 .tap-header { margin-bottom: 1.25rem; }
 .tap-label {
@@ -415,12 +415,62 @@ defineExpose({ bgStyle, fallbackAvatar })
 
 @media (max-width: 1024px) {
   .tree-outer { flex-direction: column; align-items: center; }
+  .org-tree-scroll { width: 100%; }
   .tokoh-adat-panel { flex: 1 1 100%; max-width: 480px; }
 }
 
 @media (max-width: 680px) {
-  .org-tree, .org-tree ul { flex-wrap: wrap; }
   .org-box { min-width: 130px; padding: .9rem .75rem; }
   .org-box--kepala { min-width: 200px; padding: 1.5rem 1.25rem; }
+}
+
+/* ─── Tugas & Fungsi / Lembaga Kemasyarakatan ── */
+.info-section { padding: var(--sp-lg) var(--sp-md); background: var(--c-cream); }
+.info-section--dark { background: var(--c-stone); }
+.info-wrap { max-width: var(--max-w); margin: 0 auto; }
+
+.info-label {
+  display: block; font-size: .68rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--c-terra-dark); margin-bottom: .6rem;
+}
+.info-label--on-dark { color: var(--c-sage-light); }
+.info-title {
+  font-family: var(--font-serif); font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700; color: var(--c-stone); margin-bottom: 2rem;
+}
+.info-title--on-dark { color: var(--c-cream); }
+
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+.role-grid--2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+
+.role-card {
+  background: var(--c-white);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
+  border-left: 3px solid var(--c-terra);
+}
+.role-card h3 {
+  font-family: var(--font-serif); font-size: 1.05rem;
+  color: var(--c-stone); margin-bottom: .6rem;
+}
+.role-card p { font-size: .88rem; line-height: 1.7; color: var(--c-stone-muted); }
+
+.role-card--dark {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid var(--c-siger);
+  box-shadow: none;
+}
+.role-card--dark h3 { color: var(--c-cream); }
+.role-card--dark p { color: rgba(237, 250, 233, 0.65); }
+
+@media (max-width: 600px) {
+  .info-section { padding: var(--sp-lg) 1.25rem; }
 }
 </style>

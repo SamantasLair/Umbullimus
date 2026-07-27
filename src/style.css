@@ -21,6 +21,11 @@
 	--c-siger-dark: #a07830;
 	--c-siger-glow: rgba(212, 168, 83, 0.22);
 
+	/* Maroon: aksen tema halaman Infografis (data/editorial) */
+	--c-maroon: #4a1220;
+	--c-maroon-dark: #34090f;
+	--c-maroon-glow: rgba(74, 18, 32, 0.18);
+
 	/* Neutral */
 	--c-cream: #edf8e9;
 	--c-cream-dark: #d6f0cf;

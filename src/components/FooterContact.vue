@@ -1,5 +1,5 @@
 <template>
-  <footer id="kontak" class="footer">
+  <footer id="kontak" :class="['footer', { 'footer--maroon': isMaroonTheme }]">
     <div class="footer-container">
       <div class="footer-top">
         <div class="footer-brand">
@@ -28,7 +28,7 @@
           <h4>Kontak</h4>
           <p>
             <strong>Alamat:</strong><br>
-            Desa Umbul Limus, Kec. Pesawaran,<br>
+            Desa Umbul Limus, Kec. Marga Punduh,<br>
             Kab. Pesawaran, Lampung.
           </p>
           <p>
@@ -56,12 +56,16 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
 // biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const currentYear = new Date().getFullYear()
+// Halaman dengan tema warna berbeda (mis. Infografis: maroon/emas): footer ikut menyesuaikan
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
+const isMaroonTheme = computed(() => route.path === '/infografis')
 
 // biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 function scrollToTopIfHome() {
@@ -194,6 +198,13 @@ function goToWisata() {
 }
 
 .footer-credit { font-style: italic; }
+
+/* Tema Maroon: menyesuaikan halaman Infografis (lihat isMaroonTheme) */
+.footer--maroon { background: var(--c-maroon-dark); }
+.footer--maroon .social-link:hover { border-color: var(--c-siger); color: var(--c-siger); }
+.footer--maroon .footer-kontak a { color: var(--c-siger); }
+.footer--maroon .maps-link { color: var(--c-siger) !important; border-color: var(--c-siger); }
+.footer--maroon .maps-link:hover { background: var(--c-siger); color: var(--c-maroon-dark) !important; }
 
 @media (max-width: 768px) {
   .footer-top { grid-template-columns: 1fr; gap: 2rem; }

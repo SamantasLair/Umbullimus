@@ -25,7 +25,7 @@
     </header>
 
     <!-- Bento Grid -->
-    <section class="galeri-section">
+    <section class="galeri-section" ref="sectionRef">
       <div class="galeri-container">
         <!-- Skeleton -->
         <div v-if="loading" class="bento-skeleton-grid" aria-label="Memuat galeri...">
@@ -51,6 +51,8 @@
             :class="getBentoClass(i)"
             :ref="el => { if(el) itemRefs[i] = el }"
             @click="openLightbox(i)"
+            @mouseenter="onEnter"
+            @mouseleave="onLeave"
             :aria-label="`Buka foto: ${img.alt}`"
             role="button"
             tabindex="0"
@@ -115,6 +117,10 @@
 <script setup>
 import anime from 'animejs'
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { useCardHover } from '../composables/useCardHover.js'
+import { useScrollExit } from '../composables/useScrollExit.js'
+
+const { onEnter, onLeave } = useCardHover({ lift: -6, scale: 1.015 })
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const allImages   = ref([])
@@ -122,6 +128,7 @@ const loading     = ref(true)
 const activeFilter = ref('Semua')
 const lightboxIndex = ref(null)
 
+const sectionRef = ref(null)
 const headerEl = ref(null)
 const labelEl  = ref(null)
 const titleEl  = ref(null)
@@ -219,6 +226,15 @@ const animateGrid = async () => {
     easing: 'easeOutExpo',
   })
 }
+
+// Exit: item bento menyebar & naik saat section dilewati ke atas
+useScrollExit(
+  sectionRef,
+  () => itemRefs.value.filter(Boolean).map((el, i) => ({
+    el, x: (i % 3 - 1) * 30, y: -90 - (i % 3) * 12, scale: 0.93,
+  })),
+  { exitZone: 300, staggerPx: 8 },
+)
 
 // ─── Lifecycle ────────────────────────────────────────────────────────────────
 onMounted(async () => {

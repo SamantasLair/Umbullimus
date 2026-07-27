@@ -10,7 +10,7 @@
           </h2>
           <p class="profil-sejarah" ref="textEl" v-if="data.sejarah">{{ data.sejarah }}</p>
           <p class="profil-sejarah" ref="textEl" v-else>
-            Desa Umbul Limus adalah destinasi wisata alam yang terletak di Pesawaran, Lampung.
+            Desa Umbul Limus terletak di Kecamatan Marga Punduh, Kabupaten Pesawaran, Lampung.
             Dikenal dengan sumber mata air alaminya, hutan tropis yang lebat, dan kearifan budaya Lampung yang lestari.
           </p>
           <RouterLink to="/infografis" class="profil-cta" ref="ctaEl">
@@ -28,6 +28,8 @@
             :key="stat.label"
             class="stat-card"
             :ref="el => { if(el) statEls[i] = el }"
+            @mouseenter="onEnter"
+            @mouseleave="onLeave"
           >
             <div class="stat-icon" v-html="stat.icon"></div>
             <div class="stat-value" :ref="el => { if(el) counterEls[i] = el }">{{ stat.display }}</div>
@@ -45,7 +47,10 @@
 <script setup>
 import anime from 'animejs'
 import { nextTick, onMounted, ref } from 'vue'
+import { useCardHover } from '../composables/useCardHover.js'
+import { useScrollExit } from '../composables/useScrollExit.js'
 
+const { onEnter, onLeave } = useCardHover()
 const data = ref({})
 const sectionRef = ref(null)
 const labelEl    = ref(null)
@@ -60,10 +65,10 @@ const statEls    = ref([])
 const counterEls = ref([])
 
 const stats = ref([
-  { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>', label: 'Jumlah Penduduk', display: '3.200+', numericTarget: 3200 },
-  { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>', label: 'Luas Wilayah', display: '12,4 km²', numericTarget: null },
-  { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>', label: 'Jumlah RT / RW', display: '12 RT / 4 RW', numericTarget: null },
-  { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>', label: 'Tahun Berdiri', display: '1958', numericTarget: null },
+  { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>', label: 'Jumlah Penduduk', display: '651', numericTarget: 651 },
+  { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>', label: 'Luas Wilayah', display: '922 HA', numericTarget: null },
+  { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>', label: 'Jumlah RT / RW', display: '7 RT / 3 RW', numericTarget: null },
+  { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V10l7-6 7 6v11"/><path d="M9 21v-6h6v6"/></svg>', label: 'Jumlah Dusun', display: '3', numericTarget: 3 },
 ])
 
 let hasEntered = false
@@ -117,6 +122,15 @@ const animateIn = async () => {
     }, '-=300')
 }
 
+// Exit: stat cards naik & menyusut lembut saat section dilewati ke atas
+useScrollExit(
+  sectionRef,
+  () => statEls.value.filter(Boolean).map((el, i) => ({
+    el, y: -70 - i * 12, scale: 0.94, x: i % 2 === 0 ? -8 : 8,
+  })),
+  { exitZone: 260, staggerPx: 12 },
+)
+
 onMounted(async () => {
   try {
     const res = await fetch('/data/profil/data.json')
@@ -127,7 +141,7 @@ onMounted(async () => {
       if (data.value.luas_wilayah)    stats.value[1].display = data.value.luas_wilayah
       if (data.value.jumlah_rt && data.value.jumlah_rw)
         stats.value[2].display = `${data.value.jumlah_rt} RT / ${data.value.jumlah_rw} RW`
-      if (data.value.tahun_berdiri)   stats.value[3].display = data.value.tahun_berdiri
+      if (data.value.jumlah_dusun)    stats.value[3].display = String(data.value.jumlah_dusun)
     }
   } catch (e) {
     console.error('Gagal memuat profil desa:', e)

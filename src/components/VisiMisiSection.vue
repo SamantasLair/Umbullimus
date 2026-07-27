@@ -31,6 +31,8 @@
               :key="index"
               class="misi-card"
               :ref="el => { if(el) misiEls[index] = el }"
+              @mouseenter="onEnter"
+              @mouseleave="onLeave"
             >
               <div class="misi-number">{{ formatNumber(index + 1) }}</div>
               <p class="misi-text">{{ getMisiText(item) }}</p>
@@ -52,6 +54,10 @@
 <script setup>
 import anime from 'animejs'
 import { nextTick, onMounted, ref } from 'vue'
+import { useCardHover } from '../composables/useCardHover.js'
+import { useScrollExit } from '../composables/useScrollExit.js'
+
+const { onEnter, onLeave } = useCardHover()
 
 const DEFAULT_DATA = {
   visi: 'Terwujudnya Desa Umbul Limus yang maju, mandiri, sejahtera, religius, dan berbudaya melalui pembangunan yang berkelanjutan serta pemberdayaan masyarakat.',
@@ -157,6 +163,18 @@ const animateIn = () => {
       easing: 'easeOutExpo',
     }, '-=300')
 }
+
+// Exit: visi-card & misi-card naik bersama saat section dilewati ke atas
+useScrollExit(
+  sectionRef,
+  () => [
+    { el: visiCardEl.value, y: -60 },
+    ...misiEls.value.filter(Boolean).map((el, i) => ({
+      el, y: -50 - (i % 3) * 14, x: (i % 2 === 0 ? -1 : 1) * 8, scale: 0.95,
+    })),
+  ],
+  { exitZone: 280, staggerPx: 10 },
+)
 
 onMounted(async () => {
   try {
@@ -306,11 +324,11 @@ onMounted(async () => {
   align-items: flex-start;
   gap: 1.25rem;
   border: 1px solid var(--c-cream-dark);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease;
 }
 
+/* transform saat hover ditangani anime.js (useCardHover) agar konsisten dgn kartu lain di situs */
 .misi-card:hover {
-  transform: translateY(-4px);
   box-shadow: 0 12px 28px rgba(15, 36, 9, 0.12);
 }
 

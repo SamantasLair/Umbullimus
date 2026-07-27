@@ -24,12 +24,11 @@ collections:
           - {label: "Kecamatan", name: "kecamatan", widget: "string"}
           - {label: "Kabupaten", name: "kabupaten", widget: "string"}
           - {label: "Provinsi", name: "provinsi", widget: "string"}
-          - {label: "Tahun Berdiri", name: "tahun_berdiri", widget: "string"}
           - {label: "Luas Wilayah", name: "luas_wilayah", widget: "string"}
           - {label: "Jumlah Penduduk", name: "jumlah_penduduk", widget: "string"}
           - {label: "Jumlah RT", name: "jumlah_rt", widget: "number"}
           - {label: "Jumlah RW", name: "jumlah_rw", widget: "number"}
-          - {label: "Nama Kepala Desa", name: "kepala_desa", widget: "string"}
+          - {label: "Jumlah Dusun", name: "jumlah_dusun", widget: "number"}
           - {label: "Tagline", name: "tagline", widget: "string"}
           - {label: "Sejarah Desa", name: "sejarah", widget: "text"}
 
@@ -125,54 +124,109 @@ collections:
         name: "infografis"
         file: "public/data/infografis/data.json"
         fields:
-          - {label: "Tahun Data", name: "tahun_data", widget: "number"}
-          - {label: "Link Embed Google Maps", name: "maps_embed", widget: "string", required: false}
-          - {label: "Label Lokasi Maps", name: "maps_label", widget: "string", required: false}
-          - label: "Kependudukan"
-            name: "kependudukan"
+          - {label: "Nama Desa", name: "desa", widget: "string"}
+          - {label: "Kecamatan", name: "kecamatan", widget: "string"}
+          - {label: "Kabupaten", name: "kabupaten", widget: "string"}
+          - {label: "Provinsi", name: "provinsi", widget: "string"}
+          - label: "Asal Usul Nama"
+            name: "asal_usul"
             widget: "object"
             fields:
-              - {label: "Total Jiwa", name: "total", widget: "number"}
-              - {label: "Satuan", name: "satuan", widget: "string"}
-              - {label: "Keterangan Sumber Data", name: "keterangan", widget: "string", required: false}
-              - label: "Rincian"
-                name: "rincian"
-                widget: "list"
-                summary: "{{label}}: {{value}}"
+              - {label: "Judul Section", name: "judul", widget: "string"}
+              - label: "Kata 'Umbul'"
+                name: "umbul"
+                widget: "object"
                 fields:
-                  - {label: "Label", name: "label", widget: "string"}
-                  - {label: "Nilai", name: "value", widget: "number"}
+                  - {label: "Kata", name: "kata", widget: "string"}
+                  - {label: "Penjelasan", name: "penjelasan", widget: "text"}
+              - label: "Kata 'Limus'"
+                name: "limus"
+                widget: "object"
+                fields:
+                  - {label: "Kata", name: "kata", widget: "string"}
+                  - {label: "Penjelasan", name: "penjelasan", widget: "text"}
+          - label: "Statistik Utama (baris angka)"
+            name: "stats"
+            widget: "list"
+            summary: "{{value}} {{label}}"
+            fields:
+              - {label: "Nilai", name: "value", widget: "number"}
+              - {label: "Label", name: "label", widget: "string"}
           - label: "Wilayah"
             name: "wilayah"
-            widget: "list"
-            summary: "{{label}}: {{value}}"
+            widget: "object"
             fields:
-              - {label: "Label", name: "label", widget: "string"}
-              - {label: "Nilai", name: "value", widget: "string"}
-              - {label: "Ikon (emoji)", name: "icon", widget: "string", required: false}
-          - label: "Tingkat Pendidikan"
-            name: "pendidikan"
+              - {label: "Luas Wilayah", name: "luas", widget: "string"}
+              - {label: "Catatan Luas (mis. perlu konfirmasi satuan)", name: "luas_catatan", widget: "string", required: false}
+              - label: "Batas Wilayah"
+                name: "batas"
+                widget: "object"
+                fields:
+                  - {label: "Utara", name: "utara", widget: "string"}
+                  - {label: "Selatan", name: "selatan", widget: "string"}
+                  - {label: "Timur", name: "timur", widget: "string"}
+                  - {label: "Barat", name: "barat", widget: "string"}
+              - {label: "Deskripsi Wilayah", name: "deskripsi", widget: "text"}
+          - label: "Jarak ke Pusat Pemerintahan"
+            name: "jarak"
             widget: "list"
-            summary: "{{label}}: {{value}}"
+            summary: "{{label}}: {{km}} km"
             fields:
-              - {label: "Label", name: "label", widget: "string"}
-              - {label: "Nilai", name: "value", widget: "number"}
-          - label: "Mata Pencaharian"
-            name: "pekerjaan"
-            widget: "list"
-            summary: "{{label}}: {{value}}"
+              - {label: "Label Tujuan", name: "label", widget: "string"}
+              - {label: "Estimasi Waktu Tempuh", name: "waktu", widget: "string"}
+              - {label: "Jarak (km)", name: "km", widget: "number"}
+          - label: "Penduduk & Ekonomi"
+            name: "penduduk_ekonomi"
+            widget: "object"
             fields:
-              - {label: "Label", name: "label", widget: "string"}
-              - {label: "Nilai", name: "value", widget: "number"}
-              - {label: "Ikon (emoji)", name: "icon", widget: "string", required: false}
-          - label: "Statistik Wisata"
-            name: "wisata"
-            widget: "list"
-            summary: "{{label}}: {{value}}"
+              - {label: "Judul Section", name: "judul", widget: "string"}
+              - label: "Komposisi Penduduk"
+                name: "komposisi"
+                widget: "object"
+                fields:
+                  - {label: "Persentase Laki-laki", name: "laki_persen", widget: "number"}
+                  - {label: "Persentase Perempuan", name: "perempuan_persen", widget: "number"}
+                  - {label: "Rata-rata Jiwa per KK", name: "rata_jiwa_per_kk", widget: "number"}
+              - label: "Mata Pencaharian"
+                name: "pekerjaan"
+                widget: "object"
+                fields:
+                  - {label: "Persentase Petani", name: "petani_persen", widget: "number"}
+                  - {label: "Persentase Lainnya", name: "lainnya_persen", widget: "number"}
+                  - {label: "Label Pekerjaan Lainnya", name: "lainnya_label", widget: "string"}
+                  - {label: "Deskripsi Hasil Pertanian", name: "hasil", widget: "text"}
+          - label: "Arsitektur"
+            name: "arsitektur"
+            widget: "object"
             fields:
-              - {label: "Label", name: "label", widget: "string"}
-              - {label: "Nilai", name: "value", widget: "number"}
-              - {label: "Suffix (contoh: +, Km)", name: "suffix", widget: "string", required: false}
+              - {label: "Judul", name: "judul", widget: "string"}
+              - {label: "Deskripsi", name: "deskripsi", widget: "text"}
+          - label: "Pariwisata"
+            name: "pariwisata"
+            widget: "object"
+            fields:
+              - {label: "Judul", name: "judul", widget: "string"}
+              - {label: "Deskripsi", name: "deskripsi", widget: "text"}
+          - label: "Infrastruktur & Fasilitas"
+            name: "infrastruktur"
+            widget: "object"
+            fields:
+              - label: "Infrastruktur Dasar"
+                name: "dasar"
+                widget: "list"
+                summary: "{{label}}"
+                fields:
+                  - {label: "Keterangan", name: "label", widget: "string"}
+                  - {label: "Sudah Ada?", name: "ada", widget: "boolean", default: true}
+              - label: "Kesehatan, Pendidikan & Ibadah"
+                name: "sosial"
+                widget: "list"
+                summary: "{{label}}"
+                fields:
+                  - {label: "Keterangan", name: "label", widget: "string"}
+                  - {label: "Sudah Ada?", name: "ada", widget: "boolean", default: true}
+          - {label: "Sosial & Budaya", name: "sosial_budaya", widget: "text"}
+          - {label: "Pemerintahan", name: "pemerintahan", widget: "text"}
 
       - label: "Galeri Foto"
         name: "galeri"

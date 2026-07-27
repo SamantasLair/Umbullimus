@@ -1,5 +1,5 @@
 <template>
-  <header :class="['nav', { 'nav--scrolled': isScrolled, 'nav--open': menuOpen }]">
+  <header :class="['nav', { 'nav--scrolled': isScrolled, 'nav--open': menuOpen, 'nav--maroon': isMaroonTheme }]">
     <div class="nav-container">
       <!-- Wordmark -->
       <RouterLink to="/" class="nav-wordmark" @click="closeMenu">
@@ -72,8 +72,12 @@
 
 <script setup>
 import anime from 'animejs'
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
+// Halaman dengan tema warna berbeda (mis. Infografis: maroon/emas): nav ikut menyesuaikan
+const isMaroonTheme = computed(() => route.path === '/infografis')
 const isScrolled = ref(false)
 const menuOpen   = ref(false)
 const ctaEl      = ref(null)
@@ -359,6 +363,21 @@ defineExpose({
   transition:var(--transition);
 }
 .ov-cta:hover { background:var(--c-siger-dark);transform:translateY(-2px); }
+
+/* Tema Maroon: menyesuaikan halaman Infografis (lihat isMaroonTheme) */
+.nav--maroon.nav--scrolled {
+  background: rgba(74, 18, 32, 0.94);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+.nav--maroon.nav--scrolled .wordmark-main { color: var(--c-cream); }
+.nav--maroon.nav--scrolled .wordmark-sub { color: rgba(237, 250, 233, 0.6); }
+.nav--maroon.nav--scrolled .nav-sep { background: rgba(245, 240, 232, 0.2); }
+.nav--maroon.nav--scrolled .nav-link,
+.nav--maroon.nav--scrolled .nav-link--anchor { color: rgba(245, 240, 232, 0.65); }
+.nav--maroon.nav--scrolled .nav-link:hover,
+.nav--maroon.nav--scrolled .nav-link--active { color: var(--c-cream); }
+.nav--maroon.nav--scrolled .nav-link::after { background: var(--c-siger); }
+.nav--maroon.nav--scrolled .hb-bar { background: var(--c-cream); }
 
 /* Responsive */
 @media (max-width:960px) {

@@ -29,6 +29,8 @@
           :class="bentoClass(i)"
           :ref="el => { if(el) itemEls[i] = el }"
           @click="openLightbox(i)"
+          @mouseenter="onEnter"
+          @mouseleave="onLeave"
           :aria-label="`Lihat foto: ${img.alt}`"
         >
           <img :src="img.src" :alt="img.alt" loading="lazy" decoding="async" />
@@ -51,7 +53,10 @@
 <script setup>
 import anime from 'animejs'
 import { nextTick, onMounted, ref } from 'vue'
+import { useCardHover } from '../composables/useCardHover.js'
+import { useScrollExit } from '../composables/useScrollExit.js'
 
+const { onEnter, onLeave } = useCardHover({ lift: -6, scale: 1.015 })
 const images  = ref([])
 const loading = ref(true)
 const sectionRef = ref(null)
@@ -112,6 +117,15 @@ const animateIn = async () => {
       easing: 'easeOutBack',
     }, '-=200')
 }
+
+// Exit: bento items terangkat ke atas & menyusut saat section dilewati
+useScrollExit(
+  sectionRef,
+  () => itemEls.value.filter(Boolean).map((el, i) => ({
+    el, x: (i % 2 === 0 ? -1 : 1) * (20 + (i % 3) * 10), y: -90 - (i % 3) * 12, scale: 0.92,
+  })),
+  { exitZone: 280, staggerPx: 10 },
+)
 
 onMounted(async () => {
   try {

@@ -1,112 +1,133 @@
 {
-  "tahun_data": 2025,
-  "maps_embed": "https://maps.google.com/maps?q=Umbul+Limus+Pesawaran+Lampung&t=&z=14&ie=UTF8&iwloc=&output=embed",
-  "maps_label": "Desa Umbul Limus, Kec. Pesawaran, Lampung",
-  "kependudukan": {
-    "total": 639,
-    "satuan": "Jiwa",
-    "keterangan": "Sumber: BPS Kabupaten Pesawaran (Estimasi)",
-    "rincian": [
+  "desa": "Umbul Limus",
+  "kecamatan": "Marga Punduh",
+  "kabupaten": "Pesawaran",
+  "provinsi": "Lampung",
+  "asal_usul": {
+    "judul": "Sepenggal Cerita di Balik Umbul Limus",
+    "umbul": {
+      "kata": "Umbul",
+      "penjelasan": "Dalam tradisi masyarakat Lampung dan Jawa, kata ini merujuk pada mata air atau permukiman kelompok pendatang baru — sebuah dusun rintisan yang tumbuh dari titik air kehidupan."
+    },
+    "limus": {
+      "kata": "Limus",
+      "penjelasan": "Nama lokal bagi mangga kuweni yang dahulu tumbuh liar di sekitar permukiman — jejak buah yang akhirnya melekat sebagai identitas desa."
+    }
+  },
+  "stats": [
+    {
+      "value": 651,
+      "label": "Jiwa"
+    },
+    {
+      "value": 193,
+      "label": "Kepala Keluarga"
+    },
+    {
+      "value": 3,
+      "label": "Dusun"
+    },
+    {
+      "value": 3,
+      "label": "RW"
+    },
+    {
+      "value": 7,
+      "label": "RT"
+    }
+  ],
+  "wilayah": {
+    "luas": "922 HA",
+    "luas_catatan": "*Perlu konfirmasi satuan luas wilayah kepada perangkat desa.",
+    "batas": {
+      "utara": "Tajur & Kekatang",
+      "selatan": "Kunyaian",
+      "timur": "Pekon Ampai",
+      "barat": "Penyandingan & Banding Agung"
+    },
+    "deskripsi": "Desa Umbul Limus terbagi ke dalam 3 dusun, 3 RW, dan 7 RT, dengan luas wilayah sekitar 922 HA*. Bentang alamnya didominasi perbukitan yang menjadi lahan perkebunan dan persawahan, sementara permukiman warga berada di area yang relatif datar."
+  },
+  "jarak": [
+    {
+      "label": "Ibu Kota Kecamatan",
+      "waktu": "± 5 menit",
+      "km": 2.8
+    },
+    {
+      "label": "Ibu Kota Kabupaten",
+      "waktu": "± 2 jam 10 menit",
+      "km": 68
+    },
+    {
+      "label": "Ibu Kota Provinsi",
+      "waktu": "± 2 jam",
+      "km": 60
+    }
+  ],
+  "penduduk_ekonomi": {
+    "judul": "Siapa dan Bagaimana Warga Umbul Limus Hidup",
+    "komposisi": {
+      "laki_persen": 50.7,
+      "perempuan_persen": 49.3,
+      "rata_jiwa_per_kk": 3.4
+    },
+    "pekerjaan": {
+      "petani_persen": 90,
+      "lainnya_persen": 10,
+      "lainnya_label": "Nelayan & Pedagang",
+      "hasil": "Padi, kelapa, dan pisang menjadi hasil utama yang tumbuh dari lahan perbukitan desa ini."
+    }
+  },
+  "arsitektur": {
+    "judul": "Rumah Lamban Panggung",
+    "deskripsi": "Mayoritas rumah warga masih mempertahankan bentuk lamban panggung — rumah panggung tradisional yang menjadi ciri khas permukiman Lampung, berdiri kokoh di atas topografi desa yang berbukit."
+  },
+  "pariwisata": {
+    "judul": "Air Terjun Way Curup",
+    "deskripsi": "Tersembunyi di antara perbukitan, Way Curup adalah daya tarik alam desa yang hingga kini belum memiliki pengelola wisata resmi — sebuah potensi yang masih menanti untuk dikembangkan."
+  },
+  "infrastruktur": {
+    "dasar": [
       {
-        "label": "Laki-laki",
-        "value": 330
+        "label": "Jalan sudah beraspal dengan kondisi baik",
+        "ada": true
       },
       {
-        "label": "Perempuan",
-        "value": 309
+        "label": "Listrik menjangkau seluruh rumah warga",
+        "ada": true
       },
       {
-        "label": "Kepala Keluarga",
-        "value": 172
+        "label": "Akses air bersih di seluruh rumah",
+        "ada": true
+      },
+      {
+        "label": "Sinyal komunikasi baik, sebagian rumah ber-WiFi",
+        "ada": true
+      }
+    ],
+    "sosial": [
+      {
+        "label": "Posyandu dan Bidan Desa",
+        "ada": true
+      },
+      {
+        "label": "Puskesmas",
+        "ada": false
+      },
+      {
+        "label": "PAUD",
+        "ada": true
+      },
+      {
+        "label": "SD / SMP / SMA di dalam desa",
+        "ada": false
+      },
+      {
+        "label": "Masjid Al-Hidayah & Mushola",
+        "ada": true
       }
     ]
   },
-  "wilayah": [
-    {
-      "label": "Luas Wilayah",
-      "value": "520 Ha",
-      "icon": "🌿"
-    },
-    {
-      "label": "Dusun",
-      "value": 3,
-      "icon": "🏘"
-    },
-    {
-      "label": "RW",
-      "value": 3,
-      "icon": "🔷"
-    },
-    {
-      "label": "RT",
-      "value": 7,
-      "icon": "🔹"
-    }
-  ],
-  "pendidikan": [
-    {
-      "label": "Tidak Sekolah",
-      "value": 25
-    },
-    {
-      "label": "SD",
-      "value": 180
-    },
-    {
-      "label": "SMP",
-      "value": 150
-    },
-    {
-      "label": "SMA",
-      "value": 210
-    },
-    {
-      "label": "Perguruan Tinggi",
-      "value": 74
-    }
-  ],
-  "pekerjaan": [
-    {
-      "label": "Petani",
-      "value": 185,
-      "icon": "🌾"
-    },
-    {
-      "label": "Pedagang",
-      "value": 45,
-      "icon": "🏪"
-    },
-    {
-      "label": "Buruh",
-      "value": 60,
-      "icon": "🔧"
-    },
-    {
-      "label": "Peg. Negeri",
-      "value": 20,
-      "icon": "🏛"
-    },
-    {
-      "label": "Wiraswasta",
-      "value": 55,
-      "icon": "💼"
-    }
-  ],
-  "wisata": [
-    {
-      "label": "Pengunjung / Bulan",
-      "value": 320,
-      "suffix": "+"
-    },
-    {
-      "label": "Jalur Trekking",
-      "value": 4,
-      "suffix": " Km"
-    },
-    {
-      "label": "Destinasi Wisata",
-      "value": 3,
-      "suffix": ""
-    }
-  ]
+  "sosial_budaya": "99% warga bersuku Lampung dengan mayoritas memeluk agama Islam — identitas yang terjaga di tengah kehidupan agraris desa.",
+  "pemerintahan": "Meraih piagam 100% pemungutan PBB-P2 Tahun Pajak 2024, dengan PKK dan BPD sebagai lembaga desa yang aktif menjalankan roda pemerintahan."
 }

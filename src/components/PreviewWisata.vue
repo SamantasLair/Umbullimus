@@ -23,6 +23,8 @@
           :key="place.id"
           class="pw-card"
           :ref="el => { if(el) cardEls[i] = el }"
+          @mouseenter="onEnter"
+          @mouseleave="onLeave"
         >
           <div class="pw-card-img">
             <img :src="place.gambar" :alt="place.nama" loading="lazy" decoding="async" />
@@ -41,7 +43,10 @@
 <script setup>
 import anime from 'animejs'
 import { nextTick, onMounted, ref } from 'vue'
+import { useCardHover } from '../composables/useCardHover.js'
+import { useScrollExit } from '../composables/useScrollExit.js'
 
+const { onEnter, onLeave } = useCardHover()
 const places  = ref([])
 const loading = ref(true)
 const sectionRef = ref(null)
@@ -95,6 +100,15 @@ const animateIn = async () => {
       easing: 'easeOutBack',
     }, '-=300')
 }
+
+// Exit: kartu wisata melebar & naik saat section dilewati ke atas
+useScrollExit(
+  sectionRef,
+  () => cardEls.value.filter(Boolean).map((el, i) => ({
+    el, x: (i - 1) * 40, y: -90 - i * 10, rotate: (i - 1) * 3, scale: 0.93,
+  })),
+  { exitZone: 280, staggerPx: 14 },
+)
 
 onMounted(async () => {
   try {
@@ -166,10 +180,10 @@ onMounted(async () => {
   overflow: hidden;
   background: var(--c-white);
   box-shadow: var(--shadow-card);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition: box-shadow 0.35s ease;
 }
+/* transform saat hover ditangani anime.js (useCardHover) agar konsisten dgn kartu lain di situs */
 .pw-card:hover {
-  transform: translateY(-6px);
   box-shadow: var(--shadow-lift);
 }
 

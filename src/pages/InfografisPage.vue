@@ -1,579 +1,667 @@
 <template>
-  <div class="info-page">
+  <div class="if-page">
     <!-- Hero -->
-    <div class="page-hero">
-      <div class="page-hero__bg">
-        <div class="hero-blob hero-blob--1"></div>
-        <div class="hero-blob hero-blob--2"></div>
-        <div class="hero-blob hero-blob--3"></div>
+    <header class="if-hero" ref="heroEl">
+      <div class="if-hero-container">
+        <span class="if-hero-label" ref="heroLabelEl">Profil Desa · {{ data.provinsi }}</span>
+        <h1 class="if-hero-title" ref="heroTitleEl">Infografis <em>{{ data.desa }}</em></h1>
+        <p class="if-hero-sub" ref="heroSubEl">
+          Kecamatan {{ data.kecamatan }} · Kabupaten {{ data.kabupaten }} · Provinsi {{ data.provinsi }}
+        </p>
+        <span class="if-hero-rule"></span>
       </div>
-      <div class="page-hero__content">
-        <span class="page-hero__label">Data &amp; Fakta</span>
-        <h1 class="page-hero__title">Infografis<br><em>Desa Umbul Limus</em></h1>
-        <p v-if="data.tahun_data" class="page-hero__year">Pemutakhiran Data · Tahun {{ data.tahun_data }}</p>
+    </header>
+    <div class="if-zigzag" aria-hidden="true"></div>
+
+    <div v-if="loading" class="if-skeleton" aria-hidden="true">
+      <div class="if-skel-row">
+        <div class="skeleton-box if-skel-card" v-for="n in 2" :key="n"></div>
       </div>
+      <div class="if-skel-stats">
+        <div class="skeleton-box if-skel-stat" v-for="n in 5" :key="n"></div>
+      </div>
+      <div class="skeleton-box if-skel-block"></div>
     </div>
 
-    <div v-if="loading" class="info-skeleton" aria-hidden="true">
-      <div class="skel-section">
-        <div class="skel-penduduk">
-          <div class="skeleton-box skel-spotlight-num"></div>
-          <div class="skel-pills">
-            <div class="skeleton-box skel-pill" v-for="n in 3" :key="n"></div>
+    <template v-else>
+      <!-- Asal Usul Nama -->
+      <section class="if-section" ref="secAsal">
+        <span class="if-label">Asal Usul Nama</span>
+        <h2 class="if-title">{{ data.asal_usul?.judul }}</h2>
+        <div class="if-quote-grid">
+          <div class="if-quote-card if-quote-card--gold" @mouseenter="onEnter" @mouseleave="onLeave">
+            <span class="if-quote-word">“{{ data.asal_usul?.umbul?.kata }}”</span>
+            <p>{{ data.asal_usul?.umbul?.penjelasan }}</p>
+          </div>
+          <div class="if-quote-card if-quote-card--sage" @mouseenter="onEnter" @mouseleave="onLeave">
+            <span class="if-quote-word">“{{ data.asal_usul?.limus?.kata }}”</span>
+            <p>{{ data.asal_usul?.limus?.penjelasan }}</p>
           </div>
         </div>
-      </div>
-      <div class="skel-section skel-section--dark">
-        <div class="skel-tiles">
-          <div class="skeleton-box skel-tile" v-for="n in 4" :key="n"></div>
-        </div>
-      </div>
-      <div class="skel-section">
-        <div class="skel-bars">
-          <div class="skeleton-box skel-bar" v-for="n in 5" :key="n" :style="{ width: (38 + n * 11) + '%' }"></div>
-        </div>
-      </div>
-      <div class="skel-section skel-section--cream-dark">
-        <div class="skel-rings">
-          <div class="skeleton-box skel-ring" v-for="n in 5" :key="n"></div>
-        </div>
-      </div>
-    </div>
+      </section>
 
-    <div v-else class="info-body">
+      <!-- Stats -->
+      <section class="if-stats" ref="secStats">
+        <div class="if-stat" v-for="(s, i) in data.stats" :key="s.label" @mouseenter="onEnter" @mouseleave="onLeave">
+          <span class="if-stat-num" :ref="el => { if (el) statNumEls[i] = el }" :data-target="s.value">0</span>
+          <span class="if-stat-label">{{ s.label }}</span>
+        </div>
+      </section>
 
-      <!-- 1. Kependudukan (Hanya tampil jika ada data.kependudukan) -->
-      <section v-if="data.kependudukan" class="info-section" ref="secPenduduk">
-        <div class="info-wrap">
-          <div class="sec-header"><span class="section-label">Penduduk</span><h2 class="section-title">Kependudukan</h2></div>
-          <div class="penduduk-layout">
-            <div class="penduduk-spotlight">
-              <span class="spotlight-num" ref="pendudukNumEl">0</span>
-              <span class="spotlight-unit">{{ data.kependudukan.satuan || 'Jiwa' }}</span>
-              <p class="spotlight-caption">{{ data.kependudukan.keterangan }}</p>
+      <!-- Wilayah -->
+      <section class="if-section" ref="secWilayah">
+        <span class="if-label">Wilayah</span>
+        <h2 class="if-title">Batas dan Letak Desa</h2>
+        <div class="if-wilayah-grid">
+          <div class="if-compass">
+            <span class="compass-dir compass-dir--utara">
+              <strong>UTARA</strong>
+              <span>{{ batas.utara }}</span>
+            </span>
+            <span class="compass-dir compass-dir--selatan">
+              <strong>SELATAN</strong>
+              <span>{{ batas.selatan }}</span>
+            </span>
+            <span class="compass-dir compass-dir--timur">
+              <strong>TIMUR</strong>
+              <span>{{ batas.timur }}</span>
+            </span>
+            <span class="compass-dir compass-dir--barat">
+              <strong>BARAT</strong>
+              <span>{{ batas.barat }}</span>
+            </span>
+            <div class="compass-circle"></div>
+            <div class="compass-cross-v"></div>
+            <div class="compass-cross-h"></div>
+            <div class="compass-center">
+              <span class="compass-dot"></span>
+              <span class="compass-center-label">Desa {{ data.desa }}</span>
             </div>
-            
-            <div v-if="data.kependudukan.rincian && data.kependudukan.rincian.length" class="penduduk-pills">
-              <!-- Loop rincian dinamis dari JSON -->
-              <div v-for="(item, idx) in data.kependudukan.rincian" :key="item.label" :class="['pill', 'pill--' + pillColors[idx % pillColors.length]]">
-                <div>
-                  <span class="pill__val">{{ typeof item.value === 'number' ? item.value.toLocaleString('id-ID') : item.value }}</span>
-                  <span class="pill__label">{{ item.label }}</span>
-                </div>
-              </div>
+          </div>
+          <div class="if-wilayah-text">
+            <p>{{ data.wilayah?.deskripsi }}</p>
+            <p class="if-note">{{ data.wilayah?.luas_catatan }}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Jarak ke Pusat Pemerintahan -->
+      <section class="if-section if-section--tan" ref="secJarak">
+        <span class="if-label">Aksesibilitas</span>
+        <h2 class="if-title">Jarak ke Pusat Pemerintahan</h2>
+        <div class="if-jarak-list">
+          <div class="if-jarak-row" v-for="j in data.jarak" :key="j.label">
+            <div class="if-jarak-info">
+              <span>{{ j.label }} <em>({{ j.waktu }})</em></span>
+              <span class="if-jarak-km">{{ j.km }} km</span>
+            </div>
+            <div class="if-jarak-track">
+              <div class="if-jarak-fill" :data-width="jarakWidth(j.km)"></div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 2. Wilayah (Hanya tampil jika ada data.wilayah) -->
-      <section v-if="data.wilayah && data.wilayah.length" class="info-section info-section--dark" ref="secWilayah">
-        <div class="info-wrap">
-          <div class="sec-header"><span class="section-label" style="color:var(--c-terra)">Wilayah</span><h2 class="section-title on-dark">Profil Wilayah</h2></div>
-          <div class="wilayah-tiles">
-            <!-- Loop wilayah dinamis dari JSON -->
-            <div v-for="t in data.wilayah" :key="t.label" class="wtile">
-              <span class="wtile__icon" v-if="t.icon">{{ t.icon }}</span>
-              <span class="wtile__num">{{ typeof t.value === 'number' ? t.value.toLocaleString('id-ID') : t.value }}</span>
-              <span class="wtile__label">{{ t.label }}</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <div class="if-zigzag" aria-hidden="true"></div>
 
-      <!-- 3. Pendidikan (Hanya tampil jika ada data.pendidikan) -->
-      <section v-if="data.pendidikan && data.pendidikan.length" class="info-section" ref="secPendidikan">
-        <div class="info-wrap info-wrap--split">
+      <!-- Penduduk & Ekonomi -->
+      <section class="if-section" ref="secPenduduk">
+        <span class="if-label">Penduduk &amp; Ekonomi</span>
+        <h2 class="if-title">{{ data.penduduk_ekonomi?.judul }}</h2>
+        <div class="if-dual-grid">
           <div>
-            <span class="section-label">Pendidikan</span>
-            <h2 class="section-title">Tingkat Pendidikan<br>Warga Desa</h2>
-            <p class="info-desc">Distribusi jenjang pendidikan formal penduduk berdasarkan data terkini.</p>
-          </div>
-          <div class="bar-chart">
-            <!-- Loop pendidikan dinamis dari JSON -->
-            <div v-for="(item, idx) in pendidikanBars" :key="item.label" class="bar-row">
-              <span class="bar-label">{{ item.label }}</span>
-              <div class="bar-track">
-                <div class="bar-fill" :data-width="item.pct" :style="{ background: barColors[idx % barColors.length] }"></div>
-              </div>
-              <span class="bar-val">{{ typeof item.value === 'number' ? item.value.toLocaleString('id-ID') : item.value }}</span>
+            <span class="if-sub-label">Komposisi Penduduk</span>
+            <div class="if-split-bar">
+              <div class="if-split-fill if-split-fill--laki" :data-width="komposisi.laki_persen"></div>
+              <div class="if-split-fill if-split-fill--perempuan" :data-width="komposisi.perempuan_persen"></div>
             </div>
+            <div class="if-split-labels">
+              <span><strong>{{ komposisi.laki_persen }}%</strong> Laki-laki</span>
+              <span><strong>{{ komposisi.perempuan_persen }}%</strong> Perempuan</span>
+            </div>
+            <p class="if-caption">Rata-rata setiap keluarga di {{ data.desa }} terdiri dari sekitar <strong>{{ komposisi.rata_jiwa_per_kk }} jiwa</strong>.</p>
+          </div>
+          <div>
+            <span class="if-sub-label">Mata Pencaharian</span>
+            <div class="if-split-bar">
+              <div class="if-split-fill if-split-fill--petani" :data-width="pekerjaan.petani_persen"></div>
+              <div class="if-split-fill if-split-fill--lain" :data-width="pekerjaan.lainnya_persen"></div>
+            </div>
+            <div class="if-split-labels">
+              <span><strong>{{ pekerjaan.petani_persen }}%</strong> Petani</span>
+              <span><strong>{{ pekerjaan.lainnya_persen }}%</strong> {{ pekerjaan.lainnya_label }}</span>
+            </div>
+            <p class="if-caption">{{ pekerjaan.hasil }}</p>
           </div>
         </div>
       </section>
 
-      <!-- 4. Pekerjaan (Hanya tampil jika ada data.pekerjaan) -->
-      <section v-if="pekerjaanList.length" class="info-section info-section--cream-dark" ref="secPekerjaan">
-        <div class="info-wrap">
-          <div class="sec-header"><span class="section-label">Ekonomi</span><h2 class="section-title">Mata Pencaharian</h2></div>
-          <div class="pekerjaan-grid">
-            <!-- Loop pekerjaan dinamis dari JSON -->
-            <div v-for="(item, i) in pekerjaanList" :key="item.label" class="pcard">
-              <div class="pcard__ring">
-                <svg viewBox="0 0 36 36">
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--c-cream-dark)" stroke-width="3.2"/>
-                  <circle
-                    cx="18" cy="18" r="15.9"
-                    fill="none"
-                    :stroke="donutColors[i % donutColors.length]"
-                    stroke-width="3.2"
-                    stroke-dasharray="100"
-                    stroke-dashoffset="100"
-                    stroke-linecap="round"
-                    transform="rotate(-90 18 18)"
-                    class="ring-arc"
-                    :data-offset="100 - item.pct"
-                  />
-                </svg>
-                <span class="pcard__pct">{{ item.pct }}%</span>
-              </div>
-              <span class="pcard__icon" v-if="item.icon">{{ item.icon }}</span>
-              <span class="pcard__val">{{ typeof item.value === 'number' ? item.value.toLocaleString('id-ID') : item.value }}</span>
-              <span class="pcard__label">{{ item.label }}</span>
-            </div>
+      <!-- Arsitektur & Pariwisata -->
+      <section class="if-section if-section--tan" ref="secBudaya">
+        <div class="if-dual-grid">
+          <div>
+            <span class="if-label">Arsitektur</span>
+            <h3 class="if-subtitle">{{ data.arsitektur?.judul }}</h3>
+            <p>{{ data.arsitektur?.deskripsi }}</p>
+          </div>
+          <div>
+            <span class="if-label">Pariwisata</span>
+            <h3 class="if-subtitle">{{ data.pariwisata?.judul }}</h3>
+            <p>{{ data.pariwisata?.deskripsi }}</p>
           </div>
         </div>
       </section>
 
-      <!-- 5. Wisata Stats (Hanya tampil jika ada data.wisata) -->
-      <section v-if="data.wisata && data.wisata.length" class="info-section info-section--terra" ref="secWisata">
-        <div class="info-wrap">
-          <div class="sec-header"><span class="section-label" style="color:rgba(245,240,232,.55)">Pariwisata</span><h2 class="section-title on-dark">Potensi Wisata</h2></div>
-          <div class="wisata-row">
-            <!-- Loop wisata dinamis dari JSON -->
-            <div v-for="(s, idx) in data.wisata" :key="s.label" class="wstat">
-              <span class="wstat__num" :ref="el => { if (el) wstatEls[idx] = { el, target: s.value } }">0</span>
-              <span class="wstat__suffix" v-if="s.suffix">{{ s.suffix }}</span>
-              <span class="wstat__label">{{ s.label }}</span>
-            </div>
+      <!-- Infrastruktur & Fasilitas -->
+      <section class="if-section" ref="secInfra">
+        <span class="if-label">Infrastruktur &amp; Fasilitas</span>
+        <h2 class="if-title">Yang Sudah Ada, Yang Masih Dinanti</h2>
+        <div class="if-dual-grid">
+          <div>
+            <span class="if-sub-label">Infrastruktur Dasar</span>
+            <ul class="if-checklist">
+              <li v-for="item in data.infrastruktur?.dasar" :key="item.label">
+                <span class="if-check-icon" :class="item.ada ? 'if-check-icon--yes' : 'if-check-icon--no'">{{ item.ada ? '✓' : '✕' }}</span>
+                {{ item.label }}
+              </li>
+            </ul>
+          </div>
+          <div>
+            <span class="if-sub-label">Kesehatan, Pendidikan &amp; Ibadah</span>
+            <ul class="if-checklist">
+              <li v-for="item in data.infrastruktur?.sosial" :key="item.label">
+                <span class="if-check-icon" :class="item.ada ? 'if-check-icon--yes' : 'if-check-icon--no'">{{ item.ada ? '✓' : '✕' }}</span>
+                {{ item.label }}
+              </li>
+            </ul>
           </div>
         </div>
       </section>
 
-      <!-- 6. Google Maps (Hanya tampil jika ada data.maps_embed) -->
-      <section v-if="data.maps_embed" class="info-section info-section--maps" ref="secMaps">
-        <div class="info-wrap">
-          <div class="sec-header">
-            <span class="section-label">Lokasi</span>
-            <h2 class="section-title">Temukan Kami</h2>
-            <p v-if="data.maps_label" class="info-desc">{{ data.maps_label }}</p>
+      <div class="if-zigzag" aria-hidden="true"></div>
+
+      <!-- Footer band -->
+      <section class="if-closing" ref="secClosing">
+        <div class="if-dual-grid">
+          <div>
+            <span class="if-label if-label--on-dark">Sosial &amp; Budaya</span>
+            <p>{{ data.sosial_budaya }}</p>
           </div>
-          <div class="maps-wrapper">
-            <iframe
-              :src="data.maps_embed"
-              class="maps-iframe"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              title="Lokasi Desa di Google Maps"
-            ></iframe>
-            <div class="maps-actions">
-              <a
-                href="https://maps.google.com/?q=Umbul+Limus+Pesawaran+Lampung"
-                target="_blank"
-                rel="noopener"
-                class="maps-btn"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                Buka di Google Maps
-              </a>
-            </div>
+          <div>
+            <span class="if-label if-label--on-dark">Pemerintahan</span>
+            <p>{{ data.pemerintahan }}</p>
           </div>
         </div>
+        <div class="if-closing-bottom">
+          Desa {{ data.desa }} · Kec. {{ data.kecamatan }} · Kab. {{ data.kabupaten }} · {{ data.provinsi }}
+        </div>
       </section>
-
-    </div>
+    </template>
   </div>
 </template>
 
 <script setup>
-import anime from "animejs";
-import { computed, onMounted, ref } from "vue";
+import anime from 'animejs'
+import { computed, nextTick, onMounted, ref } from 'vue'
+import { useCardHover } from '../composables/useCardHover.js'
+import { useScrollExit } from '../composables/useScrollExit.js'
 
-const data = ref({});
-const loading = ref(true);
+const { onEnter, onLeave } = useCardHover({ lift: -6, scale: 1.03 })
+const data = ref({})
+const loading = ref(true)
 
-const pendudukNumEl = ref(null);
-const wstatEls = ref([]);
+const heroEl = ref(null)
+const heroLabelEl = ref(null)
+const heroTitleEl = ref(null)
+const heroSubEl = ref(null)
 
-const secPenduduk = ref(null);
-const secWilayah = ref(null);
-const secPendidikan = ref(null);
-const secPekerjaan = ref(null);
-const secWisata = ref(null);
-const secMaps = ref(null);
+const secAsal = ref(null)
+const secStats = ref(null)
+const secWilayah = ref(null)
+const secJarak = ref(null)
+const secPenduduk = ref(null)
+const secBudaya = ref(null)
+const secInfra = ref(null)
+const secClosing = ref(null)
+const statNumEls = ref([])
 
-/* Palet warna dinamis */
+const batas = computed(() => data.value.wilayah?.batas || {})
+const komposisi = computed(() => data.value.penduduk_ekonomi?.komposisi || {})
+const pekerjaan = computed(() => data.value.penduduk_ekonomi?.pekerjaan || {})
+
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
-const pillColors = ["sage", "terra", "stone"];
-// biome-ignore lint/correctness/noUnusedVariables: Used in template
-const barColors = ["#c4917a", "#a06a55", "#7a4a3a", "#4a6741", "#2e4428"];
-// biome-ignore lint/correctness/noUnusedVariables: Used in template
-const donutColors = ["#7a4a3a", "#4a6741", "#2c2420", "#a06a55", "#3a5234"];
-
-/* Hitung persentase dinamis untuk Pendidikan */
-// biome-ignore lint/correctness/noUnusedVariables: Used in template
-const pendidikanBars = computed(() => {
-	if (!data.value.pendidikan?.length) return [];
-	const max = Math.max(...data.value.pendidikan.map((item) => item.value || 0));
-	return data.value.pendidikan.map((item) => ({
-		label: item.label,
-		value: item.value,
-		pct: max > 0 ? Math.round((item.value / max) * 100) : 0,
-	}));
-});
-
-/* Hitung persentase dinamis untuk Pekerjaan */
-// biome-ignore lint/correctness/noUnusedVariables: Used in template
-const pekerjaanList = computed(() => {
-	if (!data.value.pekerjaan?.length) return [];
-	const total = data.value.pekerjaan.reduce(
-		(sum, item) => sum + (item.value || 0),
-		0,
-	);
-	return data.value.pekerjaan.map((item) => ({
-		label: item.label,
-		value: item.value,
-		icon: item.icon,
-		pct: total > 0 ? Math.round((item.value / total) * 100) : 0,
-	}));
-});
-
-function runCounter(el, target) {
-	const obj = { val: 0 };
-	anime({
-		targets: obj,
-		val: target,
-		round: 1,
-		duration: 1600,
-		easing: "easeOutExpo",
-		update() {
-			el.textContent = Math.round(obj.val).toLocaleString("id-ID");
-		},
-	});
+const jarakWidth = (km) => {
+  const all = (data.value.jarak || []).map(j => j.km)
+  const max = Math.max(...all, 1)
+  return Math.round((km / max) * 100)
 }
 
+// Exit: kartu kutipan, angka statistik, dan checklist naik & menyusut saat dilewati ke atas
+useScrollExit(
+  secAsal,
+  () => [...(secAsal.value?.querySelectorAll('.if-quote-card') || [])].map((el, i) => ({
+    el, x: (i === 0 ? -1 : 1) * 20, y: -70, scale: 0.95,
+  })),
+  { exitZone: 260, staggerPx: 12 },
+)
+useScrollExit(
+  secStats,
+  () => [...(secStats.value?.querySelectorAll('.if-stat') || [])].map((el, i) => ({
+    el, y: -50 - i * 8, scale: 0.94,
+  })),
+  { exitZone: 220, staggerPx: 10 },
+)
+useScrollExit(
+  secInfra,
+  () => [...(secInfra.value?.querySelectorAll('.if-checklist li') || [])].map((el, i) => ({
+    el, x: -16, y: -40 - (i % 5) * 6,
+  })),
+  { exitZone: 260, staggerPx: 6 },
+)
+
+/**
+ * Observer ringan & re-triggerable: satu animasi sederhana per section,
+ * sengaja TIDAK ditumpuk banyak efek agar tetap ringan (permintaan user).
+ */
+const makeObserver = (fn, reset, threshold = 0.15) =>
+  new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return
+      reset(e.target)
+      fn(e.target)
+    })
+  }, { threshold })
+
 onMounted(async () => {
-	try {
-		const res = await fetch("/data/infografis/data.json");
-		if (res.ok) data.value = await res.json();
-	} catch (e) {
-		console.error("Gagal memuat infografis:", e);
-	} finally {
-		loading.value = false;
-	}
+  try {
+    const res = await fetch('/data/infografis/data.json')
+    if (res.ok) data.value = await res.json()
+  } catch (e) {
+    console.error('Gagal memuat infografis:', e)
+  } finally {
+    loading.value = false
+  }
 
-	setTimeout(() => {
-		/**
-		 * observeRepeat: Observer yang re-triggerable.
-		 * resetFn dipanggil sebelum animateFn setiap kali section masuk viewport.
-		 */
-		const observeRepeat = (el, animateFn, resetFn, threshold = 0.15) => {
-			if (!el) return;
-			const obs = new IntersectionObserver(
-				(entries) => {
-					entries.forEach((e) => {
-						if (!e.isIntersecting) return;
-						resetFn(e.target);
-						animateFn(e.target);
-					});
-				},
-				{ threshold },
-			);
-			obs.observe(el);
-		};
+  await nextTick()
 
-		// ── 1. Kependudukan: Counter + Pills slide dari kiri ──
-		// Signature: number counter adalah yang PALING UNIK di seluruh website
-		observeRepeat(
-			secPenduduk.value,
-			(sec) => {
-				// Reset counter ke 0 dulu
-				if (pendudukNumEl.value) pendudukNumEl.value.textContent = "0";
-				if (pendudukNumEl.value && data.value.kependudukan)
-					runCounter(pendudukNumEl.value, data.value.kependudukan.total || 0);
-				anime({
-					targets: sec.querySelectorAll(".pill"),
-					opacity: [0, 1],
-					translateX: [-24, 0],
-					delay: anime.stagger(90),
-					duration: 500,
-					easing: "easeOutExpo",
-				});
-			},
-			(sec) => {
-				sec.querySelectorAll(".pill").forEach((el) => {
-					el.style.opacity = "0";
-					el.style.transform = "";
-				});
-			},
-		);
+  // ── Hero: fade + slide up on load, tanpa scroll trigger ──
+  anime({
+    targets: [heroLabelEl.value, heroTitleEl.value, heroSubEl.value],
+    opacity: [0, 1],
+    translateY: [16, 0],
+    delay: anime.stagger(90),
+    duration: 650,
+    easing: 'easeOutExpo',
+  })
 
-		// Wilayah: 3D Flip dari bawah
-		// Signature UNIK: rotateX: tidak dipakai di section mana pun
-		observeRepeat(
-			secWilayah.value,
-			(sec) => {
-				anime({
-					targets: sec.querySelectorAll(".wtile"),
-					opacity: [0, 1],
-					rotateX: [90, 0],
-					translateY: [30, 0],
-					transformOrigin: ["50% 100%", "50% 100%"],
-					delay: anime.stagger(70),
-					duration: 600,
-					easing: "easeOutBack",
-				});
-			},
-			(sec) => {
-				sec.querySelectorAll(".wtile").forEach((el) => {
-					el.style.opacity = "0";
-					el.style.transform = "";
-				});
-			},
-		);
+  // ── Asal Usul: dua kartu kutipan fade + scale ──
+  makeObserver(
+    (sec) => anime({
+      targets: sec.querySelectorAll('.if-quote-card'),
+      opacity: [0, 1],
+      translateY: [18, 0],
+      delay: anime.stagger(120),
+      duration: 550,
+      easing: 'easeOutExpo',
+    }),
+    (sec) => sec.querySelectorAll('.if-quote-card').forEach(el => { el.style.opacity = '0'; el.style.transform = '' }),
+  ).observe(secAsal.value)
 
-		// ── 3. Pendidikan: Bar grow dari kiri + label reveal ──
-		// Signature UNIK: width animation pada bar-fill
-		observeRepeat(
-			secPendidikan.value,
-			(sec) => {
-				anime({
-					targets: sec.querySelectorAll(".bar-row"),
-					opacity: [0, 1],
-					translateX: [-20, 0],
-					delay: anime.stagger(65),
-					duration: 450,
-					easing: "easeOutExpo",
-				});
-				sec.querySelectorAll(".bar-fill").forEach((el) => {
-					const targetW = el.getAttribute("data-width") || "0";
-					anime({
-						targets: el,
-						width: ["0%", `${targetW}%`],
-						duration: 950,
-						delay: 200,
-						easing: "easeOutExpo",
-					});
-				});
-			},
-			(sec) => {
-				sec.querySelectorAll(".bar-row").forEach((el) => {
-					el.style.opacity = "0";
-					el.style.transform = "";
-				});
-				sec.querySelectorAll(".bar-fill").forEach((el) => {
-					el.style.width = "0%";
-				});
-			},
-		);
+  // ── Stats: count-up angka — Signature UNIK infografis ──
+  makeObserver(
+    (sec) => {
+      sec.querySelectorAll('.if-stat-num').forEach((el, i) => {
+        const target = Number(el.dataset.target) || 0
+        const obj = { val: 0 }
+        anime({
+          targets: obj,
+          val: target,
+          round: 1,
+          duration: 1200,
+          delay: i * 90,
+          easing: 'easeOutExpo',
+          update: () => { el.textContent = Math.round(obj.val).toLocaleString('id-ID') },
+        })
+      })
+    },
+    (sec) => sec.querySelectorAll('.if-stat-num').forEach(el => { el.textContent = '0' }),
+    0.3
+  ).observe(secStats.value)
 
-		// Pekerjaan: Scale pop + Ring draw
-		// Signature: ring-arc stroke animation: digunakan hanya di sini
-		observeRepeat(
-			secPekerjaan.value,
-			(sec) => {
-				anime({
-					targets: sec.querySelectorAll(".pcard"),
-					opacity: [0, 1],
-					scale: [0.88, 1],
-					translateY: [16, 0],
-					delay: anime.stagger(60),
-					duration: 500,
-					easing: "easeOutExpo",
-				});
-				sec.querySelectorAll(".ring-arc").forEach((el) => {
-					const offset = parseFloat(el.getAttribute("data-offset") || "100");
-					anime({
-						targets: el,
-						strokeDashoffset: [100, offset],
-						duration: 1100,
-						delay: 300,
-						easing: "easeOutExpo",
-					});
-				});
-			},
-			(sec) => {
-				sec.querySelectorAll(".pcard").forEach((el) => {
-					el.style.opacity = "0";
-					el.style.transform = "";
-				});
-				sec.querySelectorAll(".ring-arc").forEach((el) => {
-					el.style.strokeDashoffset = "100";
-				});
-			},
-		);
+  // ── Wilayah: kompas muncul dengan scale ringan, teks fade terpisah ──
+  makeObserver(
+    (sec) => {
+      anime({
+        targets: sec.querySelector('.if-compass'),
+        opacity: [0, 1],
+        scale: [0.9, 1],
+        duration: 650,
+        easing: 'easeOutExpo',
+      })
+      anime({
+        targets: sec.querySelectorAll('.if-wilayah-text, .if-wilayah-text p'),
+        opacity: [0, 1],
+        translateY: [14, 0],
+        duration: 550,
+        delay: anime.stagger(100, { start: 150 }),
+        easing: 'easeOutExpo',
+      })
+    },
+    (sec) => {
+      const compass = sec.querySelector('.if-compass')
+      if (compass) { compass.style.opacity = '0'; compass.style.transform = '' }
+      sec.querySelectorAll('.if-wilayah-text, .if-wilayah-text p').forEach(el => {
+        el.style.opacity = '0'
+        el.style.transform = ''
+      })
+    },
+    0.2
+  ).observe(secWilayah.value)
 
-		// ── 5. Wisata Stats: Count-up + slide dari kanan ──
-		// Signature UNIK: translateX dari kanan (berlawanan dari pills yang dari kiri)
-		observeRepeat(
-			secWisata.value,
-			(sec) => {
-				anime({
-					targets: sec.querySelectorAll(".wstat"),
-					opacity: [0, 1],
-					translateX: [40, 0],
-					delay: anime.stagger(80),
-					duration: 550,
-					easing: "easeOutExpo",
-				});
-				// Reset counter lalu jalankan ulang
-				wstatEls.value.forEach(({ el, target }) => {
-					if (el) {
-						el.textContent = "0";
-						runCounter(el, target || 0);
-					}
-				});
-			},
-			(sec) => {
-				sec.querySelectorAll(".wstat").forEach((el) => {
-					el.style.opacity = "0";
-					el.style.transform = "";
-				});
-			},
-		);
+  // ── Jarak: bar tumbuh dari kiri — konsisten dgn pola "bar grow" infografis ──
+  makeObserver(
+    (sec) => {
+      sec.querySelectorAll('.if-jarak-fill').forEach((el, i) => {
+        const w = el.dataset.width || 0
+        anime({
+          targets: el,
+          width: ['0%', `${w}%`],
+          duration: 900,
+          delay: i * 100,
+          easing: 'easeOutExpo',
+        })
+      })
+      anime({
+        targets: sec.querySelectorAll('.if-jarak-info'),
+        opacity: [0, 1],
+        duration: 400,
+        delay: anime.stagger(80),
+      })
+    },
+    (sec) => {
+      sec.querySelectorAll('.if-jarak-fill').forEach(el => { el.style.width = '0%' })
+      sec.querySelectorAll('.if-jarak-info').forEach(el => { el.style.opacity = '0' })
+    },
+    0.2
+  ).observe(secJarak.value)
 
-		// ── 6. Maps: Drop-in dari atas + scale ──
-		// Signature UNIK: translateY negatif (dari atas) + scale
-		observeRepeat(
-			secMaps.value,
-			(sec) => {
-				anime({
-					targets: sec.querySelector(".maps-wrapper"),
-					opacity: [0, 1],
-					translateY: [-30, 0],
-					scale: [0.97, 1],
-					duration: 700,
-					easing: "easeOutExpo",
-				});
-			},
-			(sec) => {
-				const w = sec.querySelector(".maps-wrapper");
-				if (w) {
-					w.style.opacity = "0";
-					w.style.transform = "";
-				}
-			},
-		);
-	}, 120);
-});
+  // ── Penduduk & Ekonomi: split-bar tumbuh dari kiri ──
+  makeObserver(
+    (sec) => {
+      sec.querySelectorAll('.if-split-fill').forEach((el, i) => {
+        const w = el.dataset.width || 0
+        anime({
+          targets: el,
+          width: ['0%', `${w}%`],
+          duration: 800,
+          delay: i * 90,
+          easing: 'easeOutExpo',
+        })
+      })
+      anime({
+        targets: sec.querySelectorAll('.if-split-labels, .if-caption'),
+        opacity: [0, 1],
+        translateY: [10, 0],
+        delay: anime.stagger(70, { start: 250 }),
+        duration: 450,
+      })
+    },
+    (sec) => {
+      sec.querySelectorAll('.if-split-fill').forEach(el => { el.style.width = '0%' })
+      sec.querySelectorAll('.if-split-labels, .if-caption').forEach(el => { el.style.opacity = '0'; el.style.transform = '' })
+    },
+    0.2
+  ).observe(secPenduduk.value)
+
+  // ── Arsitektur & Pariwisata: fade + slide sederhana ──
+  makeObserver(
+    (sec) => anime({
+      targets: sec.querySelectorAll('.if-dual-grid > div'),
+      opacity: [0, 1],
+      translateY: [16, 0],
+      delay: anime.stagger(100),
+      duration: 550,
+      easing: 'easeOutExpo',
+    }),
+    (sec) => sec.querySelectorAll('.if-dual-grid > div').forEach(el => { el.style.opacity = '0'; el.style.transform = '' }),
+  ).observe(secBudaya.value)
+
+  // ── Infrastruktur: checklist stagger dari kiri ──
+  makeObserver(
+    (sec) => anime({
+      targets: sec.querySelectorAll('.if-checklist li'),
+      opacity: [0, 1],
+      translateX: [-14, 0],
+      delay: anime.stagger(45),
+      duration: 400,
+      easing: 'easeOutExpo',
+    }),
+    (sec) => sec.querySelectorAll('.if-checklist li').forEach(el => { el.style.opacity = '0'; el.style.transform = '' }),
+    0.1
+  ).observe(secInfra.value)
+
+  // ── Penutup: fade + slide up ──
+  makeObserver(
+    (sec) => anime({
+      targets: sec.querySelectorAll('.if-dual-grid > div, .if-closing-bottom'),
+      opacity: [0, 1],
+      translateY: [14, 0],
+      delay: anime.stagger(90),
+      duration: 500,
+      easing: 'easeOutExpo',
+    }),
+    (sec) => sec.querySelectorAll('.if-dual-grid > div, .if-closing-bottom').forEach(el => { el.style.opacity = '0'; el.style.transform = '' }),
+    0.15
+  ).observe(secClosing.value)
+})
 </script>
 
 <style scoped>
-.info-page { background: var(--c-cream); min-height: 100vh; }
+.if-page {
+  /* Warna maroon & emas berasal dari token global (--c-maroon / --c-siger) agar
+     header & footer situs bisa ikut menyesuaikan saat berada di halaman ini. */
+  --if-maroon: var(--c-maroon);
+  --if-maroon-dark: var(--c-maroon-dark);
+  --if-cream: #f3ead9;
+  --if-cream-dark: #e7dbbd;
+  --if-gold: var(--c-siger);
+  --if-sage: #4a6741;
+  --if-text: #3a2f1a;
+  --if-text-muted: #7a6a4d;
+  background: var(--if-cream);
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  color: var(--if-text);
+}
 
-/* ─── Skeleton: mengikuti bentuk konten Infografis (unik, bukan spinner generik) ── */
-.skel-section { padding: var(--sp-lg) var(--sp-md); }
-.skel-section--dark { background: var(--c-stone); }
-.skel-section--cream-dark { background: var(--c-cream-dark); }
+/* ─── Hero ── */
+.if-hero {
+  background: var(--if-maroon);
+  padding: 7.5rem 0 3.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.if-hero-container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--sp-md);
+  text-align: left;
+}
+.if-hero-label {
+  display: inline-block;
+  font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--if-gold);
+  border: 1px solid rgba(201, 162, 39, 0.4);
+  background: rgba(201, 162, 39, 0.08);
+  padding: .25rem .85rem; border-radius: 50px;
+  margin-bottom: 1rem;
+  opacity: 0;
+}
+.if-hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 700;
+  color: var(--c-cream);
+  line-height: 1.1;
+  margin-bottom: .75rem;
+  opacity: 0;
+}
+.if-hero-title em { font-style: italic; color: rgba(245, 240, 232, 0.7); }
+.if-hero-sub { font-size: .88rem; color: rgba(245, 240, 232, .65); letter-spacing: .04em; opacity: 0; }
+.if-hero-rule {
+  display: block;
+  width: 56px; height: 3px;
+  background: var(--if-gold);
+  margin-top: 1.5rem;
+  border-radius: 2px;
+}
 
-.skel-penduduk { max-width: var(--max-w); margin: 0 auto; display: flex; gap: 3rem; flex-wrap: wrap; align-items: center; }
-.skel-spotlight-num { width: 200px; height: 96px; border-radius: var(--radius-md); flex-shrink: 0; }
-.skel-pills { display: flex; flex-direction: column; gap: 0.7rem; flex: 1; min-width: 220px; }
-.skel-pill { height: 56px; border-radius: var(--radius-md); }
+/* ─── Zigzag triangle divider ── */
+.if-zigzag {
+  height: 16px;
+  background-color: var(--if-maroon);
+  background-image:
+    linear-gradient(-45deg, var(--if-gold) 8px, transparent 0),
+    linear-gradient(45deg, var(--if-gold) 8px, transparent 0);
+  background-position: 0 0, 8px 0;
+  background-size: 16px 16px;
+  background-repeat: repeat-x;
+}
 
-.skel-tiles { max-width: var(--max-w); margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; }
-.skel-tile { height: 108px; border-radius: var(--radius-md); }
+/* ─── Sections ── */
+.if-section { padding: var(--sp-lg) var(--sp-md); max-width: var(--max-w); margin: 0 auto; }
+.if-section--tan { background: var(--if-cream-dark); max-width: none; }
+.if-section--tan > * { max-width: var(--max-w); margin-left: auto; margin-right: auto; }
 
-.skel-bars { max-width: var(--max-w); margin: 0 auto; display: flex; flex-direction: column; gap: 0.9rem; }
-.skel-bar { height: 20px; border-radius: 99px; }
+.if-label {
+  display: block;
+  font-size: .68rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--if-maroon);
+  margin-bottom: .6rem;
+}
+.if-label--on-dark { color: var(--if-gold); }
+.if-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 700;
+  color: var(--if-text);
+  margin-bottom: 2rem;
+}
+.if-subtitle { font-family: var(--font-serif); font-size: 1.3rem; color: var(--if-text); margin: .3rem 0 .75rem; }
 
-.skel-rings { max-width: var(--max-w); margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; }
-.skel-ring { height: 148px; border-radius: var(--radius-md); }
+/* ─── Asal Usul: kartu kutipan ── */
+.if-quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.if-quote-card {
+  padding: 1.5rem 1.75rem;
+  border-left: 3px solid var(--if-gold);
+  background: rgba(201, 162, 39, 0.06);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  opacity: 0;
+}
+.if-quote-card--sage { border-left-color: var(--if-sage); background: rgba(74, 103, 65, 0.06); }
+.if-quote-word { display: block; font-family: var(--font-serif); font-style: italic; font-size: 1.3rem; color: var(--if-maroon); margin-bottom: .5rem; }
+.if-quote-card--sage .if-quote-word { color: var(--if-sage); }
+.if-quote-card p { font-size: .9rem; line-height: 1.7; color: var(--if-text-muted); }
 
+/* ─── Stats ── */
+.if-stats {
+  background: var(--if-cream-dark);
+  display: flex; flex-wrap: wrap; justify-content: center;
+  max-width: var(--max-w); margin: 0 auto;
+  padding: 2rem var(--sp-md);
+}
+.if-stat {
+  flex: 1 1 120px;
+  text-align: center;
+  padding: 0 1.25rem;
+  border-right: 1px solid rgba(74, 18, 32, .15);
+}
+.if-stat:last-child { border-right: none; }
+.if-stat-num { display: block; font-family: var(--font-serif); font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; color: var(--if-maroon); line-height: 1; }
+.if-stat-label { font-size: .68rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--if-text-muted); margin-top: .35rem; display: block; }
+
+/* ─── Wilayah: kompas ── */
+.if-wilayah-grid { display: grid; grid-template-columns: minmax(380px, 420px) 1fr; gap: 3.5rem; align-items: center; }
+.if-compass { position: relative; width: 400px; height: 320px; margin: 0 auto; opacity: 0; flex-shrink: 0; }
+.compass-circle { position: absolute; width: 182px; height: 182px; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1.5px dashed var(--if-gold); border-radius: 50%; }
+.compass-cross-v { position: absolute; left: 50%; top: 45px; bottom: 45px; width: 1px; background: rgba(74, 18, 32, .2); transform: translateX(-50%); }
+.compass-cross-h { position: absolute; top: 50%; left: 45px; right: 45px; height: 1px; background: rgba(74, 18, 32, .2); transform: translateY(-50%); }
+.compass-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; z-index: 2; }
+.compass-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--if-maroon); box-shadow: 0 0 0 2px var(--if-cream); }
+.compass-center-label { font-size: .72rem; font-weight: 600; text-align: center; color: var(--if-text); line-height: 1.2; width: max-content; margin-top: 4px; }
+.compass-dir { position: absolute; display: flex; flex-direction: column; font-size: .8rem; line-height: 1.35; color: var(--if-text-muted); z-index: 2; }
+.compass-dir strong { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--if-maroon); margin-bottom: 2px; }
+.compass-dir--utara { top: 4px; left: 50%; transform: translateX(-50%); text-align: center; align-items: center; }
+.compass-dir--selatan { bottom: 4px; left: 50%; transform: translateX(-50%); text-align: center; align-items: center; }
+.compass-dir--timur { top: 50%; right: 0; transform: translateY(-50%); text-align: left; align-items: flex-start; max-width: 105px; }
+.compass-dir--barat { top: 50%; left: 0; transform: translateY(-50%); text-align: right; align-items: flex-end; max-width: 105px; }
+.if-wilayah-text p { font-size: .95rem; line-height: 1.75; color: var(--if-text-muted); }
+.if-wilayah-text .if-note { font-size: .78rem; font-style: italic; color: var(--if-text-muted); opacity: .85; margin-top: .75rem; }
+
+/* ─── Jarak ── */
+.if-jarak-list { display: flex; flex-direction: column; gap: 1.4rem; max-width: 640px; }
+.if-jarak-info { display: flex; justify-content: space-between; font-size: .88rem; margin-bottom: .4rem; opacity: 0; }
+.if-jarak-info em { font-style: italic; color: var(--if-text-muted); font-size: .8rem; }
+.if-jarak-km { font-weight: 700; color: var(--if-maroon); }
+.if-jarak-track { height: 8px; background: rgba(74, 18, 32, .1); border-radius: 99px; overflow: hidden; }
+.if-jarak-fill { height: 100%; width: 0%; border-radius: 99px; background: linear-gradient(90deg, var(--if-sage), var(--if-gold)); }
+
+/* ─── Dual grid (reused by Penduduk/Ekonomi, Arsitektur/Pariwisata, Penutup) ── */
+.if-dual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+.if-dual-grid p { font-size: .92rem; line-height: 1.75; color: var(--if-text-muted); }
+.if-sub-label { display: block; font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--if-maroon); margin-bottom: .9rem; }
+
+/* Split bar (komposisi penduduk / pekerjaan) */
+.if-split-bar { display: flex; height: 10px; border-radius: 99px; overflow: hidden; background: rgba(74, 18, 32, .08); }
+.if-split-fill { height: 100%; width: 0%; }
+.if-split-fill--laki, .if-split-fill--petani { background: var(--if-maroon); }
+.if-split-fill--perempuan, .if-split-fill--lain { background: var(--if-gold); }
+.if-split-labels { display: flex; justify-content: space-between; font-size: .82rem; margin-top: .6rem; opacity: 0; }
+.if-split-labels strong { color: var(--if-text); }
+.if-caption { margin-top: .9rem; opacity: 0; }
+
+/* ─── Checklist ── */
+.if-checklist { display: flex; flex-direction: column; gap: .75rem; }
+.if-checklist li { display: flex; align-items: center; gap: .7rem; font-size: .9rem; opacity: 0; }
+.if-check-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  font-size: .68rem; font-weight: 700; flex-shrink: 0;
+  color: var(--c-white);
+}
+.if-check-icon--yes { background: var(--if-sage); }
+.if-check-icon--no { background: #a04040; }
+
+/* ─── Penutup ── */
+.if-closing { background: var(--if-maroon); padding: var(--sp-lg) var(--sp-md) 2rem; }
+.if-closing .if-dual-grid { max-width: var(--max-w); margin: 0 auto; }
+.if-closing p { color: rgba(245, 240, 232, .75); }
+.if-closing-bottom {
+  max-width: var(--max-w); margin: 2.5rem auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(245, 240, 232, .15);
+  font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(245, 240, 232, .4);
+  opacity: 0;
+}
+
+/* ─── Skeleton ── */
+.if-skeleton { max-width: var(--max-w); margin: 0 auto; padding: var(--sp-lg) var(--sp-md); display: flex; flex-direction: column; gap: 2rem; }
+.if-skel-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.if-skel-card { height: 110px; border-radius: var(--radius-sm); }
+.if-skel-stats { display: flex; gap: 1rem; }
+.if-skel-stat { flex: 1; height: 70px; border-radius: var(--radius-sm); }
+.if-skel-block { height: 220px; border-radius: var(--radius-sm); }
+
+@media (max-width: 900px) {
+  .if-wilayah-grid { grid-template-columns: 1fr; }
+  .if-dual-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .if-quote-grid { grid-template-columns: 1fr; }
+}
 @media (max-width: 600px) {
-  .skel-penduduk { flex-direction: column; align-items: flex-start; }
-  .skel-spotlight-num { width: 160px; height: 80px; }
-}
-
-/* Hero */
-.page-hero { position:relative;overflow:hidden;background:var(--c-stone);padding:9rem var(--sp-md) 5rem; }
-.page-hero__bg { position:absolute;inset:0;pointer-events:none; }
-.hero-blob { position:absolute;border-radius:50%;filter:blur(60px);opacity:.22; }
-.hero-blob--1 { width:420px;height:420px;background:var(--c-terra);top:-100px;right:-80px; }
-.hero-blob--2 { width:300px;height:300px;background:var(--c-sage);bottom:-60px;left:10%; }
-.hero-blob--3 { width:200px;height:200px;background:var(--c-terra-dark);top:50%;left:40%; }
-.page-hero__content { position:relative;z-index:2;max-width:var(--max-w);margin:0 auto; }
-.page-hero__label { display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--c-terra);border:1px solid var(--c-terra);padding:.28rem .9rem;border-radius:50px;margin-bottom:1rem; }
-.page-hero__title { font-family:var(--font-serif);font-size:clamp(2.2rem,6vw,4rem);font-weight:700;color:var(--c-cream);line-height:1.1;margin-bottom:.75rem; }
-.page-hero__title em { font-style:italic;color:rgba(245,240,232,.6); }
-.page-hero__year { font-size:.82rem;color:rgba(245,240,232,.4);letter-spacing:.1em; }
-
-/* Sections */
-.info-section { padding:var(--sp-lg) var(--sp-md); }
-.info-section--dark { background:var(--c-stone); }
-.info-section--cream-dark { background:var(--c-cream-dark); }
-.info-section--terra { background:var(--c-terra-dark); }
-.info-section--maps { background:var(--c-cream); }
-.info-wrap { max-width:var(--max-w);margin:0 auto; }
-.info-wrap--split { display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:start; }
-.sec-header { margin-bottom:2rem; }
-.info-desc { color:var(--c-stone-muted);margin-top:.6rem;font-size:.95rem;line-height:1.6; }
-
-/* Kependudukan */
-.penduduk-layout { display:flex;gap:3rem;flex-wrap:wrap;align-items:center; }
-.penduduk-spotlight { flex-shrink:0;text-align:center; }
-.spotlight-num { display:block;font-family:var(--font-serif);font-size:clamp(4rem,10vw,7rem);font-weight:700;color:var(--c-terra);line-height:1; }
-.spotlight-unit { font-family:var(--font-serif);font-size:1.5rem;color:var(--c-stone-muted); }
-.spotlight-caption { font-size:.8rem;color:var(--c-stone-muted);margin-top:.4rem;max-width:160px; }
-.penduduk-pills { display:flex;flex-direction:column;gap:.7rem;flex:1;min-width:220px; }
-.pill { display:flex;align-items:center;gap:1rem;background:var(--c-white);border-radius:var(--radius-md);padding:.9rem 1.2rem;box-shadow:var(--shadow-card);opacity:0; border-left: 3px solid transparent; }
-.pill--sage { border-left-color: var(--c-sage); }
-.pill--terra { border-left-color: var(--c-terra); }
-.pill--stone { border-left-color: var(--c-stone); }
-.pill__val { display:block;font-family:var(--font-serif);font-size:1.4rem;font-weight:700;color:var(--c-stone); }
-.pill__label { font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--c-stone-muted); }
-
-/* Wilayah */
-.wilayah-tiles { display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:1rem; }
-.wtile { display:flex;flex-direction:column;align-items:center;text-align:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-md);padding:2rem 1rem;opacity:0; }
-.wtile__icon { font-size:2rem;margin-bottom:.6rem; }
-.wtile__num { font-family:var(--font-serif);font-size:2rem;font-weight:700;color:var(--c-cream); }
-.wtile__label { font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:rgba(245,240,232,.4);margin-top:.35rem; }
-
-/* Bar chart */
-.bar-chart { display:flex;flex-direction:column;gap:.9rem; }
-.bar-row { display:flex;align-items:center;gap:.75rem;opacity:0; }
-.bar-label { font-size:.8rem;color:var(--c-stone-muted);width:130px;flex-shrink:0;text-align:right; }
-.bar-track { flex:1;background:var(--c-cream-dark);border-radius:99px;height:10px;overflow:hidden; }
-.bar-fill { height:100%;border-radius:99px;width:0%; }
-.bar-val { font-size:.78rem;font-weight:600;color:var(--c-stone-muted);width:45px;text-align:right; }
-
-/* Pekerjaan */
-.pekerjaan-grid { display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:1rem; }
-.pcard { display:flex;flex-direction:column;align-items:center;text-align:center;background:var(--c-white);border-radius:var(--radius-md);padding:1.5rem 1rem;box-shadow:var(--shadow-card);opacity:0; }
-.pcard__ring { position:relative;width:70px;height:70px;margin-bottom:.65rem; }
-.pcard__ring svg { width:100%;height:100%; }
-.ring-arc { transition:none; }
-.pcard__pct { position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-size:.88rem;font-weight:700;color:var(--c-stone); }
-.pcard__icon { font-size:1.2rem;margin-bottom:.25rem; }
-.pcard__val { font-family:var(--font-serif);font-size:1.1rem;font-weight:700;color:var(--c-stone); }
-.pcard__label { font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--c-stone-muted);margin-top:.15rem; }
-
-/* Wisata */
-.wisata-row { display:flex;gap:2px;flex-wrap:wrap; }
-.wstat { flex:1;min-width:150px;display:flex;flex-direction:column;align-items:center;text-align:center;padding:3rem 1.5rem;background:rgba(255,255,255,.05);border-right:1px solid rgba(255,255,255,.08); }
-.wstat:last-child { border-right:none; }
-.wstat__num { font-family:var(--font-serif);font-size:clamp(2.8rem,6vw,4.5rem);font-weight:700;color:var(--c-cream);line-height:1; }
-.wstat__suffix { font-family:var(--font-serif);font-size:1.8rem;color:var(--c-terra); }
-.wstat__label { font-size:.7rem;text-transform:uppercase;letter-spacing:.14em;color:rgba(245,240,232,.4);margin-top:.5rem; }
-
-/* Maps */
-.maps-wrapper { border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-lift);opacity:0; }
-.maps-iframe { width:100%;height:420px;border:0;display:block; }
-.maps-actions { padding:1rem;background:var(--c-white);display:flex;justify-content:flex-end; }
-.maps-btn { display:inline-flex;align-items:center;gap:.4rem;background:var(--c-terra);color:var(--c-white);padding:.55rem 1.2rem;border-radius:50px;font-size:.82rem;font-weight:500;text-decoration:none;transition:var(--transition); }
-.maps-btn:hover { background:var(--c-terra-dark);transform:translateY(-1px); }
-
-/* Responsive */
-@media (max-width:900px) {
-  .info-wrap--split { grid-template-columns:1fr;gap:2rem; }
-}
-@media (max-width:600px) {
-  .wisata-row { flex-direction:column; }
-  .wstat { border-right:none;border-bottom:1px solid rgba(255,255,255,.08); }
-  .bar-label { width:90px;font-size:.74rem; }
-  .penduduk-layout { flex-direction:column; }
-  .maps-iframe { height:300px; }
+  .if-hero { padding: 3rem 1.25rem 2.25rem; }
+  .if-section, .if-closing { padding: var(--sp-lg) 1.25rem; }
+  .if-stats { padding: 1.5rem 1.25rem; }
+  .if-stat { flex: 1 1 40%; border-right: none; margin-bottom: 1rem; }
 }
 </style>
