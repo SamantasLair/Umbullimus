@@ -3,7 +3,7 @@
     <div class="nav-container">
       <!-- Wordmark -->
       <RouterLink to="/" class="nav-wordmark" @click="closeMenu">
-        <img src="/images/logopesawaran.svg" alt="Logo Kabupaten Pesawaran" class="nav-logo" />
+        <img src="/images/logopesawaran.png" alt="Logo Kabupaten Pesawaran" class="nav-logo" />
         <div class="wordmark-text">
           <span class="wordmark-main">Umbul Limus</span>
           <span class="wordmark-sub">Desa Wisata Lampung</span>
@@ -215,9 +215,9 @@ defineExpose({
 }
 
 /* Wordmark */
-.nav-wordmark { display:flex;align-items:center;gap:.85rem;line-height:1;flex-shrink:0;text-decoration:none;z-index:300;position:relative; }
-.nav-logo { height: 50px; width: auto; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); transition: var(--transition); }
-.nav--scrolled .nav-logo { height: 42px; }
+.nav-wordmark { display:flex;align-items:center;gap:.9rem;line-height:1;flex-shrink:0;text-decoration:none;z-index:300;position:relative; }
+.nav-logo { height: 60px; width: auto; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35)); transition: var(--transition); }
+.nav--scrolled .nav-logo { height: 48px; }
 .wordmark-text { display:flex;flex-direction:column; }
 .wordmark-main { font-family:var(--font-serif);font-size:1.3rem;font-weight:600;color:var(--c-white);transition:var(--transition); }
 .nav--scrolled .wordmark-main { color:var(--c-stone); }
@@ -387,8 +387,8 @@ defineExpose({
 
 /* Responsive */
 @media (max-width:960px) {
-  .nav-logo { height: 42px; }
-  .nav--scrolled .nav-logo { height: 36px; }
+  .nav-logo { height: 48px; }
+  .nav--scrolled .nav-logo { height: 40px; }
   .nav-links { display:none; }
   .nav-cta { display:none; }
   .nav-hamburger { display:flex; flex-direction:column; justify-content:center; align-items:center; }
