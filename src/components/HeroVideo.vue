@@ -181,9 +181,9 @@ defineExpose({ SigerDecor })
 <style scoped>
 .hero {
   position: relative;
-  width: 100%; height: 100vh; min-height: 620px;
+  width: 100%; height: 100vh; min-height: 560px;
   display: flex; flex-direction: column; justify-content: flex-end;
-  padding-top: clamp(6.5rem, 12vh, 8.5rem);
+  padding-top: clamp(4.8rem, 9vh, 6.5rem);
   box-sizing: border-box;
   overflow: hidden;
   background: var(--c-dark-bg);
@@ -228,8 +228,8 @@ defineExpose({ SigerDecor })
 .hero-content {
   position: relative; z-index: 3;
   max-width: var(--max-w); width: 100%;
-  margin: auto auto 0;
-  padding: 0 var(--sp-md) clamp(3rem, 6vh, 5rem);
+  margin: 0 auto;
+  padding: 0 var(--sp-md) clamp(2.5rem, 5vh, 4.5rem);
   box-sizing: border-box;
 }
 
@@ -238,7 +238,7 @@ defineExpose({ SigerDecor })
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.25rem;
   opacity: 0;
 }
 .badge-dot {
@@ -264,10 +264,10 @@ defineExpose({ SigerDecor })
 /* Title */
 .hero-title {
   font-family: var(--font-serif);
-  font-size: clamp(4.5rem, 13vw, 10rem);
+  font-size: clamp(3.2rem, 8vw, 6.2rem);
   font-weight: 700;
-  line-height: 0.9;
-  margin-bottom: 1.75rem;
+  line-height: 0.92;
+  margin-bottom: 1.25rem;
   display: flex; flex-direction: column;
 }
 .title-line {
@@ -361,9 +361,13 @@ defineExpose({ SigerDecor })
 }
 
 @media (max-width: 600px) {
-  .hero-content { padding: 0 1.25rem 2.5rem; }
-  .title-line--2 { padding-left: 0.75rem; }
+  .hero { padding-top: 4.5rem; min-height: 520px; }
+  .hero-content { padding: 0 1.25rem 2rem; }
+  .hero-badge-wrap { margin-bottom: 0.9rem; }
+  .hero-title { font-size: clamp(2.6rem, 10.5vw, 3.8rem); margin-bottom: 1rem; }
+  .title-line--2 { padding-left: 0.5rem; }
   .hero-siger-bg { display: none; }
+  .hero-tagline { margin-bottom: 1.4rem; }
   .hero-tagline br { display: none; }
   .hero-actions {
     flex-direction: column;
