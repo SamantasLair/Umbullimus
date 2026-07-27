@@ -3,7 +3,7 @@
     <div class="nav-container">
       <!-- Wordmark -->
       <RouterLink to="/" class="nav-wordmark" @click="closeMenu">
-        <img src="/images/logopesawaran.png" alt="Logo Kabupaten Pesawaran" class="nav-logo" />
+        <img src="/images/logopesawaran.svg" alt="Logo Kabupaten Pesawaran" class="nav-logo" />
         <div class="wordmark-text">
           <span class="wordmark-main">Umbul Limus</span>
           <span class="wordmark-sub">Desa Wisata Lampung</span>
