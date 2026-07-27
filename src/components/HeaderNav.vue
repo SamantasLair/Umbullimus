@@ -3,11 +3,8 @@
     <div class="nav-container">
       <!-- Wordmark -->
       <RouterLink to="/" class="nav-wordmark" @click="closeMenu">
-        <img src="/images/logopesawaran.svg" alt="Logo Kabupaten Pesawaran" class="nav-logo-img" />
-        <div class="nav-wordmark-text">
-          <span class="wordmark-main">Umbul Limus</span>
-          <span class="wordmark-sub">Desa Wisata Lampung</span>
-        </div>
+        <span class="wordmark-main">Umbul Limus</span>
+        <span class="wordmark-sub">Desa Wisata Lampung</span>
       </RouterLink>
 
       <!-- Desktop Nav -->
@@ -215,10 +212,7 @@ defineExpose({
 }
 
 /* Wordmark */
-.nav-wordmark { display:flex;align-items:center;gap:.65rem;line-height:1;flex-shrink:0;text-decoration:none;z-index:300;position:relative; }
-.nav-logo-img { width:32px;height:32px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));transition:var(--transition); }
-.nav--scrolled .nav-logo-img { width:28px;height:28px; }
-.nav-wordmark-text { display:flex;flex-direction:column;line-height:1; }
+.nav-wordmark { display:flex;flex-direction:column;line-height:1;flex-shrink:0;text-decoration:none;z-index:300;position:relative; }
 .wordmark-main { font-family:var(--font-serif);font-size:1.3rem;font-weight:600;color:var(--c-white);transition:var(--transition); }
 .nav--scrolled .wordmark-main { color:var(--c-stone); }
 .wordmark-sub { font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:2px;transition:var(--transition); }

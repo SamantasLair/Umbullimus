@@ -3,10 +3,7 @@
     <div class="page-hero" :style="bgStyle">
       <div class="page-hero__overlay"></div>
       <div class="page-hero__content" ref="heroContent">
-        <div class="page-hero__badge">
-          <img src="/images/logopesawaran.svg" alt="Logo Kabupaten Pesawaran" class="page-hero__logo" />
-          <span class="page-hero__label">Pemerintahan</span>
-        </div>
+        <span class="page-hero__label">Pemerintahan</span>
         <h1 class="page-hero__title">Struktur Organisasi<br><em>Desa Umbul Limus</em></h1>
         <p v-if="data.kecamatan" class="page-hero__sub">
           Kec. {{ data.kecamatan }} · Kab. {{ data.kabupaten }} · {{ data.provinsi }}
@@ -156,6 +153,7 @@ import { computed, nextTick, onMounted, ref } from 'vue'
 const data = ref({})
 const loading = ref(true)
 
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const secTree     = ref(null)
 const heroContent = ref(null)
 
@@ -167,6 +165,7 @@ const bgStyle = computed(() => ({
 
 // Kaur & Kasi ditampilkan sebagai 2 kotak grup (bukan tiap orang jadi daun tree sendiri)
 // supaya tier ini tidak melebar terlalu jauh dan tetap muat tanpa scroll horizontal.
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const staffGroups = computed(() => [
   { key: 'kaur', label: 'Kepala Urusan (Kaur)', people: data.value.kaur || [] },
   { key: 'kasi', label: 'Kepala Seksi (Kasi)', people: data.value.kasi || [] },
@@ -174,19 +173,6 @@ const staffGroups = computed(() => [
 
 const fallbackAvatar = (nama) =>
   `https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=7a4a3a&color=fff&size=200&bold=true`
-
-/**
- * Buat IntersectionObserver yang re-triggerable (TIDAK unobserve).
- * Memanggil resetFn sebelum animateFn agar animasi bersih saat re-entry.
- */
-const makeObserver = (fn, reset, threshold = 0.15) =>
-  new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return
-      reset(e.target)
-      fn(e.target)
-    })
-  }, { threshold })
 
 onMounted(async () => {
   try {
@@ -237,23 +223,11 @@ defineExpose({ bgStyle, fallbackAvatar })
   max-width: var(--max-w); width: 100%;
   margin: 0 auto; padding: 0 var(--sp-md) 3rem;
 }
-.page-hero__badge {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  margin-bottom: 0.75rem;
-}
-.page-hero__logo {
-  width: 26px;
-  height: 26px;
-  object-fit: contain;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
-}
 .page-hero__label {
   display: inline-block; font-size: .68rem; font-weight: 700;
   letter-spacing: .22em; text-transform: uppercase;
   color: var(--c-terra); border: 1px solid var(--c-terra);
-  padding: .28rem .9rem; border-radius: 50px;
+  padding: .28rem .9rem; border-radius: 50px; margin-bottom: 1rem;
 }
 .page-hero__title {
   font-family: var(--font-serif); font-size: clamp(2.2rem,6vw,4rem);

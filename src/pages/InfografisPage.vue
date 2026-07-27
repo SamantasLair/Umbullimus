@@ -3,10 +3,7 @@
     <!-- Hero -->
     <header class="if-hero">
       <div class="if-hero-container">
-        <div class="if-hero-badge-wrap">
-          <img src="/images/logopesawaran.svg" alt="Logo Kabupaten Pesawaran" class="if-hero-logo" />
-          <span class="if-hero-label" ref="heroLabelEl">Profil Desa · {{ data.provinsi }}</span>
-        </div>
+        <span class="if-hero-label" ref="heroLabelEl">Profil Desa · {{ data.provinsi }}</span>
         <h1 class="if-hero-title" ref="heroTitleEl">Infografis <em>{{ data.desa }}</em></h1>
         <p class="if-hero-sub" ref="heroSubEl">
           Kecamatan {{ data.kecamatan }} · Kabupaten {{ data.kabupaten }} · Provinsi {{ data.provinsi }}
@@ -502,25 +499,14 @@ onMounted(async () => {
   padding: 0 var(--sp-md);
   text-align: left;
 }
-.if-hero-badge-wrap {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  margin-bottom: 0.85rem;
-}
-.if-hero-logo {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
-}
 .if-hero-label {
   display: inline-block;
-  font-size: .72rem; font-weight: 600;
-  letter-spacing: .24em; text-transform: uppercase;
-  color: var(--if-gold); border: 1px solid rgba(201, 162, 39, 0.4);
+  font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--if-gold);
+  border: 1px solid rgba(201, 162, 39, 0.4);
   background: rgba(201, 162, 39, 0.08);
   padding: .25rem .85rem; border-radius: 50px;
+  margin-bottom: 1rem;
   opacity: 0;
 }
 .if-hero-title {
