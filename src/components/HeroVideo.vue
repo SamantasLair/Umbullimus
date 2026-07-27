@@ -227,7 +227,7 @@ defineExpose({ SigerDecor })
   position: relative; z-index: 3;
   max-width: var(--max-w); width: 100%;
   margin: 0 auto;
-  padding: 0 var(--sp-md) clamp(3rem, 6vh, 5rem);
+  padding: clamp(6.5rem, 12vh, 8.5rem) var(--sp-md) clamp(3rem, 6vh, 5rem);
 }
 
 /* Badge */

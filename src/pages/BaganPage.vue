@@ -221,7 +221,7 @@ defineExpose({ bgStyle, fallbackAvatar })
 .page-hero__content {
   position: relative; z-index: 2;
   max-width: var(--max-w); width: 100%;
-  margin: 0 auto; padding: 0 var(--sp-md) 3rem;
+  margin: 0 auto; padding: 6.5rem var(--sp-md) 3rem;
 }
 .page-hero__label {
   display: inline-block; font-size: .68rem; font-weight: 700;
