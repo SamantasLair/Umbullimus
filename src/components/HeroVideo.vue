@@ -17,7 +17,7 @@
     <div class="hero-content" ref="contentEl">
       <!-- Badge -->
       <div class="hero-badge-wrap" ref="badgeEl">
-        <span class="badge-dot"></span>
+        <img src="/images/logopesawaran.svg" alt="Logo Kabupaten Pesawaran" class="hero-badge-logo" />
         <span class="hero-badge">Pesawaran · Lampung</span>
       </div>
 
@@ -238,16 +238,11 @@ defineExpose({ SigerDecor })
   margin-bottom: 1.75rem;
   opacity: 0;
 }
-.badge-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--c-siger);
-  box-shadow: 0 0 8px 2px rgba(212, 168, 83, 0.6);
-  animation: dotPulse 2.4s ease-in-out infinite;
-}
-@keyframes dotPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.7); }
+.hero-badge-logo {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
 }
 .hero-badge {
   font-family: var(--font-sans);

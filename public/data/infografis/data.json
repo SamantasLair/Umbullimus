@@ -39,6 +39,7 @@
   "wilayah": {
     "luas": "2.158 HA",
     "luas_catatan": "Dihitung dari rincian penggunaan lahan pada sensus Data Dasar Profil Desa tahun 2017.",
+    "maps_embed": "https://maps.google.com/maps?q=Umbul+Limus+Pesawaran+Lampung&t=&z=14&ie=UTF8&iwloc=&output=embed",
     "batas": {
       "utara": "Tajur & Kekatang",
       "selatan": "Kunyaian",
@@ -75,7 +76,7 @@
       "petani_persen": 90,
       "lainnya_persen": 10,
       "lainnya_label": "Nelayan & Pedagang",
-      "hasil": "Padi, kelapa, dan pisang menjadi hasil utama yang tumbuh dari lahan perbukitan desa ini."
+      "hasil": "Padi, kelapa, dan pisang menjadi hasil utama yang tumbuh dari lahan perbukitan desa ini. Selain bertani, warga juga berkebun, beternak (kambing, ayam, kerbau, dan itik), serta sebagian kecil menekuni pertambangan galian C dan perdagangan skala kecil."
     }
   },
   "arsitektur": {

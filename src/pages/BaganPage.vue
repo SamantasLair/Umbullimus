@@ -3,7 +3,10 @@
     <div class="page-hero" :style="bgStyle">
       <div class="page-hero__overlay"></div>
       <div class="page-hero__content" ref="heroContent">
-        <span class="page-hero__label">Pemerintahan</span>
+        <div class="page-hero__badge">
+          <img src="/images/logopesawaran.svg" alt="Logo Kabupaten Pesawaran" class="page-hero__logo" />
+          <span class="page-hero__label">Pemerintahan</span>
+        </div>
         <h1 class="page-hero__title">Struktur Organisasi<br><em>Desa Umbul Limus</em></h1>
         <p v-if="data.kecamatan" class="page-hero__sub">
           Kec. {{ data.kecamatan }} · Kab. {{ data.kabupaten }} · {{ data.provinsi }}
@@ -127,10 +130,14 @@
       <div class="info-wrap">
         <span class="info-label info-label--on-dark">Mitra Pemerintah Desa</span>
         <h2 class="info-title info-title--on-dark">Lembaga Kemasyarakatan Desa</h2>
-        <div class="role-grid role-grid--2">
+        <div class="role-grid role-grid--3">
           <article class="role-card role-card--dark">
             <h3>BPD (Badan Permusyawaratan Desa)</h3>
             <p>Dibentuk sejak 27 Mei 2011 dengan 5 orang anggota, BPD membahas dan menyepakati Rancangan Peraturan Desa bersama Kepala Desa, menampung serta menyalurkan aspirasi masyarakat, dan mengawasi kinerja Kepala Desa. BPD juga menyelenggarakan musyawarah desa dan membentuk panitia pemilihan Kepala Desa.</p>
+          </article>
+          <article class="role-card role-card--dark">
+            <h3>LKMD (Lembaga Ketahanan Masyarakat Desa)</h3>
+            <p>Wadah partisipasi masyarakat dalam pembangunan desa: menyusun rencana pembangunan secara partisipatif, menggerakkan swadaya gotong royong, serta membantu Pemerintah Desa dalam penyelenggaraan pembangunan dan kemasyarakatan.</p>
           </article>
           <article class="role-card role-card--dark">
             <h3>PKK (Pemberdayaan Kesejahteraan Keluarga)</h3>
@@ -230,11 +237,23 @@ defineExpose({ bgStyle, fallbackAvatar })
   max-width: var(--max-w); width: 100%;
   margin: 0 auto; padding: 0 var(--sp-md) 3rem;
 }
+.page-hero__badge {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.75rem;
+}
+.page-hero__logo {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+}
 .page-hero__label {
   display: inline-block; font-size: .68rem; font-weight: 700;
   letter-spacing: .22em; text-transform: uppercase;
   color: var(--c-terra); border: 1px solid var(--c-terra);
-  padding: .28rem .9rem; border-radius: 50px; margin-bottom: 1rem;
+  padding: .28rem .9rem; border-radius: 50px;
 }
 .page-hero__title {
   font-family: var(--font-serif); font-size: clamp(2.2rem,6vw,4rem);
@@ -491,6 +510,7 @@ defineExpose({ bgStyle, fallbackAvatar })
   gap: 1.25rem;
 }
 .role-grid--2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.role-grid--3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
 
 .role-card {
   background: var(--c-white);

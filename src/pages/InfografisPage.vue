@@ -3,7 +3,10 @@
     <!-- Hero -->
     <header class="if-hero">
       <div class="if-hero-container">
-        <span class="if-hero-label" ref="heroLabelEl">Profil Desa · {{ data.provinsi }}</span>
+        <div class="if-hero-badge-wrap">
+          <img src="/images/logopesawaran.svg" alt="Logo Kabupaten Pesawaran" class="if-hero-logo" />
+          <span class="if-hero-label" ref="heroLabelEl">Profil Desa · {{ data.provinsi }}</span>
+        </div>
         <h1 class="if-hero-title" ref="heroTitleEl">Infografis <em>{{ data.desa }}</em></h1>
         <p class="if-hero-sub" ref="heroSubEl">
           Kecamatan {{ data.kecamatan }} · Kabupaten {{ data.kabupaten }} · Provinsi {{ data.provinsi }}
@@ -82,6 +85,16 @@
             <p>{{ data.wilayah?.deskripsi }}</p>
             <p v-if="data.wilayah?.luas_catatan" class="if-note">{{ data.wilayah?.luas_catatan }}</p>
           </div>
+        </div>
+
+        <div class="if-map-wrap" v-if="data.wilayah?.maps_embed">
+          <iframe
+            class="if-map"
+            :src="data.wilayah.maps_embed"
+            title="Peta lokasi Desa Umbul Limus"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
       </section>
 
@@ -489,14 +502,25 @@ onMounted(async () => {
   padding: 0 var(--sp-md);
   text-align: left;
 }
+.if-hero-badge-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.85rem;
+}
+.if-hero-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
+}
 .if-hero-label {
   display: inline-block;
-  font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
-  color: var(--if-gold);
-  border: 1px solid rgba(201, 162, 39, 0.4);
+  font-size: .72rem; font-weight: 600;
+  letter-spacing: .24em; text-transform: uppercase;
+  color: var(--if-gold); border: 1px solid rgba(201, 162, 39, 0.4);
   background: rgba(201, 162, 39, 0.08);
   padding: .25rem .85rem; border-radius: 50px;
-  margin-bottom: 1rem;
   opacity: 0;
 }
 .if-hero-title {
@@ -599,6 +623,14 @@ onMounted(async () => {
 .compass-dir--barat { top: 50%; left: 0; transform: translateY(-50%); text-align: right; align-items: flex-end; max-width: 105px; }
 .if-wilayah-text p { font-size: .95rem; line-height: 1.75; color: var(--if-text-muted); }
 .if-wilayah-text .if-note { font-size: .78rem; font-style: italic; color: var(--if-text-muted); opacity: .85; margin-top: .75rem; }
+
+.if-map-wrap {
+  margin-top: 2rem;
+  border: 1px solid rgba(74, 18, 32, .15);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.if-map { display: block; width: 100%; height: 280px; border: 0; }
 
 /* ─── Jarak ── */
 .if-jarak-list { display: flex; flex-direction: column; gap: 1.4rem; max-width: 640px; }

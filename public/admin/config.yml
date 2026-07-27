@@ -167,6 +167,7 @@ collections:
                   - {label: "Timur", name: "timur", widget: "string"}
                   - {label: "Barat", name: "barat", widget: "string"}
               - {label: "Deskripsi Wilayah", name: "deskripsi", widget: "text"}
+              - {label: "Link Embed Google Maps", name: "maps_embed", widget: "string", required: false, hint: "Google Maps > Bagikan > Sematkan peta > salin URL di dalam src=\"...\""}
           - label: "Jarak ke Pusat Pemerintahan"
             name: "jarak"
             widget: "list"

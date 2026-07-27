@@ -3,7 +3,10 @@
     <div class="footer-container">
       <div class="footer-top">
         <div class="footer-brand">
-          <span class="footer-wordmark">Umbul Limus</span>
+          <div class="footer-brand-header">
+            <img src="/images/logopesawaran.svg" alt="Logo Kabupaten Pesawaran" class="footer-logo-img" />
+            <span class="footer-wordmark">Umbul Limus</span>
+          </div>
           <p class="footer-tagline">Surga tersembunyi di jantung Lampung.<br>Alam asri, budaya kaya, masyarakat hangat.</p>
           <div class="footer-socials">
             <a href="#" aria-label="Instagram" class="social-link">
@@ -115,13 +118,25 @@ function goToWisata() {
   border-bottom: 1px solid rgba(245, 240, 232, 0.1);
 }
 
+.footer-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.footer-logo-img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
 .footer-wordmark {
   display: block;
   font-family: var(--font-serif);
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--c-cream);
-  margin-bottom: 0.75rem;
 }
 
 .footer-tagline {
