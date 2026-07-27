@@ -76,7 +76,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-// Halaman dengan tema warna berbeda (mis. Infografis: maroon/emas): nav ikut menyesuaikan
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const isMaroonTheme = computed(() => route.path === '/infografis')
 const isScrolled = ref(false)
 const menuOpen   = ref(false)
