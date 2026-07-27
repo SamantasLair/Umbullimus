@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="100%" height="100%" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-viewBox="-1250 0 11000 11000"
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="3075 4100 2350 2350"
  xmlns:xlink="http://www.w3.org/1999/xlink">
- <title>Logo Kabupaten Pesawaran</title>
+ <title>Favicon Logo Kabupaten Pesawaran</title>
  <defs>
   <style type="text/css">
     .str2 {stroke:black;stroke-width:42.5315}
@@ -24,20 +24,17 @@ viewBox="-1250 0 11000 11000"
     .fil10 {fill:black;fill-rule:nonzero}
     .fil4 {fill:white;fill-rule:nonzero}
   </style>
-    <clipPath id="id0">
+    <clipPath id="id0_fav">
      <path d="M3391 5819c0,705 573,660 859,994 286,-334 859,-288 859,-994l0 -1285 -1718 0 0 1285z"/>
     </clipPath>
  </defs>
  <g id="Layer_x0020_1">
-  <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g id="Kabupaten_x0020_Pesawaran_x0020__x005b_koleksilogo.com_x005d_.cdr">
+  <g id="Kabupaten_x0020_Pesawaran_Favicon">
    <g>
     <path class="fil0 str0" d="M3318 5825c0,764 621,726 932,1088 311,-362 932,-324 932,-1088l0 -1742 -932 0 -932 0 0 1742z"/>
     <path id="1" class="fil1" d="M3318 5825c0,764 621,726 932,1088 311,-362 932,-324 932,-1088l0 -1742 -932 0 -932 0 0 1742z"/>
    </g>
-   <g>
-   </g>
-   <g style="clip-path:url(#id0)">
+   <g style="clip-path:url(#id0_fav)">
     <g>
      <g>
       <polygon class="fil0 str1" points="3821,4478 4679,4478 4679,6913 3821,6913 "/>
