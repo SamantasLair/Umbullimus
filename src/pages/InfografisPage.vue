@@ -585,13 +585,13 @@ onMounted(async () => {
 /* ─── Wilayah: kompas ── */
 .if-wilayah-grid { display: grid; grid-template-columns: minmax(380px, 420px) 1fr; gap: 3.5rem; align-items: center; }
 .if-compass { position: relative; width: 400px; height: 320px; margin: 0 auto; opacity: 0; flex-shrink: 0; }
-.compass-circle { position: absolute; width: 182px; height: 182px; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1.5px dashed var(--if-gold); border-radius: 50%; }
-.compass-cross-v { position: absolute; left: 50%; top: 45px; bottom: 45px; width: 1px; background: rgba(74, 18, 32, .2); transform: translateX(-50%); }
-.compass-cross-h { position: absolute; top: 50%; left: 45px; right: 45px; height: 1px; background: rgba(74, 18, 32, .2); transform: translateY(-50%); }
-.compass-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; z-index: 2; }
-.compass-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--if-maroon); box-shadow: 0 0 0 2px var(--if-cream); }
-.compass-center-label { font-size: .72rem; font-weight: 600; text-align: center; color: var(--if-text); line-height: 1.2; width: max-content; margin-top: 4px; }
-.compass-dir { position: absolute; display: flex; flex-direction: column; font-size: .8rem; line-height: 1.35; color: var(--if-text-muted); z-index: 2; }
+.compass-circle { position: absolute; width: 182px; height: 182px; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1.5px dashed var(--if-gold); border-radius: 50%; z-index: 1; }
+.compass-cross-v { position: absolute; left: 50%; top: calc(50% - 91px); height: 182px; width: 1px; background: rgba(74, 18, 32, .2); transform: translateX(-50%); z-index: 1; }
+.compass-cross-h { position: absolute; top: 50%; left: calc(50% - 91px); width: 182px; height: 1px; background: rgba(74, 18, 32, .2); transform: translateY(-50%); z-index: 1; }
+.compass-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; z-index: 3; }
+.compass-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--if-maroon); box-shadow: 0 0 0 3px var(--if-cream); }
+.compass-center-label { font-size: .72rem; font-weight: 600; text-align: center; color: var(--if-text); line-height: 1.2; width: max-content; margin-top: 4px; background: var(--if-cream); padding: 1px 6px; border-radius: 4px; z-index: 3; }
+.compass-dir { position: absolute; display: flex; flex-direction: column; font-size: .8rem; line-height: 1.35; color: var(--if-text-muted); z-index: 3; background: var(--if-cream); padding: 2px 4px; border-radius: 4px; }
 .compass-dir strong { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--if-maroon); margin-bottom: 2px; }
 .compass-dir--utara { top: 4px; left: 50%; transform: translateX(-50%); text-align: center; align-items: center; }
 .compass-dir--selatan { bottom: 4px; left: 50%; transform: translateX(-50%); text-align: center; align-items: center; }
@@ -667,5 +667,15 @@ onMounted(async () => {
   .if-section, .if-closing { padding: var(--sp-lg) 1.25rem; }
   .if-stats { padding: 1.5rem 1.25rem; }
   .if-stat { flex: 1 1 40%; border-right: none; margin-bottom: 1rem; }
+
+  /* Responsive Mobile Compass */
+  .if-compass { width: 100%; max-width: 350px; height: 280px; }
+  .compass-circle { width: 150px; height: 150px; }
+  .compass-cross-v { top: calc(50% - 75px); height: 150px; }
+  .compass-cross-h { left: calc(50% - 75px); width: 150px; }
+  .compass-dir--timur { max-width: 92px; font-size: .74rem; }
+  .compass-dir--barat { max-width: 92px; font-size: .74rem; }
+  .compass-dir strong { font-size: .68rem; }
+  .compass-center-label { font-size: .68rem; padding: 1px 5px; }
 }
 </style>

@@ -37,26 +37,26 @@
     }
   ],
   "wilayah": {
-    "luas": "922 HA",
-    "luas_catatan": "",
+    "luas": "2.158 HA",
+    "luas_catatan": "Dihitung dari rincian penggunaan lahan pada sensus Data Dasar Profil Desa tahun 2017.",
     "batas": {
       "utara": "Tajur & Kekatang",
       "selatan": "Kunyaian",
       "timur": "Pekon Ampai",
       "barat": "Penyandingan & Banding Agung"
     },
-    "deskripsi": "Desa Umbul Limus terbagi ke dalam 3 dusun, 3 RW, dan 7 RT, dengan luas wilayah sekitar 922 HA. Bentang alamnya didominasi perbukitan yang menjadi lahan perkebunan dan persawahan, sementara permukiman warga berada di area yang relatif datar."
+    "deskripsi": "Desa Umbul Limus terbagi ke dalam 3 dusun, 3 RW, dan 7 RT, dengan luas wilayah sekitar 2.158 HA — didominasi lahan perkebunan (±1.750 Ha) dan permukiman (±350 Ha). Berketinggian sekitar 25 mdpl dengan suhu rata-rata 28°C, tanah desa ini tergolong subur dan cocok untuk pertanian serta perkebunan."
   },
   "jarak": [
     {
       "label": "Ibu Kota Kecamatan",
-      "waktu": "± 5 menit",
-      "km": 2.8
+      "waktu": "± 20 menit",
+      "km": 4
     },
     {
       "label": "Ibu Kota Kabupaten",
-      "waktu": "± 2 jam 10 menit",
-      "km": 68
+      "waktu": "± 3 jam",
+      "km": 85
     },
     {
       "label": "Ibu Kota Provinsi",
@@ -115,7 +115,7 @@
         "ada": false
       },
       {
-        "label": "PAUD",
+        "label": "PAUD Cinta Bunda",
         "ada": true
       },
       {

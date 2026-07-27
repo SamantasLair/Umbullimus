@@ -130,7 +130,7 @@
         <div class="role-grid role-grid--2">
           <article class="role-card role-card--dark">
             <h3>BPD (Badan Permusyawaratan Desa)</h3>
-            <p>Lembaga yang membahas dan menyepakati Rancangan Peraturan Desa bersama Kepala Desa, menampung serta menyalurkan aspirasi masyarakat, dan mengawasi kinerja Kepala Desa. BPD juga menyelenggarakan musyawarah desa dan membentuk panitia pemilihan Kepala Desa.</p>
+            <p>Dibentuk sejak 27 Mei 2011 dengan 5 orang anggota, BPD membahas dan menyepakati Rancangan Peraturan Desa bersama Kepala Desa, menampung serta menyalurkan aspirasi masyarakat, dan mengawasi kinerja Kepala Desa. BPD juga menyelenggarakan musyawarah desa dan membentuk panitia pemilihan Kepala Desa.</p>
           </article>
           <article class="role-card role-card--dark">
             <h3>PKK (Pemberdayaan Kesejahteraan Keluarga)</h3>
