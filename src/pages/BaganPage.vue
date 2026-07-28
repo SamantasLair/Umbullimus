@@ -116,9 +116,11 @@ const loading = ref(true)
 const secTree     = ref(null)
 const heroContent = ref(null)
 
+// Tint tipis (bukan wash tebal) supaya foto aparat desa yang asli tetap terlihat jelas,
+// dipadu overlay gelap-ke-transparan (.page-hero__overlay) khusus untuk keterbacaan teks.
 const bgStyle = computed(() => ({
   backgroundImage: data.value.background
-    ? `linear-gradient(135deg, rgba(92,44,22,0.85), rgba(160,120,48,0.85)), url(${data.value.background})`
+    ? `linear-gradient(135deg, rgba(31,62,38,0.45), rgba(92,44,22,0.4)), url(${data.value.background})`
     : 'linear-gradient(135deg, #5c2c16, var(--c-siger-dark))',
 }))
 

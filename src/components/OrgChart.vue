@@ -5,6 +5,7 @@
     </svg>
 
     <div v-for="grp in tiers" :key="grp.tier" class="chart-row">
+      <!-- Kartu gabungan Kaur & Kasi: 2 kolom dalam 1 kartu (kiri Kaur, kanan Kasi) -->
       <div
         v-for="node in grp.nodes"
         :key="node.id"
@@ -12,17 +13,39 @@
         :class="boxClass(node)"
         :ref="el => setNodeRef(node.id, el)"
       >
-        <span v-if="node.tier === 1" class="pf-crown">Pimpinan Tertinggi Desa</span>
-        <img
-          :src="node.foto || fallbackAvatar(node.nama)"
-          :alt="node.nama"
-          class="org-img"
-          :class="imgClass(node)"
-        />
-        <span class="org-jabatan" :class="{ 'org-jabatan--sm': node.tier > 1 }">{{ node.jabatan }}</span>
-        <span class="org-nama" :class="{ 'org-nama--lead': node.tier === 1, 'org-nama--sm': node.tier > 1 }">{{ node.nama }}</span>
-        <span v-if="node.periode" class="org-periode">{{ node.periode }}</span>
-        <p v-if="node.bio" class="org-bio">{{ node.bio }}</p>
+        <template v-if="node.kelompok === 'kaurkasi'">
+          <span class="org-jabatan">Kaur &amp; Kasi</span>
+          <div class="kk-columns">
+            <div class="kk-col">
+              <span class="kk-col-title kk-col-title--kaur">Kaur</span>
+              <div v-for="p in node.kaur" :key="p.jabatan" class="kk-person">
+                <span class="kk-person-jabatan">{{ p.jabatan }}</span>
+                <span class="kk-person-nama">{{ p.nama }}</span>
+              </div>
+            </div>
+            <div class="kk-col">
+              <span class="kk-col-title kk-col-title--kasi">Kasi</span>
+              <div v-for="p in node.kasi" :key="p.jabatan" class="kk-person">
+                <span class="kk-person-jabatan">{{ p.jabatan }}</span>
+                <span class="kk-person-nama">{{ p.nama }}</span>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <template v-else>
+          <span v-if="node.tier === 1" class="pf-crown">Pimpinan Tertinggi Desa</span>
+          <img
+            :src="node.foto || fallbackAvatar(node.nama)"
+            :alt="node.nama"
+            class="org-img"
+            :class="imgClass(node)"
+          />
+          <span class="org-jabatan" :class="{ 'org-jabatan--sm': node.tier > 1 }">{{ node.jabatan }}</span>
+          <span class="org-nama" :class="{ 'org-nama--lead': node.tier === 1, 'org-nama--sm': node.tier > 1 }">{{ node.nama }}</span>
+          <span v-if="node.periode" class="org-periode">{{ node.periode }}</span>
+          <p v-if="node.bio" class="org-bio">{{ node.bio }}</p>
+        </template>
       </div>
     </div>
   </div>
@@ -53,8 +76,7 @@ const setNodeRef = (id, el) => {
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const boxClass = (node) => {
   if (node.tier === 1) return 'org-box--kepala'
-  if (node.kelompok === 'kaur') return 'org-box--kaur'
-  if (node.kelompok === 'kasi') return 'org-box--kasi'
+  if (node.kelompok === 'kaurkasi') return 'org-box--kaurkasi'
   if (node.kelompok === 'kadus') return 'org-box--kadus'
   return 'org-box--staff'
 }
@@ -119,9 +141,12 @@ const computeConnectors = () => {
     for (const { cY, items } of rowGroups.values()) {
       if (!items.length) continue
 
-      // Celah pertengahan antara induk dan baris anak ini
-      let midY = pY + (cY - pY) * 0.5
-      if (cY <= pY) midY = pY + 18
+      // Bus bar dibuat SEGERA di bawah induk (bukan pertengahan) — supaya kalau
+      // ada anak yang "melompati" beberapa tingkat (mis. Bendahara/Operator yang
+      // levelnya di bawah Sekretaris tapi sama-sama anak Kepala Desa), garisnya
+      // sudah menyamping dulu SEBELUM masuk ke baris tingkat yang dilewati,
+      // supaya tidak menembus kartu tingkat tersebut.
+      const midY = pY + 18
 
       // Jika hanya ada 1 anak dan letak X-nya sama persis dengan induk: buat garis lurus
       if (items.length === 1 && Math.abs(items[0].cX - pX) < 3) {
@@ -256,12 +281,40 @@ onUnmounted(() => {
 }
 
 .org-box--staff { border-top: 3px solid var(--c-stone-muted); }
-.org-box--kaur  { border-top: 3px solid var(--c-terra); }
-.org-box--kasi  { border-top: 3px solid var(--c-sage); }
 .org-box--kadus { border-top: 3px solid var(--c-stone); }
+
+/* Kartu gabungan Kaur & Kasi: 2 kolom dalam 1 kartu, kiri Kaur - kanan Kasi */
+.org-box--kaurkasi {
+  width: 320px;
+  border-top: 3px solid var(--c-terra);
+  align-items: stretch;
+}
+.kk-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1rem;
+  margin-top: .6rem;
+  padding-top: .6rem;
+  border-top: 1px dashed var(--c-cream-dark);
+}
+.kk-col { display: flex; flex-direction: column; gap: .55rem; }
+.kk-col:first-child { border-right: 1px dashed var(--c-cream-dark); padding-right: .75rem; }
+.kk-col:last-child { padding-left: .25rem; }
+.kk-col-title {
+  font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  margin-bottom: .1rem;
+}
+.kk-col-title--kaur { color: var(--c-terra); }
+.kk-col-title--kasi { color: var(--c-sage); }
+.kk-person { display: flex; flex-direction: column; }
+.kk-person-jabatan { font-size: .62rem; font-weight: 600; color: var(--c-stone); line-height: 1.3; }
+.kk-person-nama { font-size: .68rem; color: var(--c-stone-muted); font-family: var(--font-serif); }
 
 @media (max-width: 480px) {
   .org-box { width: 100%; max-width: 220px; padding: .9rem .75rem; }
   .org-box--kepala { max-width: 240px; padding: 1.5rem 1.25rem; }
+  .org-box--kaurkasi { max-width: 280px; }
+  .kk-columns { grid-template-columns: 1fr; }
+  .kk-col:first-child { border-right: none; padding-right: 0; border-bottom: 1px dashed var(--c-cream-dark); padding-bottom: .5rem; }
 }
 </style>
