@@ -66,9 +66,6 @@ const imgClass = (node) => {
   return ''
 }
 
-const JOG_GAP = 22    // jarak siku dari tepi baris induk/anak, harus muat di celah antar-baris
-const DETOUR_PAD = 20 // jarak aman di luar kotak yang harus dihindari saat memutar
-
 const rectIn = (el, wrapRect) => {
   const r = el.getBoundingClientRect()
   return {
