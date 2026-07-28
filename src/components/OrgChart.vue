@@ -100,10 +100,10 @@ const computeConnectors = () => {
     const endX = (cRect.left + cRect.right) / 2
     const endY = cRect.top
 
-    // Midpoint Y di celah vertikal antar-baris (di antara bagian bawah induk dan bagian atas anak)
-    let midY = startY + (endY - startY) * 0.5
-    if (endY <= startY) {
-      midY = startY + 18
+    // Midpoint Y disesuaikan dengan posisi anak agar selalu berada di celah kosong tepat di atas baris anak (endY - 24px)
+    let midY = endY - 24
+    if (midY <= startY) {
+      midY = startY + (endY - startY) * 0.5
     }
 
     const d = `M ${startX} ${startY} V ${midY} H ${endX} V ${endY}`
