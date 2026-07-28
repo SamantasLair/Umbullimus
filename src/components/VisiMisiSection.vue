@@ -178,7 +178,7 @@ useScrollExit(
 
 onMounted(async () => {
   try {
-    const res = await fetch('/data/visi-misi/data.json')
+    const res = await fetch('/data/visi-misi/data.json', { cache: 'no-store' })
     if (res.ok) {
       const json = await res.json()
       if (json && typeof json === 'object') {

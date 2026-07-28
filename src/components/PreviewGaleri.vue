@@ -129,7 +129,7 @@ useScrollExit(
 
 onMounted(async () => {
   try {
-    const res = await fetch('/images/galeri/manifest.json')
+    const res = await fetch('/images/galeri/manifest.json', { cache: 'no-store' })
     if (res.ok) {
       const data = await res.json()
       images.value = (data.images || []).slice(0, 6)
@@ -137,7 +137,7 @@ onMounted(async () => {
   } catch {
     // Fallback ke gallery/list.json
     try {
-      const res2 = await fetch('/data/gallery/list.json')
+      const res2 = await fetch('/data/gallery/list.json', { cache: 'no-store' })
       if (res2.ok) {
         const data = await res2.json()
         images.value = data.slice(0, 6).map(d => ({ src: d.gambar, alt: d.judul, kategori: '' }))

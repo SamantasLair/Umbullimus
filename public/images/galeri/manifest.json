@@ -1,64 +1,1196 @@
 {
   "images": [
     {
-      "src": "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=85&w=1200&auto=format&fit=crop",
-      "alt": "Umbul Limus: Mata Air Jernih",
-      "kategori": "alam"
+      "src": "/images/galeri/d01-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
     },
     {
-      "src": "https://images.unsplash.com/photo-1448375240586-882707db888b?q=85&w=1200&auto=format&fit=crop",
-      "alt": "Rimba Tropis yang Asri",
-      "kategori": "alam"
+      "src": "/images/galeri/d01-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
     },
     {
-      "src": "https://images.unsplash.com/photo-1509833903111-9cb142f0e297?q=85&w=1200&auto=format&fit=crop",
-      "alt": "Tenun Tapis: Warisan Budaya",
-      "kategori": "budaya"
+      "src": "/images/galeri/d01-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
     },
     {
-      "src": "https://images.unsplash.com/photo-1439066615861-d1af74d74000?q=85&w=1200&auto=format&fit=crop",
-      "alt": "Air Terjun Way Curup",
-      "kategori": "alam"
+      "src": "/images/galeri/d01-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
     },
     {
-      "src": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=85&w=1200&auto=format&fit=crop",
-      "alt": "Panorama Desa di Pagi Hari",
-      "kategori": "desa"
+      "src": "/images/galeri/d01-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
     },
     {
-      "src": "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=85&w=1200&auto=format&fit=crop",
-      "alt": "Keluarga Berwisata Alam",
-      "kategori": "wisata"
+      "src": "/images/galeri/d01-006.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
     },
     {
-      "src": "https://images.unsplash.com/photo-1540202404-a2f29016b523?q=85&w=1200&auto=format&fit=crop",
-      "alt": "Kolam Renang Alam Alami",
-      "kategori": "wisata"
+      "src": "/images/galeri/d01-007.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
     },
     {
-      "src": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=85&w=1200&auto=format&fit=crop",
-      "alt": "Pegunungan Pesawaran",
-      "kategori": "alam"
+      "src": "/images/galeri/d01-008.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
     },
     {
-      "src": "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=85&w=1200&auto=format&fit=crop",
-      "alt": "Hutan Hujan Tropis",
-      "kategori": "alam"
+      "src": "/images/galeri/d01-009.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
     },
     {
-      "src": "https://images.unsplash.com/photo-1476611338391-6f395a0dd82f?q=85&w=1200&auto=format&fit=crop",
-      "alt": "Sungai Jernih Berbatu",
-      "kategori": "alam"
+      "src": "/images/galeri/d01-010.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
     },
     {
-      "src": "https://images.unsplash.com/photo-1519677584237-752f8853252e?q=85&w=1200&auto=format&fit=crop",
-      "alt": "Upacara Adat Lampung",
-      "kategori": "budaya"
+      "src": "/images/galeri/d01-011.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
     },
     {
-      "src": "https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=85&w=1200&auto=format&fit=crop",
-      "alt": "Air Terjun Tersembunyi",
-      "kategori": "wisata"
+      "src": "/images/galeri/d01-012.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d01-013.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d01-014.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d01-015.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d01-016.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d01-017.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d02-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d02-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d02-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d02-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d02-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d02-006.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d02-007.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d02-008.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d02-009.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d02-010.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d02-011.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-006.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-007.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-008.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-009.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-010.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-011.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-012.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-013.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-014.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-015.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d03-016.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d04-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d04-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d05-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d05-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d05-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d05-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d05-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d05-006.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d05-007.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d05-008.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d05-009.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d05-010.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d05-011.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d05-012.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d05-013.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-006.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-007.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-008.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-009.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-010.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-011.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-012.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-013.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-014.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-015.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-016.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-017.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-018.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-019.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-020.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-021.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-022.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-023.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-024.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-025.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-026.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-027.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-028.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-029.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-030.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-031.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-032.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-033.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-034.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-035.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-036.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-037.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-038.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-039.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-040.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-041.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-042.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-043.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-044.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-045.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-046.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-047.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-048.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d06-049.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-006.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-007.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-008.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-009.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-010.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-011.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-012.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-013.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-014.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-015.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-016.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-017.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-018.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-019.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-020.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-021.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-022.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-023.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-024.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-025.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-026.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-027.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-028.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d07-029.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d08-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d08-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d08-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d08-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d08-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d08-006.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-006.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-007.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-008.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-009.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-010.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-011.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-012.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-013.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-014.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-015.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-016.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d09-017.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d10-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d10-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d10-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d10-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d10-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d11-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d11-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d11-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d11-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d11-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d11-006.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d11-007.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d11-008.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d11-009.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d11-010.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d11-011.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d11-012.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d12-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d12-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d12-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d12-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d12-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d12-006.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d12-007.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d12-008.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d12-009.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d12-010.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d12-011.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d12-012.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d12-013.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-006.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-007.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-008.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-009.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-010.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-011.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-012.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-013.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-014.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-015.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-016.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-017.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-018.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-019.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-020.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-021.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-022.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-023.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d13-024.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d14-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d14-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d14-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-006.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-007.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-008.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-009.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-010.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-011.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-012.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-013.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-014.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-015.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-016.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-017.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-018.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-019.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-020.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-021.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-022.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-023.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-024.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-025.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-026.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-027.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-028.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-029.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-030.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d15-031.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-004.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-005.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-006.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-007.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-008.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-009.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-010.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-011.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-012.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-013.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-014.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-015.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-016.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-017.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-018.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-019.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-020.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-021.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-022.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-023.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-024.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-025.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-026.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-027.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-028.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-029.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-030.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-031.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-032.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-033.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-034.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-035.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-036.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-037.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-038.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-039.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-040.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-041.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-042.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-043.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-044.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-045.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-046.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d16-047.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d17-001.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d17-002.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
+    },
+    {
+      "src": "/images/galeri/d17-003.jpg",
+      "alt": "Dokumentasi Kegiatan KKN Umbul Limus"
     }
   ]
 }

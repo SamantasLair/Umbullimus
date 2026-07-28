@@ -11,16 +11,6 @@
         <p class="galeri-tagline" ref="taglineEl">
           Koleksi momen dan panorama alam, budaya, serta kehidupan masyarakat Desa Umbul Limus.
         </p>
-        <!-- Filter kategori -->
-        <div class="galeri-filters" ref="filterEl">
-          <button
-            v-for="cat in categories"
-            :key="cat"
-            class="filter-btn"
-            :class="{ 'filter-btn--active': activeFilter === cat }"
-            @click="setFilter(cat)"
-          >{{ cat }}</button>
-        </div>
       </div>
     </header>
 
@@ -33,19 +23,19 @@
         </div>
 
         <!-- Error -->
-        <div v-else-if="!filteredImages.length" class="galeri-empty">
+        <div v-else-if="!displayPool.length" class="galeri-empty">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
             <circle cx="8.5" cy="8.5" r="1.5"/>
             <polyline points="21 15 16 10 5 21"/>
           </svg>
-          <p>Belum ada foto untuk kategori ini.</p>
+          <p>Belum ada foto galeri.</p>
         </div>
 
         <!-- Bento Grid -->
         <div v-else class="bento-grid" ref="gridEl">
           <figure
-            v-for="(img, i) in filteredImages"
+            v-for="(img, i) in displayPool"
             :key="img.src + i"
             class="bento-item"
             :class="getBentoClass(i)"
@@ -66,7 +56,6 @@
             />
             <figcaption>
               <span class="bento-caption-title">{{ img.alt }}</span>
-              <span v-if="img.kategori" class="bento-caption-cat">{{ img.kategori }}</span>
             </figcaption>
           </figure>
         </div>
@@ -87,27 +76,27 @@
             <line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         </button>
-        <button class="lb-prev" @click="prevImage" aria-label="Foto sebelumnya" v-if="filteredImages.length > 1">
+        <button class="lb-prev" @click="prevImage" aria-label="Foto sebelumnya" v-if="displayPool.length > 1">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
             <polyline points="15 18 9 12 15 6"/>
           </svg>
         </button>
         <div class="lb-img-wrap">
           <img
-            :src="filteredImages[lightboxIndex]?.src"
-            :alt="filteredImages[lightboxIndex]?.alt"
+            :src="displayPool[lightboxIndex]?.src"
+            :alt="displayPool[lightboxIndex]?.alt"
             class="lb-img"
             loading="eager"
           />
         </div>
-        <button class="lb-next" @click="nextImage" aria-label="Foto berikutnya" v-if="filteredImages.length > 1">
+        <button class="lb-next" @click="nextImage" aria-label="Foto berikutnya" v-if="displayPool.length > 1">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
             <polyline points="9 18 15 12 9 6"/>
           </svg>
         </button>
         <div class="lb-caption">
-          <span class="lb-title">{{ filteredImages[lightboxIndex]?.alt }}</span>
-          <span class="lb-counter">{{ lightboxIndex + 1 }} / {{ filteredImages.length }}</span>
+          <span class="lb-title">{{ displayPool[lightboxIndex]?.alt }}</span>
+          <span class="lb-counter">{{ lightboxIndex + 1 }} / {{ displayPool.length }}</span>
         </div>
       </div>
     </dialog>
@@ -116,7 +105,7 @@
 
 <script setup>
 import anime from 'animejs'
-import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { useCardHover } from '../composables/useCardHover.js'
 import { useScrollExit } from '../composables/useScrollExit.js'
 
@@ -125,9 +114,65 @@ const { onEnter, onLeave } = useCardHover({ lift: -6, scale: 1.015 })
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const allImages   = ref([])
+const displayPool = ref([]) // subset acak yang tampil & berputar
 const loading     = ref(true)
-const activeFilter = ref('Semua')
 const lightboxIndex = ref(null)
+
+// ─── Galeri Acak & Berputar ───────────────────────────────────────────────────
+const DISPLAY_COUNT = 24
+const ROTATE_INTERVAL_MS = 6500
+let rotateTimer = null
+
+const shuffle = (arr) => {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
+const pickDisplayPool = () => {
+  displayPool.value = shuffle(allImages.value).slice(0, Math.min(DISPLAY_COUNT, allImages.value.length))
+}
+
+const rotateOneImage = async () => {
+  if (lightboxIndex.value !== null) return
+  if (allImages.value.length <= displayPool.value.length) return
+
+  const shownSrcs = new Set(displayPool.value.map(img => img.src))
+  const candidates = allImages.value.filter(img => !shownSrcs.has(img.src))
+  if (!candidates.length) return
+
+  const newImg = candidates[Math.floor(Math.random() * candidates.length)]
+  const idx = Math.floor(Math.random() * displayPool.value.length)
+  displayPool.value.splice(idx, 1, newImg)
+
+  await nextTick()
+  const el = itemRefs.value[idx]
+  if (el) {
+    anime.remove(el)
+    anime({
+      targets: el,
+      opacity: [0, 1],
+      scale: [0.92, 1],
+      duration: 650,
+      easing: 'easeOutExpo',
+    })
+  }
+}
+
+const startRotation = () => {
+  stopRotation()
+  rotateTimer = setInterval(rotateOneImage, ROTATE_INTERVAL_MS)
+}
+
+const stopRotation = () => {
+  if (rotateTimer) {
+    clearInterval(rotateTimer)
+    rotateTimer = null
+  }
+}
 
 const sectionRef = ref(null)
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
@@ -135,7 +180,6 @@ const headerEl = ref(null)
 const labelEl  = ref(null)
 const titleEl  = ref(null)
 const taglineEl = ref(null)
-const filterEl = ref(null)
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const gridEl   = ref(null)
 const dialogEl = ref(null)
@@ -161,25 +205,6 @@ const BENTO_PATTERN = [
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const getBentoClass = i => BENTO_PATTERN[i % BENTO_PATTERN.length]
 
-// ─── Kategori & Filter ────────────────────────────────────────────────────────
-// biome-ignore lint/correctness/noUnusedVariables: Used in template
-const categories = computed(() => {
-  const cats = new Set(allImages.value.map(img => img.kategori).filter(Boolean))
-  return ['Semua', ...cats]
-})
-
-const filteredImages = computed(() => {
-  if (activeFilter.value === 'Semua') return allImages.value
-  return allImages.value.filter(img => img.kategori === activeFilter.value)
-})
-
-// biome-ignore lint/correctness/noUnusedVariables: Used in template
-const setFilter = async (cat) => {
-  activeFilter.value = cat
-  await nextTick()
-  animateGrid()
-}
-
 // ─── Lightbox ─────────────────────────────────────────────────────────────────
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const openLightbox = (i) => {
@@ -196,11 +221,11 @@ const closeLightbox = () => {
 }
 
 const nextImage = () => {
-  lightboxIndex.value = (lightboxIndex.value + 1) % filteredImages.value.length
+  lightboxIndex.value = (lightboxIndex.value + 1) % displayPool.value.length
 }
 
 const prevImage = () => {
-  const len = filteredImages.value.length
+  const len = displayPool.value.length
   lightboxIndex.value = (lightboxIndex.value - 1 + len) % len
 }
 
@@ -264,19 +289,10 @@ onMounted(async () => {
       translateY: [16, 0],
       duration: 700,
     }, '-=500')
-    .add({
-      targets: filterEl.value?.querySelectorAll('.filter-btn'),
-      opacity: [0, 1],
-      translateY: [10, 0],
-      scale: [0.92, 1],
-      delay: anime.stagger(70),
-      duration: 500,
-      easing: 'easeOutBack',
-    }, '-=400')
 
   // Load images
   try {
-    const res = await fetch('/images/galeri/manifest.json')
+    const res = await fetch('/images/galeri/manifest.json', { cache: 'no-store' })
     if (res.ok) {
       const data = await res.json()
       allImages.value = data.images || []
@@ -284,13 +300,12 @@ onMounted(async () => {
   } catch {
     // Fallback ke gallery/list.json
     try {
-      const res2 = await fetch('/data/gallery/list.json')
+      const res2 = await fetch('/data/gallery/list.json', { cache: 'no-store' })
       if (res2.ok) {
         const data = await res2.json()
         allImages.value = data.map(d => ({
           src: d.gambar,
           alt: d.judul,
-          kategori: 'alam'
         }))
       }
     } catch (e) {
@@ -300,6 +315,9 @@ onMounted(async () => {
     loading.value = false
   }
 
+  pickDisplayPool()
+  startRotation()
+
   await nextTick()
   animateGrid()
 })
@@ -307,6 +325,7 @@ onMounted(async () => {
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKey)
   document.body.style.overflow = ''
+  stopRotation()
 })
 </script>
 
@@ -372,30 +391,6 @@ onUnmounted(() => {
   opacity: 0;
 }
 
-/* Filters */
-.galeri-filters { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-.filter-btn {
-  padding: 0.45rem 1.1rem;
-  border-radius: 50px;
-  border: 1.5px solid rgba(237,250,233,0.2);
-  background: transparent;
-  color: rgba(237,250,233,0.55);
-  font-size: 0.8rem; font-weight: 500;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  opacity: 0;
-  font-family: var(--font-sans);
-}
-.filter-btn:hover {
-  border-color: rgba(212,168,83,0.5);
-  color: var(--c-siger);
-}
-.filter-btn--active {
-  border-color: var(--c-siger);
-  background: rgba(212,168,83,0.15);
-  color: var(--c-siger);
-}
-
 /* ─── Bento Grid Section ──────────────────────────────────────── */
 .galeri-section {
   padding: 3rem var(--sp-md) 5rem;
@@ -452,13 +447,6 @@ onUnmounted(() => {
   font-size: 0.95rem;
   color: var(--c-cream);
   font-weight: 600;
-}
-.bento-caption-cat {
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--c-siger);
 }
 
 /* ─── 8 Bento Patterns ────────────────────────────────────────── */

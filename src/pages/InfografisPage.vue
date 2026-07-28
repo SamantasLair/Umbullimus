@@ -286,7 +286,7 @@ const makeObserver = (fn, reset, threshold = 0.15) =>
 
 onMounted(async () => {
   try {
-    const res = await fetch('/data/infografis/data.json')
+    const res = await fetch('/data/infografis/data.json', { cache: 'no-store' })
     if (res.ok) data.value = await res.json()
   } catch (e) {
     console.error('Gagal memuat infografis:', e)

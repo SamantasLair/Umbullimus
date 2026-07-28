@@ -4,69 +4,122 @@
   "kabupaten": "Pesawaran",
   "provinsi": "Lampung",
   "background": "https://images.unsplash.com/photo-1629837920117-0243ee7d4c1b?q=80&w=1600&auto=format&fit=crop",
-  "kepala_desa": {
-    "nama": "Sudirman, S.Pd",
-    "jabatan": "Kepala Desa",
-    "periode": "2022 – 2028",
-    "bio": "Memimpin desa dengan visi pengembangan pariwisata berbasis masyarakat dan pelestarian budaya lokal Lampung.",
-    "foto": "https://ui-avatars.com/api/?name=Sudirman&background=1f3e26&color=fff&size=200"
-  },
-  "sekretaris_desa": {
-    "nama": "Sari Dewi, S.E",
-    "jabatan": "Sekretaris Desa",
-    "periode": "2022 – 2028",
-    "bio": "Bertanggung jawab atas administrasi dan koordinasi antar perangkat desa untuk kelancaran pelayanan publik.",
-    "foto": "https://ui-avatars.com/api/?name=Sari+Dewi&background=2d5a3f&color=fff&size=200"
-  },
-  "kaur": [
+  "struktur": [
     {
-      "nama": "Hendra Saputra",
+      "id": 1,
+      "tier": 1,
+      "parent": 0,
+      "jabatan": "Kepala Desa",
+      "nama": "Ismail Alvian, S.IP.",
+      "periode": "2022 – 2028",
+      "bio": "Memimpin desa dengan visi pengembangan pariwisata berbasis masyarakat dan pelestarian budaya lokal Lampung.",
+      "foto": "https://ui-avatars.com/api/?name=Ismail+Alvian&background=1f3e26&color=fff&size=200"
+    },
+    {
+      "id": 2,
+      "tier": 2,
+      "parent": 1,
+      "jabatan": "Sekretaris Desa",
+      "nama": "Thohir",
+      "periode": "2022 – 2028",
+      "foto": "https://ui-avatars.com/api/?name=Thohir&background=2d5a3f&color=fff&size=200"
+    },
+    {
+      "id": 3,
+      "tier": 3,
+      "parent": 1,
+      "jabatan": "Bendahara Desa",
+      "nama": "Rudy",
+      "foto": "https://ui-avatars.com/api/?name=Rudy&background=2d5a3f&color=fff&size=200"
+    },
+    {
+      "id": 4,
+      "tier": 3,
+      "parent": 1,
+      "jabatan": "Operator Desa",
+      "nama": "Alin",
+      "foto": "https://ui-avatars.com/api/?name=Alin&background=2d5a3f&color=fff&size=200"
+    },
+    {
+      "id": 5,
+      "tier": 4,
+      "parent": 1,
+      "kelompok": "kaur",
       "jabatan": "Kaur Umum & Tata Usaha",
-      "foto": "https://ui-avatars.com/api/?name=Hendra+Saputra&background=2d5a3f&color=fff&size=200"
+      "nama": "Pak/Bu Kaur Umum & Tata Usaha",
+      "foto": "https://ui-avatars.com/api/?name=Kaur+Umum+Tata+Usaha&background=2d5a3f&color=fff&size=200"
     },
     {
-      "nama": "Ratna Wulandari",
+      "id": 6,
+      "tier": 4,
+      "parent": 1,
+      "kelompok": "kaur",
       "jabatan": "Kaur Keuangan",
-      "foto": "https://ui-avatars.com/api/?name=Ratna+Wulandari&background=2d5a3f&color=fff&size=200"
+      "nama": "Pak/Bu Kaur Keuangan",
+      "foto": "https://ui-avatars.com/api/?name=Kaur+Keuangan&background=2d5a3f&color=fff&size=200"
     },
     {
-      "nama": "Agus Santoso",
+      "id": 7,
+      "tier": 4,
+      "parent": 1,
+      "kelompok": "kaur",
       "jabatan": "Kaur Perencanaan",
-      "foto": "https://ui-avatars.com/api/?name=Agus+Santoso&background=2d5a3f&color=fff&size=200"
-    }
-  ],
-  "kasi": [
+      "nama": "Pak/Bu Kaur Perencanaan",
+      "foto": "https://ui-avatars.com/api/?name=Kaur+Perencanaan&background=2d5a3f&color=fff&size=200"
+    },
     {
-      "nama": "Dedi Kurniawan",
+      "id": 8,
+      "tier": 4,
+      "parent": 1,
+      "kelompok": "kasi",
       "jabatan": "Kasi Pemerintahan",
-      "foto": "https://ui-avatars.com/api/?name=Dedi+Kurniawan&background=2d5a3f&color=fff&size=200"
+      "nama": "Pak/Bu Kasi Pemerintahan",
+      "foto": "https://ui-avatars.com/api/?name=Kasi+Pemerintahan&background=2d5a3f&color=fff&size=200"
     },
     {
-      "nama": "Lestari Ningrum",
+      "id": 9,
+      "tier": 4,
+      "parent": 1,
+      "kelompok": "kasi",
       "jabatan": "Kasi Kesejahteraan",
-      "foto": "https://ui-avatars.com/api/?name=Lestari+Ningrum&background=2d5a3f&color=fff&size=200"
+      "nama": "Pak/Bu Kasi Kesejahteraan",
+      "foto": "https://ui-avatars.com/api/?name=Kasi+Kesejahteraan&background=2d5a3f&color=fff&size=200"
     },
     {
-      "nama": "Wahyu Pratama",
+      "id": 10,
+      "tier": 4,
+      "parent": 1,
+      "kelompok": "kasi",
       "jabatan": "Kasi Pelayanan",
-      "foto": "https://ui-avatars.com/api/?name=Wahyu+Pratama&background=2d5a3f&color=fff&size=200"
-    }
-  ],
-  "kadus": [
+      "nama": "Pak/Bu Kasi Pelayanan",
+      "foto": "https://ui-avatars.com/api/?name=Kasi+Pelayanan&background=2d5a3f&color=fff&size=200"
+    },
     {
-      "nama": "Rudi Hartono",
+      "id": 11,
+      "tier": 5,
+      "parent": 2,
+      "kelompok": "kadus",
       "jabatan": "Kepala Dusun I",
-      "foto": "https://ui-avatars.com/api/?name=Rudi+Hartono&background=2d5a3f&color=fff&size=200"
+      "nama": "Pak/Bu Kepala Dusun I",
+      "foto": "https://ui-avatars.com/api/?name=Kepala+Dusun+I&background=2d5a3f&color=fff&size=200"
     },
     {
-      "nama": "Eko Prasetyo",
+      "id": 12,
+      "tier": 5,
+      "parent": 2,
+      "kelompok": "kadus",
       "jabatan": "Kepala Dusun II",
-      "foto": "https://ui-avatars.com/api/?name=Eko+Prasetyo&background=2d5a3f&color=fff&size=200"
+      "nama": "Pak/Bu Kepala Dusun II",
+      "foto": "https://ui-avatars.com/api/?name=Kepala+Dusun+II&background=2d5a3f&color=fff&size=200"
     },
     {
-      "nama": "Mira Susanti",
+      "id": 13,
+      "tier": 5,
+      "parent": 2,
+      "kelompok": "kadus",
       "jabatan": "Kepala Dusun III",
-      "foto": "https://ui-avatars.com/api/?name=Mira+Susanti&background=2d5a3f&color=fff&size=200"
+      "nama": "Pak/Bu Kepala Dusun III",
+      "foto": "https://ui-avatars.com/api/?name=Kepala+Dusun+III&background=2d5a3f&color=fff&size=200"
     }
   ],
   "tokoh_adat": [

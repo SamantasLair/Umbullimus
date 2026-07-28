@@ -133,7 +133,7 @@ useScrollExit(
 
 onMounted(async () => {
   try {
-    const res = await fetch('/data/profil/data.json')
+    const res = await fetch('/data/profil/data.json', { cache: 'no-store' })
     if (res.ok) {
       data.value = await res.json()
       // Update stats dari data JSON

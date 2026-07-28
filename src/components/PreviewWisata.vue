@@ -112,7 +112,7 @@ useScrollExit(
 
 onMounted(async () => {
   try {
-    const res = await fetch('/data/tempat-wisata/list.json')
+    const res = await fetch('/data/tempat-wisata/list.json', { cache: 'no-store' })
     if (res.ok) {
       const json = await res.json()
       places.value = json.items || []
