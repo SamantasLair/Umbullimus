@@ -16,7 +16,7 @@
             v-for="node in sub.nodes"
             :key="node.id"
             class="org-box"
-            :class="[boxClass(node), { 'org-box--branch-right': node.tier > 1 && parentIds.has(node.id) }]"
+            :class="[boxClass(node)]"
             :ref="el => setNodeRef(node.id, el)"
           >
             <template v-if="node.kelompok === 'kaurkasi'">
@@ -79,6 +79,9 @@ const nodeEls = {}
 const size = ref({ w: 0, h: 0 })
 const connectors = ref([])
 
+// Id yang jadi induk dari orang lain (punya cabang sendiri)
+const parentIds = computed(() => new Set(props.items.filter(n => n.parent).map(n => n.parent)))
+
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const tiers = computed(() => {
   const rawTiers = groupByTier(props.items)
@@ -93,7 +96,8 @@ const tiers = computed(() => {
     const subGroups = [...parentMap.entries()].map(([parentId, nodes]) => ({
       parentId,
       nodes,
-      isRightBranch: parentId === 2,
+      // Rata kanan jika induknya adalah Sekdes (parentId===2) atau kartunya adalah Sekdes sendiri (node.id===2)
+      isRightBranch: parentId === 2 || nodes.some(n => parentIds.value.has(n.id) && n.id === 2),
     }))
 
     return {
@@ -103,11 +107,6 @@ const tiers = computed(() => {
   })
 })
 
-// Id yang jadi induk dari orang lain (punya cabang sendiri)
-// biome-ignore lint/correctness/noUnusedVariables: Used in template
-const parentIds = computed(() => new Set(props.items.filter(n => n.parent).map(n => n.parent)))
-
-// biome-ignore lint/correctness/noUnusedVariables: Used in template
 const setNodeRef = (id, el) => {
   if (el) nodeEls[id] = el
 }
