@@ -61,8 +61,10 @@ let hasEntered   = false
 
 const animateIn = async () => {
   if (hasEntered) return
-  hasEntered = true
   await nextTick()
+  const validCards = cardEls.value.filter(Boolean)
+  if (!validCards.length) return
+  hasEntered = true
 
   anime.timeline({ easing: 'easeOutExpo' })
     .add({
@@ -91,7 +93,7 @@ const animateIn = async () => {
       duration: 600,
     }, '-=350')
     .add({
-      targets: cardEls.value.filter(Boolean),
+      targets: validCards,
       opacity: [0, 1],
       translateY: [30, 0],
       scale: [0.94, 1],

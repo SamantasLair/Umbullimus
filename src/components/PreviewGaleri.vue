@@ -83,8 +83,10 @@ const openLightbox = (_i) => {
 
 const animateIn = async () => {
   if (hasEntered) return
-  hasEntered = true
   await nextTick()
+  const validItems = itemEls.value.filter(Boolean)
+  if (!validItems.length) return
+  hasEntered = true
 
   anime.timeline({ easing: 'easeOutExpo' })
     .add({
@@ -108,7 +110,7 @@ const animateIn = async () => {
       easing: 'easeOutQuart',
     }, '-=450')
     .add({
-      targets: itemEls.value.filter(Boolean),
+      targets: validItems,
       opacity: [0, 1],
       scale: [0.88, 1.02, 1],
       rotateZ: (_, i) => [i % 2 === 0 ? -1.5 : 1.5, 0],
@@ -129,22 +131,22 @@ useScrollExit(
 
 onMounted(async () => {
   try {
+    let list = []
     const res = await fetch('/images/galeri/manifest.json', { cache: 'no-store' })
     if (res.ok) {
       const data = await res.json()
-      images.value = (data.images || []).slice(0, 6)
-    }
-  } catch {
-    // Fallback ke gallery/list.json
-    try {
+      list = data.images || []
+    } else {
       const res2 = await fetch('/data/gallery/list.json', { cache: 'no-store' })
       if (res2.ok) {
-        const data = await res2.json()
-        images.value = data.slice(0, 6).map(d => ({ src: d.gambar, alt: d.judul, kategori: '' }))
+        const data2 = await res2.json()
+        const raw = Array.isArray(data2) ? data2 : data2.images || []
+        list = raw.map(d => ({ src: d.src || d.gambar, alt: d.alt || d.judul, kategori: d.kategori || '' }))
       }
-    } catch {
-      console.error('Gagal memuat gambar galeri')
     }
+    images.value = list.slice(0, 6)
+  } catch (e) {
+    console.error('Gagal memuat gambar galeri:', e)
   } finally {
     loading.value = false
   }
@@ -153,7 +155,7 @@ onMounted(async () => {
 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) animateIn() })
-  }, { threshold: 0.12 })
+  }, { threshold: 0.1 })
   if (sectionRef.value) observer.observe(sectionRef.value)
 })
 </script>
