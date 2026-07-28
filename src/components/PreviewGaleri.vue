@@ -56,6 +56,7 @@ import { nextTick, onMounted, ref } from 'vue'
 import { useCardHover } from '../composables/useCardHover.js'
 import { useScrollExit } from '../composables/useScrollExit.js'
 
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const { onEnter, onLeave } = useCardHover({ lift: -6, scale: 1.015 })
 const images  = ref([])
 const loading = ref(true)

@@ -46,6 +46,7 @@ import { nextTick, onMounted, ref } from 'vue'
 import { useCardHover } from '../composables/useCardHover.js'
 import { useScrollExit } from '../composables/useScrollExit.js'
 
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const { onEnter, onLeave } = useCardHover()
 const places  = ref([])
 const loading = ref(true)
@@ -227,6 +228,7 @@ onMounted(async () => {
   line-height: 1.6;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
