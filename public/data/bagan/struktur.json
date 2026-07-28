@@ -27,7 +27,7 @@
     {
       "id": 3,
       "tier": 3,
-      "parent": 1,
+      "parent": 2,
       "jabatan": "Bendahara Desa",
       "nama": "Rudy",
       "foto": "https://ui-avatars.com/api/?name=Rudy&background=2d5a3f&color=fff&size=200"
@@ -35,7 +35,7 @@
     {
       "id": 4,
       "tier": 3,
-      "parent": 1,
+      "parent": 2,
       "jabatan": "Operator Desa",
       "nama": "Alin",
       "foto": "https://ui-avatars.com/api/?name=Alin&background=2d5a3f&color=fff&size=200"
@@ -43,7 +43,7 @@
     {
       "id": 5,
       "tier": 4,
-      "parent": 1,
+      "parent": 2,
       "kelompok": "kaur",
       "jabatan": "Kaur Umum & Tata Usaha",
       "nama": "Pak/Bu Kaur Umum & Tata Usaha",
@@ -52,7 +52,7 @@
     {
       "id": 6,
       "tier": 4,
-      "parent": 1,
+      "parent": 2,
       "kelompok": "kaur",
       "jabatan": "Kaur Keuangan",
       "nama": "Pak/Bu Kaur Keuangan",
@@ -61,7 +61,7 @@
     {
       "id": 7,
       "tier": 4,
-      "parent": 1,
+      "parent": 2,
       "kelompok": "kaur",
       "jabatan": "Kaur Perencanaan",
       "nama": "Pak/Bu Kaur Perencanaan",
@@ -70,7 +70,7 @@
     {
       "id": 8,
       "tier": 4,
-      "parent": 1,
+      "parent": 2,
       "kelompok": "kasi",
       "jabatan": "Kasi Pemerintahan",
       "nama": "Pak/Bu Kasi Pemerintahan",
@@ -79,7 +79,7 @@
     {
       "id": 9,
       "tier": 4,
-      "parent": 1,
+      "parent": 2,
       "kelompok": "kasi",
       "jabatan": "Kasi Kesejahteraan",
       "nama": "Pak/Bu Kasi Kesejahteraan",
@@ -88,7 +88,7 @@
     {
       "id": 10,
       "tier": 4,
-      "parent": 1,
+      "parent": 2,
       "kelompok": "kasi",
       "jabatan": "Kasi Pelayanan",
       "nama": "Pak/Bu Kasi Pelayanan",

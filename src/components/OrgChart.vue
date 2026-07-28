@@ -85,30 +85,71 @@ const computeConnectors = () => {
 
   const paths = []
 
+  // Grouping anak berdasarkan parentId
+  const parentMap = new Map()
   for (const node of props.items) {
-    if (!node.parent) continue // 0 = akar, tidak punya garis ke atas
+    if (!node.parent) continue
+    if (!parentMap.has(node.parent)) parentMap.set(node.parent, [])
+    parentMap.get(node.parent).push(node)
+  }
 
-    const parentEl = nodeEls[node.parent]
-    const childEl = nodeEls[node.id]
-    if (!parentEl || !childEl) continue
+  for (const [parentId, children] of parentMap.entries()) {
+    const parentEl = nodeEls[parentId]
+    if (!parentEl) continue
 
     const pRect = rectIn(parentEl, wrapRect)
-    const cRect = rectIn(childEl, wrapRect)
+    const pX = (pRect.left + pRect.right) / 2
+    const pY = pRect.bottom
 
-    const startX = (pRect.left + pRect.right) / 2
-    const startY = pRect.bottom
-    const endX = (cRect.left + cRect.right) / 2
-    const endY = cRect.top
+    // Kelompokkan anak berdasarkan posisi baris vertikal (tier/row)
+    const rowGroups = new Map()
+    for (const child of children) {
+      const cEl = nodeEls[child.id]
+      if (!cEl) continue
+      const cRect = rectIn(cEl, wrapRect)
+      const cX = (cRect.left + cRect.right) / 2
+      const cY = cRect.top
 
-    // Midpoint Y disesuaikan dengan posisi anak agar selalu berada di celah kosong tepat di atas baris anak (endY - 24px)
-    let midY = endY - 24
-    if (midY <= startY) {
-      midY = startY + (endY - startY) * 0.5
+      // Bulatkan cY ke kelipatan 30px untuk mengelompokkan anak di baris visual yang sama
+      const rowKey = Math.round(cY / 30) * 30
+      if (!rowGroups.has(rowKey)) rowGroups.set(rowKey, { cY, items: [] })
+      rowGroups.get(rowKey).items.push({ id: child.id, cX })
     }
 
-    const d = `M ${startX} ${startY} V ${midY} H ${endX} V ${endY}`
-    paths.push({ id: node.id, d })
+    for (const { cY, items } of rowGroups.values()) {
+      if (!items.length) continue
+
+      // Celah pertengahan antara induk dan baris anak ini
+      let midY = pY + (cY - pY) * 0.5
+      if (cY <= pY) midY = pY + 18
+
+      // Jika hanya ada 1 anak dan letak X-nya sama persis dengan induk: buat garis lurus
+      if (items.length === 1 && Math.abs(items[0].cX - pX) < 3) {
+        paths.push({
+          id: `${parentId}-${items[0].id}`,
+          d: `M ${pX} ${pY} V ${cY}`,
+        })
+        continue
+      }
+
+      // Cari batas X terkiri & terkanan untuk membuat 1 bus bar horizontal bersama
+      const allX = items.map(it => it.cX)
+      const minX = Math.min(pX, ...allX)
+      const maxX = Math.max(pX, ...allX)
+
+      // Jalur tunggal induk -> bus bar -> cabang anak
+      let d = `M ${pX} ${pY} V ${midY} M ${minX} ${midY} H ${maxX}`
+      for (const it of items) {
+        d += ` M ${it.cX} ${midY} V ${cY}`
+      }
+
+      paths.push({
+        id: `${parentId}-row-${Math.round(cY)}`,
+        d,
+      })
+    }
   }
+
   connectors.value = paths
 }
 
