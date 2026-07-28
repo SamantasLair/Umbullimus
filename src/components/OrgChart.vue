@@ -1,51 +1,65 @@
 <template>
-  <div class="chart-wrap" ref="wrapRef">
-    <svg class="chart-lines" :width="size.w" :height="size.h" aria-hidden="true">
-      <path v-for="c in connectors" :key="c.id" :d="c.d" />
-    </svg>
+  <div class="chart-scroll">
+    <div class="chart-wrap" ref="wrapRef">
+      <svg class="chart-lines" :width="size.w" :height="size.h" aria-hidden="true">
+        <path v-for="c in connectors" :key="c.id" :d="c.d" />
+      </svg>
 
-    <div v-for="grp in tiers" :key="grp.tier" class="chart-row">
-      <!-- Kartu gabungan Kaur & Kasi: 2 kolom dalam 1 kartu (kiri Kaur, kanan Kasi) -->
-      <div
-        v-for="node in grp.nodes"
-        :key="node.id"
-        class="org-box"
-        :class="boxClass(node)"
-        :ref="el => setNodeRef(node.id, el)"
-      >
-        <template v-if="node.kelompok === 'kaurkasi'">
-          <span class="org-jabatan">Kaur &amp; Kasi</span>
-          <div class="kk-columns">
-            <div class="kk-col">
-              <span class="kk-col-title kk-col-title--kaur">Kaur</span>
-              <div v-for="p in node.kaur" :key="p.jabatan" class="kk-person">
-                <span class="kk-person-jabatan">{{ p.jabatan }}</span>
-                <span class="kk-person-nama">{{ p.nama }}</span>
+      <div v-for="grp in tiers" :key="grp.tier" class="chart-row">
+        <div
+          v-for="sub in grp.subGroups"
+          :key="sub.parentId"
+          class="chart-subgroup"
+          :class="{ 'chart-subgroup--right': sub.isRightBranch }"
+        >
+          <div
+            v-for="node in sub.nodes"
+            :key="node.id"
+            class="org-box"
+            :class="[boxClass(node), { 'org-box--branch-right': node.tier > 1 && parentIds.has(node.id) }]"
+            :ref="el => setNodeRef(node.id, el)"
+          >
+            <template v-if="node.kelompok === 'kaurkasi'">
+              <span class="org-jabatan">Kaur &amp; Kasi</span>
+              <div class="kk-columns">
+                <div class="kk-col">
+                  <span class="kk-col-title kk-col-title--kaur">Kaur</span>
+                  <div v-for="p in node.kaur" :key="p.jabatan" class="kk-person">
+                    <img :src="p.foto || fallbackAvatar(p.nama)" :alt="p.nama" class="kk-person-img" />
+                    <div class="kk-person-text">
+                      <span class="kk-person-jabatan">{{ p.jabatan }}</span>
+                      <span class="kk-person-nama">{{ p.nama }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="kk-col">
+                  <span class="kk-col-title kk-col-title--kasi">Kasi</span>
+                  <div v-for="p in node.kasi" :key="p.jabatan" class="kk-person">
+                    <img :src="p.foto || fallbackAvatar(p.nama)" :alt="p.nama" class="kk-person-img" />
+                    <div class="kk-person-text">
+                      <span class="kk-person-jabatan">{{ p.jabatan }}</span>
+                      <span class="kk-person-nama">{{ p.nama }}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="kk-col">
-              <span class="kk-col-title kk-col-title--kasi">Kasi</span>
-              <div v-for="p in node.kasi" :key="p.jabatan" class="kk-person">
-                <span class="kk-person-jabatan">{{ p.jabatan }}</span>
-                <span class="kk-person-nama">{{ p.nama }}</span>
-              </div>
-            </div>
+            </template>
+
+            <template v-else>
+              <span v-if="node.tier === 1" class="pf-crown">Pimpinan Tertinggi Desa</span>
+              <img
+                :src="node.foto || fallbackAvatar(node.nama)"
+                :alt="node.nama"
+                class="org-img"
+                :class="imgClass(node)"
+              />
+              <span class="org-jabatan" :class="{ 'org-jabatan--sm': node.tier > 1 }">{{ node.jabatan }}</span>
+              <span class="org-nama" :class="{ 'org-nama--lead': node.tier === 1, 'org-nama--sm': node.tier > 1 }">{{ node.nama }}</span>
+              <span v-if="node.periode" class="org-periode">{{ node.periode }}</span>
+              <p v-if="node.bio" class="org-bio">{{ node.bio }}</p>
+            </template>
           </div>
-        </template>
-
-        <template v-else>
-          <span v-if="node.tier === 1" class="pf-crown">Pimpinan Tertinggi Desa</span>
-          <img
-            :src="node.foto || fallbackAvatar(node.nama)"
-            :alt="node.nama"
-            class="org-img"
-            :class="imgClass(node)"
-          />
-          <span class="org-jabatan" :class="{ 'org-jabatan--sm': node.tier > 1 }">{{ node.jabatan }}</span>
-          <span class="org-nama" :class="{ 'org-nama--lead': node.tier === 1, 'org-nama--sm': node.tier > 1 }">{{ node.nama }}</span>
-          <span v-if="node.periode" class="org-periode">{{ node.periode }}</span>
-          <p v-if="node.bio" class="org-bio">{{ node.bio }}</p>
-        </template>
+        </div>
       </div>
     </div>
   </div>
@@ -66,7 +80,32 @@ const size = ref({ w: 0, h: 0 })
 const connectors = ref([])
 
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
-const tiers = computed(() => groupByTier(props.items))
+const tiers = computed(() => {
+  const rawTiers = groupByTier(props.items)
+  return rawTiers.map(grp => {
+    const parentMap = new Map()
+    for (const node of grp.nodes) {
+      const pId = node.parent || 0
+      if (!parentMap.has(pId)) parentMap.set(pId, [])
+      parentMap.get(pId).push(node)
+    }
+
+    const subGroups = [...parentMap.entries()].map(([parentId, nodes]) => ({
+      parentId,
+      nodes,
+      isRightBranch: parentId === 2,
+    }))
+
+    return {
+      tier: grp.tier,
+      subGroups,
+    }
+  })
+})
+
+// Id yang jadi induk dari orang lain (punya cabang sendiri)
+// biome-ignore lint/correctness/noUnusedVariables: Used in template
+const parentIds = computed(() => new Set(props.items.filter(n => n.parent).map(n => n.parent)))
 
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const setNodeRef = (id, el) => {
@@ -132,7 +171,6 @@ const computeConnectors = () => {
       const cX = (cRect.left + cRect.right) / 2
       const cY = cRect.top
 
-      // Bulatkan cY ke kelipatan 30px untuk mengelompokkan anak di baris visual yang sama
       const rowKey = Math.round(cY / 30) * 30
       if (!rowGroups.has(rowKey)) rowGroups.set(rowKey, { cY, items: [] })
       rowGroups.get(rowKey).items.push({ id: child.id, cX })
@@ -141,14 +179,9 @@ const computeConnectors = () => {
     for (const { cY, items } of rowGroups.values()) {
       if (!items.length) continue
 
-      // Bus bar dibuat SEGERA di bawah induk (bukan pertengahan) — supaya kalau
-      // ada anak yang "melompati" beberapa tingkat (mis. Bendahara/Operator yang
-      // levelnya di bawah Sekretaris tapi sama-sama anak Kepala Desa), garisnya
-      // sudah menyamping dulu SEBELUM masuk ke baris tingkat yang dilewati,
-      // supaya tidak menembus kartu tingkat tersebut.
-      const midY = pY + 18
+      let midY = pY + (cY - pY) * 0.5
+      if (cY <= pY) midY = pY + 18
 
-      // Jika hanya ada 1 anak dan letak X-nya sama persis dengan induk: buat garis lurus
       if (items.length === 1 && Math.abs(items[0].cX - pX) < 3) {
         paths.push({
           id: `${parentId}-${items[0].id}`,
@@ -157,12 +190,10 @@ const computeConnectors = () => {
         continue
       }
 
-      // Cari batas X terkiri & terkanan untuk membuat 1 bus bar horizontal bersama
       const allX = items.map(it => it.cX)
       const minX = Math.min(pX, ...allX)
       const maxX = Math.max(pX, ...allX)
 
-      // Jalur tunggal induk -> bus bar -> cabang anak
       let d = `M ${pX} ${pY} V ${midY} M ${minX} ${midY} H ${maxX}`
       for (const it of items) {
         d += ` M ${it.cX} ${midY} V ${cY}`
@@ -203,6 +234,10 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.chart-scroll {
+  width: 100%;
+}
+
 .chart-wrap {
   position: relative;
   padding-left: 0;
@@ -235,6 +270,15 @@ onUnmounted(() => {
   margin-top: 3.5rem;
 }
 .chart-row:first-child { margin-top: 0; }
+
+.chart-subgroup {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+.chart-subgroup--right {
+  margin-left: auto;
+}
 
 /* ─── Boxes ── */
 .org-box {
@@ -283,38 +327,63 @@ onUnmounted(() => {
 .org-box--staff { border-top: 3px solid var(--c-stone-muted); }
 .org-box--kadus { border-top: 3px solid var(--c-stone); }
 
-/* Kartu gabungan Kaur & Kasi: 2 kolom dalam 1 kartu, kiri Kaur - kanan Kasi */
+/* Node yang punya cabang sendiri (mis. Sekdes) digeser ke kanan barisnya,
+   supaya garis komandonya ke bawah tidak menabrak kartu/garis lain yang
+   kebetulan sebaris (mis. Bendahara & Operator). */
+.org-box--branch-right { margin-left: auto; }
+
+/* Kartu gabungan Kaur & Kasi: 2 kolom dalam 1 kartu, foto profil 48px (2x lebih besar) */
 .org-box--kaurkasi {
-  width: 320px;
+  width: 520px;
   border-top: 3px solid var(--c-terra);
   align-items: stretch;
 }
 .kk-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0 1rem;
+  gap: 0 1.25rem;
   margin-top: .6rem;
   padding-top: .6rem;
   border-top: 1px dashed var(--c-cream-dark);
 }
-.kk-col { display: flex; flex-direction: column; gap: .55rem; }
-.kk-col:first-child { border-right: 1px dashed var(--c-cream-dark); padding-right: .75rem; }
-.kk-col:last-child { padding-left: .25rem; }
+.kk-col { display: flex; flex-direction: column; gap: .75rem; }
+.kk-col:first-child { border-right: 1px dashed var(--c-cream-dark); padding-right: 1rem; }
+.kk-col:last-child { padding-left: .5rem; }
 .kk-col-title {
-  font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-  margin-bottom: .1rem;
+  font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  margin-bottom: .2rem;
 }
 .kk-col-title--kaur { color: var(--c-terra); }
 .kk-col-title--kasi { color: var(--c-sage); }
-.kk-person { display: flex; flex-direction: column; }
-.kk-person-jabatan { font-size: .62rem; font-weight: 600; color: var(--c-stone); line-height: 1.3; }
-.kk-person-nama { font-size: .68rem; color: var(--c-stone-muted); font-family: var(--font-serif); }
+.kk-person { display: flex; align-items: center; gap: .75rem; }
+.kk-person-img {
+  width: 48px; height: 48px; border-radius: 50%; object-fit: cover;
+  flex-shrink: 0; border: 2px solid var(--c-cream-dark);
+}
+.kk-person-text { display: flex; flex-direction: column; min-width: 0; }
+.kk-person-jabatan { font-size: .72rem; font-weight: 600; color: var(--c-stone); line-height: 1.3; }
+.kk-person-nama { font-size: .78rem; color: var(--c-stone-muted); font-family: var(--font-serif); }
 
-@media (max-width: 480px) {
-  .org-box { width: 100%; max-width: 220px; padding: .9rem .75rem; }
-  .org-box--kepala { max-width: 240px; padding: 1.5rem 1.25rem; }
-  .org-box--kaurkasi { max-width: 280px; }
-  .kk-columns { grid-template-columns: 1fr; }
-  .kk-col:first-child { border-right: none; padding-right: 0; border-bottom: 1px dashed var(--c-cream-dark); padding-bottom: .5rem; }
+@media (max-width: 640px) {
+  .chart-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: .5rem;
+  }
+  .chart-row {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 1.25rem .9rem;
+  }
+  .org-box { width: 128px; padding: .8rem .6rem; flex-shrink: 0; }
+  .org-box--kepala { width: 190px; padding: 1.25rem 1rem; flex-shrink: 0; }
+  .org-box--kaurkasi { width: 340px; flex-shrink: 0; }
+  .org-box--branch-right { margin-left: 0; }
+
+  .org-img { width: 44px; height: 44px; }
+  .org-img--lead { width: 68px; height: 68px; }
+  .org-img--sm { width: 34px; height: 34px; }
+  .org-bio { display: none; }
+  .kk-person-img { width: 36px; height: 36px; }
 }
 </style>
