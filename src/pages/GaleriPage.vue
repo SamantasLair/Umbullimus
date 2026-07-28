@@ -493,9 +493,11 @@ onUnmounted(() => {
   padding: 0; margin: 0; border: none;
   background: rgba(7, 24, 4, 0.94);
   backdrop-filter: blur(12px);
-  display: flex; align-items: center; justify-content: center;
+  -webkit-backdrop-filter: blur(12px);
+  display: none; align-items: center; justify-content: center;
 }
 .lightbox[open] { display: flex; }
+.lightbox:not([open]) { display: none !important; }
 .lightbox::backdrop { background: transparent; }
 
 .lightbox-inner {
