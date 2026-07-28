@@ -120,6 +120,7 @@ import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { useCardHover } from '../composables/useCardHover.js'
 import { useScrollExit } from '../composables/useScrollExit.js'
 
+// biome-ignore lint/correctness/noUnusedVariables: Used in template
 const { onEnter, onLeave } = useCardHover({ lift: -6, scale: 1.015 })
 
 // ─── State ────────────────────────────────────────────────────────────────────
@@ -129,11 +130,13 @@ const activeFilter = ref('Semua')
 const lightboxIndex = ref(null)
 
 const sectionRef = ref(null)
+// biome-ignore lint/correctness/noUnusedVariables: Used in template
 const headerEl = ref(null)
 const labelEl  = ref(null)
 const titleEl  = ref(null)
 const taglineEl = ref(null)
 const filterEl = ref(null)
+// biome-ignore lint/correctness/noUnusedVariables: Used in template
 const gridEl   = ref(null)
 const dialogEl = ref(null)
 const itemRefs = ref([])
@@ -159,6 +162,7 @@ const BENTO_PATTERN = [
 const getBentoClass = i => BENTO_PATTERN[i % BENTO_PATTERN.length]
 
 // ─── Kategori & Filter ────────────────────────────────────────────────────────
+// biome-ignore lint/correctness/noUnusedVariables: Used in template
 const categories = computed(() => {
   const cats = new Set(allImages.value.map(img => img.kategori).filter(Boolean))
   return ['Semua', ...cats]
@@ -191,12 +195,10 @@ const closeLightbox = () => {
   document.body.style.overflow = ''
 }
 
-// biome-ignore lint/correctness/noUnusedVariables: Used in template
 const nextImage = () => {
   lightboxIndex.value = (lightboxIndex.value + 1) % filteredImages.value.length
 }
 
-// biome-ignore lint/correctness/noUnusedVariables: Used in template
 const prevImage = () => {
   const len = filteredImages.value.length
   lightboxIndex.value = (lightboxIndex.value - 1 + len) % len
