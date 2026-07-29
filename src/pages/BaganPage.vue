@@ -26,7 +26,13 @@
     <section v-else class="bagan-tree-section" ref="secTree">
       <div class="tree-outer">
         <div v-if="data.struktur?.length" class="tree-toolbar">
-          <span class="tree-hint">Geser mendatar untuk melihat seluruh bagan</span>
+          <div class="tree-toolbar__left">
+            <label v-if="punyaTokohAdat" class="tree-toggle">
+              <input type="checkbox" v-model="sertakanTokoh" />
+              <span>Sertakan Tokoh Adat dalam unduhan</span>
+            </label>
+            <span class="tree-hint">Geser mendatar untuk melihat seluruh bagan</span>
+          </div>
           <div class="tree-actions">
             <button
               type="button"
@@ -48,26 +54,29 @@
         </div>
         <p v-if="exportError" class="dl-error" role="alert">{{ exportError }}</p>
 
-        <OrgChart v-if="data.struktur?.length" ref="chartRef" :items="data.struktur" />
-      </div>
+        <div class="tree-viewport">
+          <!-- Wadah potret ekspor: tree + panel di luar struktur, berdampingan -->
+          <div class="tree-canvas" ref="captureRef">
+            <OrgChart v-if="data.struktur?.length" ref="chartRef" :items="data.struktur" />
 
-      <!-- Di luar struktur formal: Tokoh Adat / Tokoh Masyarakat — selalu di bawah tree -->
-      <div v-if="data.tokoh_adat && data.tokoh_adat.length" class="tokoh-adat-wrap">
-        <aside class="tokoh-adat-panel">
-          <div class="tap-header">
-            <span class="tap-label">Di Luar Struktur Formal</span>
-            <h4 class="tap-title">Tokoh Adat</h4>
-          </div>
-          <div class="tap-list">
-            <div v-for="t in data.tokoh_adat" :key="t.nama" class="tap-card">
-              <img :src="t.foto || fallbackAvatar(t.nama)" :alt="t.nama" class="tap-img" />
-              <div class="tap-info">
-                <span class="tap-nama">{{ t.nama }}</span>
-                <span class="tap-peran">{{ t.peran }}</span>
+            <!-- Di luar struktur formal: Tokoh Adat / Tokoh Masyarakat — di samping tree -->
+            <aside v-if="punyaTokohAdat" class="tokoh-adat-panel">
+              <div class="tap-header">
+                <span class="tap-label">Di Luar Struktur Formal</span>
+                <h4 class="tap-title">Tokoh Adat</h4>
               </div>
-            </div>
+              <div class="tap-list">
+                <div v-for="t in data.tokoh_adat" :key="t.nama" class="tap-card">
+                  <img :src="t.foto || fallbackAvatar(t.nama)" :alt="t.nama" class="tap-img" />
+                  <div class="tap-info">
+                    <span class="tap-nama">{{ t.nama }}</span>
+                    <span class="tap-peran">{{ t.peran }}</span>
+                  </div>
+                </div>
+              </div>
+            </aside>
           </div>
-        </aside>
+        </div>
       </div>
     </section>
 
@@ -130,6 +139,7 @@ import anime from 'animejs'
 import { computed, nextTick, onMounted, ref } from 'vue'
 // biome-ignore lint/correctness/noUnusedImports: Used in template
 import OrgChart from '../components/OrgChart.vue'
+import { exportChartPng } from '../composables/useChartExport.js'
 import { fallbackAvatar } from '../composables/useOrgTree.js'
 
 const data = ref({})
@@ -139,10 +149,18 @@ const loading = ref(true)
 const secTree     = ref(null)
 const heroContent = ref(null)
 const chartRef    = ref(null)
+const captureRef  = ref(null)
 
 // '' = idle, 'solid' | 'transparan' = sedang menyiapkan varian tersebut
 const exporting   = ref('')
 const exportError = ref('')
+
+// Panel "di luar struktur formal" selalu tampil di halaman; centang ini hanya
+// menentukan apakah ia ikut terpotret ke dalam berkas PNG.
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
+const sertakanTokoh = ref(true)
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
+const punyaTokohAdat = computed(() => !!data.value.tokoh_adat?.length)
 
 // biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 async function unduh(transparent) {
@@ -150,7 +168,14 @@ async function unduh(transparent) {
   exporting.value = transparent ? 'transparan' : 'solid'
   exportError.value = ''
   try {
-    await chartRef.value?.exportPng({
+    // Hitung ulang garis penghubung dulu supaya koordinatnya tidak basi
+    chartRef.value?.refresh()
+    await nextTick()
+
+    const ikutTokoh = sertakanTokoh.value && punyaTokohAdat.value
+    const target = ikutTokoh ? captureRef.value : chartRef.value?.wrapEl
+
+    await exportChartPng(target, {
       transparent,
       title: `Struktur Organisasi Desa ${data.value.desa || ''}`.trim(),
       subtitle: data.value.kecamatan
@@ -291,7 +316,7 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
   margin: 0 auto;
 }
 
-/* Toolbar unduh + petunjuk geser */
+/* Toolbar unduh + opsi + petunjuk geser */
 .tree-toolbar {
   display: flex;
   align-items: center;
@@ -300,12 +325,45 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
   gap: .75rem 1rem;
   margin-bottom: 1.5rem;
 }
+.tree-toolbar__left {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
 .tree-hint {
   font-size: .72rem;
   letter-spacing: .04em;
   color: var(--c-stone-muted);
 }
+.tree-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--c-stone);
+  cursor: pointer;
+  user-select: none;
+}
+.tree-toggle input {
+  width: 15px; height: 15px;
+  accent-color: var(--c-terra-dark);
+  cursor: pointer;
+}
 .tree-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+/* Viewport bergulir: tree + panel di luar struktur bergeser sebagai satu kesatuan */
+.tree-viewport {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: .5rem;
+}
+.tree-canvas {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  width: max-content;
+}
 
 .dl-btn {
   font-family: inherit;
@@ -343,26 +401,16 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
   margin-bottom: 1rem;
 }
 
-/* Petunjuk geser hanya relevan saat bagan memang lebih lebar dari layar */
-@media (min-width: 1264px) {
-  .tree-hint { display: none; }
-  .tree-toolbar { justify-content: flex-end; }
-}
-
-/* Tokoh Adat: eksplisit di luar struktur formal (border putus-putus + label), selalu di bawah tree */
-.tokoh-adat-wrap {
-  max-width: var(--max-w);
-  margin: 3rem auto 0;
-  display: flex;
-  justify-content: center;
-}
+/* Tokoh Adat: eksplisit di luar struktur formal (border putus-putus + label),
+   berdiri sebagai kolom terpisah DI SAMPING tree — bukan di bawahnya — supaya
+   terbaca sebagai jalur yang sejajar, bukan bawahan dari bagan. */
 .tokoh-adat-panel {
-  width: 100%;
-  max-width: 760px;
+  width: 320px;
+  flex-shrink: 0;
   background: rgba(122, 74, 58, 0.05);
   border: 1.5px dashed var(--c-terra);
   border-radius: var(--radius-md);
-  padding: 1.75rem;
+  padding: 1.5rem;
 }
 .tap-header { margin-bottom: 1.25rem; }
 .tap-label {
@@ -373,10 +421,11 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
   margin-bottom: .35rem;
 }
 .tap-title { font-family: var(--font-serif); font-size: 1.15rem; color: var(--c-stone); }
+/* Satu kolom: panel kini berupa sidebar sempit di samping tree */
 .tap-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 .tap-card { display: flex; align-items: center; gap: .8rem; }
 .tap-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid var(--c-cream-dark); }

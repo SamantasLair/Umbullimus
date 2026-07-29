@@ -233,8 +233,14 @@ export async function exportChartPng(wrapEl, opts = {}) {
   ctx.translate(PAD, PAD + headerH)
 
   // ── 1. Garis penghubung (z-index 0, digambar paling bawah) ──
+  // Koordinat path relatif terhadap .chart-wrap, yang belum tentu sama dengan
+  // pojok area potret (mis. saat memotret tree + panel di sampingnya), jadi
+  // digeser dulu sebesar posisi SVG-nya di dalam area potret.
   const svg = wrapEl.querySelector('.chart-lines')
   if (svg) {
+    const svgRect = svg.getBoundingClientRect()
+    ctx.save()
+    ctx.translate(svgRect.left - wrapRect.left, svgRect.top - wrapRect.top)
     for (const p of svg.querySelectorAll('path')) {
       const cs = getComputedStyle(p)
       ctx.save()
@@ -246,6 +252,7 @@ export async function exportChartPng(wrapEl, opts = {}) {
       ctx.stroke(new Path2D(p.getAttribute('d')))
       ctx.restore()
     }
+    ctx.restore()
   }
 
   // ── 2. Muat semua foto lebih dulu (menggambar harus sinkron) ──

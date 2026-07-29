@@ -68,7 +68,6 @@
 
 <script setup>
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
-import { exportChartPng } from '../composables/useChartExport.js'
 // biome-ignore lint/correctness/noUnusedImports: Used in template
 import { fallbackAvatar, groupByTier } from '../composables/useOrgTree.js'
 
@@ -272,27 +271,19 @@ onUnmounted(() => {
   cancelAnimationFrame(rafId)
 })
 
-// Ekspor PNG: pastikan garis penghubung sudah dihitung ulang untuk ukuran
-// terkini sebelum dipotret, supaya hasil unduhan tidak memakai koordinat basi.
-const exportPng = async (options) => {
-  computeConnectors()
-  await nextTick()
-  return exportChartPng(wrapRef.value, options)
-}
-
-defineExpose({ exportPng })
+// Dibuka untuk halaman induk: `wrapEl` dipakai sebagai area potret saat
+// mengekspor bagan saja (tanpa panel di luar struktur), `refresh` untuk
+// memastikan garis penghubung sudah dihitung ulang sebelum dipotret.
+defineExpose({ wrapEl: wrapRef, refresh: computeConnectors })
 </script>
 
 <style scoped>
 /* Bagan dikunci pada lebar desain tetap (--chart-design-w) supaya susunan
-   percabangannya PERSIS SAMA di semua ukuran layar — di layar sempit yang
-   terjadi hanyalah geser mendatar, bukan tata letak yang menyusun ulang diri
-   dan merusak hubungan induk-anak. */
+   percabangannya PERSIS SAMA di semua ukuran layar. Komponen ini sengaja
+   TIDAK menggulir sendiri: halaman induk yang menyediakan viewport bergulir,
+   supaya tree dan panel di sampingnya ikut bergeser sebagai satu kesatuan. */
 .chart-scroll {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: .5rem;
+  width: max-content;
 }
 
 .chart-wrap {
