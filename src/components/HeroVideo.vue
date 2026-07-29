@@ -8,7 +8,7 @@
 
     <!-- Siger decor -->
     <div class="hero-siger-bg" aria-hidden="true">
-      <SigerDecor :size="320" color="rgba(212,168,83,0.32)" trigger="load" :delay="2000" />
+      <SigerDecor :size="360" trigger="load" :delay="1000" />
     </div>
 
     <!-- Grain texture overlay -->

@@ -5,13 +5,19 @@
         <path v-for="c in connectors" :key="c.id" :d="c.d" />
       </svg>
 
-      <div v-for="grp in tiers" :key="grp.tier" class="chart-row">
+      <div v-for="grp in tiers" :key="grp.tier" class="chart-row" :class="`chart-row--tier-${grp.tier}`">
         <!-- Kartu gabungan Kaur & Kasi: 2 kolom dalam 1 kartu (kiri Kaur, kanan Kasi) -->
         <div
           v-for="node in grp.nodes"
           :key="node.id"
           class="org-box"
-          :class="[boxClass(node), { 'org-box--branch-right': node.tier > 1 && parentIds.has(node.id) }]"
+          :class="[
+            boxClass(node),
+            {
+              'org-box--branch-right': node.tier > 1 && parentIds.has(node.id),
+              'org-box--push-right': isPushRight(node, grp.nodes)
+            }
+          ]"
           :ref="el => setNodeRef(node.id, el)"
         >
           <template v-if="node.kelompok === 'kaurkasi'">
@@ -47,6 +53,7 @@
               :alt="node.nama"
               class="org-img"
               :class="imgClass(node)"
+              @load="scheduleCompute"
             />
             <span class="org-jabatan" :class="{ 'org-jabatan--sm': node.tier > 1 }">{{ node.jabatan }}</span>
             <span class="org-nama" :class="{ 'org-nama--lead': node.tier === 1, 'org-nama--sm': node.tier > 1 }">{{ node.nama }}</span>
@@ -82,6 +89,13 @@ const tiers = computed(() => groupByTier(props.items))
 // kebetulan sebaris (mis. Bendahara & Operator).
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const parentIds = computed(() => new Set(props.items.filter(n => n.parent).map(n => n.parent)))
+
+// biome-ignore lint/correctness/noUnusedVariables: Used in template
+const isPushRight = (node, groupNodes) => {
+  if (node.kelompok !== 'kadus') return false
+  const firstKadus = groupNodes.find(n => n.kelompok === 'kadus')
+  return firstKadus && firstKadus.id === node.id
+}
 
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const setNodeRef = (id, el) => {
@@ -239,7 +253,12 @@ const scheduleCompute = () => {
 
 onMounted(async () => {
   await nextTick()
-  computeConnectors()
+  scheduleCompute()
+
+  requestAnimationFrame(scheduleCompute)
+  setTimeout(scheduleCompute, 100)
+  setTimeout(scheduleCompute, 400)
+  document.fonts?.ready?.then(scheduleCompute)
 
   resizeObserver = new ResizeObserver(scheduleCompute)
   if (wrapRef.value) resizeObserver.observe(wrapRef.value)
@@ -290,6 +309,11 @@ onUnmounted(() => {
   margin-top: 3.5rem;
 }
 .chart-row:first-child { margin-top: 0; }
+.chart-row--tier-3 {
+  justify-content: flex-start;
+  padding-left: 0.5rem;
+  gap: 3.75rem;
+}
 
 /* ─── Boxes ── */
 .org-box {
@@ -339,10 +363,15 @@ onUnmounted(() => {
 .org-box--staff { border-top: 3px solid var(--c-stone-muted); }
 .org-box--kadus { border-top: 3px solid var(--c-stone); }
 
-/* Node yang punya cabang sendiri (mis. Sekdes) digeser ke kanan barisnya,
-   supaya garis komandonya ke bawah tidak menabrak kartu/garis lain yang
-   kebetulan sebaris (mis. Bendahara & Operator). */
-.org-box--branch-right { margin-left: auto; }
+/* Node yang punya cabang sendiri (mis. Sekdes) digeser ke kanan barisnya dan
+   disepadankan posisinya di atas Kepala Dusun II (anak tengahnya). */
+.org-box--branch-right {
+  margin-left: auto;
+  margin-right: calc(180px + 1.25rem);
+}
+.org-box--push-right {
+  margin-left: auto;
+}
 
 /* Kartu gabungan Kaur & Kasi: 2 kolom dalam 1 kartu, kiri Kaur - kanan Kasi */
 .org-box--kaurkasi {
@@ -390,10 +419,18 @@ onUnmounted(() => {
     justify-content: flex-start;
     gap: 1.25rem .9rem;
   }
+  .chart-row--tier-3 {
+    padding-left: 0;
+    gap: 1.25rem .9rem;
+  }
   .org-box { width: 128px; padding: .8rem .6rem; flex-shrink: 0; }
   .org-box--kepala { width: 190px; padding: 1.25rem 1rem; flex-shrink: 0; }
   .org-box--kaurkasi { width: 320px; flex-shrink: 0; }
-  .org-box--branch-right { margin-left: 0; }
+  .org-box--branch-right,
+  .org-box--push-right {
+    margin-left: 0;
+    margin-right: 0;
+  }
 
   .org-img { width: 44px; height: 44px; }
   .org-img--lead { width: 68px; height: 68px; }

@@ -1,5 +1,5 @@
 <template>
-  <footer id="kontak" :class="['footer', { 'footer--maroon': isMaroonTheme }]">
+  <footer id="kontak" :class="['footer', { 'footer--maroon': isMaroonTheme, 'footer--bagan': isBaganTheme }]">
     <div class="footer-container">
       <div class="footer-top">
         <div class="footer-brand">
@@ -66,6 +66,9 @@ const currentYear = new Date().getFullYear()
 // Halaman dengan tema warna berbeda (mis. Infografis: maroon/emas): footer ikut menyesuaikan
 // biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const isMaroonTheme = computed(() => route.path === '/infografis')
+// Halaman Struktur Desa/Bagan: tema "Arsip Desa" (khaki/olive/coklat tua dari foto header)
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
+const isBaganTheme = computed(() => route.path === '/bagan')
 
 // biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 function scrollToTopIfHome() {
@@ -205,6 +208,13 @@ function goToWisata() {
 .footer--maroon .footer-kontak a { color: var(--c-siger); }
 .footer--maroon .maps-link { color: var(--c-siger) !important; border-color: var(--c-siger); }
 .footer--maroon .maps-link:hover { background: var(--c-siger); color: var(--c-maroon-dark) !important; }
+
+/* Tema Arsip Desa: menyesuaikan halaman Struktur Desa/Bagan (lihat isBaganTheme) */
+.footer--bagan { background: #1a140d; }
+.footer--bagan .social-link:hover { border-color: #b6924a; color: #b6924a; }
+.footer--bagan .footer-kontak a { color: #b6924a; }
+.footer--bagan .maps-link { color: #b6924a !important; border-color: #b6924a; }
+.footer--bagan .maps-link:hover { background: #b6924a; color: #1a140d !important; }
 
 @media (max-width: 768px) {
   .footer-top { grid-template-columns: 1fr; gap: 2rem; }

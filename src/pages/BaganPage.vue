@@ -120,8 +120,8 @@ const heroContent = ref(null)
 // dipadu overlay gelap-ke-transparan (.page-hero__overlay) khusus untuk keterbacaan teks.
 const bgStyle = computed(() => ({
   backgroundImage: data.value.background
-    ? `linear-gradient(135deg, rgba(31,62,38,0.45), rgba(92,44,22,0.4)), url(${data.value.background})`
-    : 'linear-gradient(135deg, #5c2c16, var(--c-siger-dark))',
+    ? `linear-gradient(135deg, rgba(58,50,30,0.45), rgba(26,20,12,0.5)), url(${data.value.background})`
+    : 'linear-gradient(135deg, #3a3220, #1a140d)',
 }))
 
 onMounted(async () => {
@@ -154,19 +154,41 @@ defineExpose({ bgStyle, fallbackAvatar })
 </script>
 
 <style scoped>
-.bagan-page { background: var(--c-cream); min-height: 100vh; }
+/* ─── Palet "Arsip Desa": diturunkan dari foto sepia/olive header ──
+   Menggantikan hijau neon global (--c-terra dkk) di seluruh halaman
+   bagan (termasuk OrgChart.vue, yang mewarisi custom property ini
+   lewat cascade DOM meski style-nya scoped) supaya selaras dengan
+   foto aparat desa yang bertone khaki/olive/coklat tua. */
+.bagan-page {
+  --c-terra: #b6924a;
+  --c-terra-dark: #8a6f38;
+  --c-sage: #7d7350;
+  --c-sage-light: #ded2ab;
+  --c-stone: #2a2118;
+  --c-stone-muted: #6b5f4c;
+  --c-dark-bg: #1a140d;
+  --c-cream: #f6f1e4;
+  --c-cream-dark: #ecdfc2;
+  --c-white: #fbf8f0;
+
+  background: var(--c-cream); min-height: 100vh;
+}
 
 /* Hero */
 .page-hero {
   position: relative;
   height: 52vh; min-height: 360px;
   display: flex; align-items: flex-end;
-  background-size: cover; background-position: center;
+  background-size: cover; background-position: center 35%;
   overflow: hidden;
 }
 .page-hero__overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to top, var(--c-dark-bg) 0%, rgba(20,10,5,.55) 55%, rgba(20,10,5,.15) 100%);
+  background:
+    radial-gradient(circle at 50% 40%, rgba(58,50,30,0.25) 0%, rgba(20,10,5,0.75) 100%),
+    linear-gradient(to top, var(--c-dark-bg) 0%, rgba(20,10,5,.55) 50%, rgba(20,10,5,.2) 100%);
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
 }
 .page-hero__content {
   position: relative; z-index: 2;
@@ -226,11 +248,11 @@ defineExpose({ bgStyle, fallbackAvatar })
 }
 .tokoh-adat-panel {
   width: 100%;
-  max-width: 480px;
+  max-width: 760px;
   background: rgba(122, 74, 58, 0.05);
   border: 1.5px dashed var(--c-terra);
   border-radius: var(--radius-md);
-  padding: 1.5rem;
+  padding: 1.75rem;
 }
 .tap-header { margin-bottom: 1.25rem; }
 .tap-label {
@@ -241,7 +263,11 @@ defineExpose({ bgStyle, fallbackAvatar })
   margin-bottom: .35rem;
 }
 .tap-title { font-family: var(--font-serif); font-size: 1.15rem; color: var(--c-stone); }
-.tap-list { display: flex; flex-direction: column; gap: .9rem; }
+.tap-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.1rem 1.5rem;
+}
 .tap-card { display: flex; align-items: center; gap: .8rem; }
 .tap-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid var(--c-cream-dark); }
 .tap-info { display: flex; flex-direction: column; gap: .1rem; }

@@ -3,7 +3,7 @@
   "kecamatan": "Marga Punduh",
   "kabupaten": "Pesawaran",
   "provinsi": "Lampung",
-  "background": "/images/profil/aparat-desa-header.jpg",
+  "background": "/images/profil/header-aparat-desa.jpg",
   "struktur": [
     {
       "id": 1,
@@ -47,14 +47,32 @@
       "kelompok": "kaurkasi",
       "jabatan": "Kaur & Kasi",
       "kaur": [
-        { "jabatan": "Kaur Umum & Tata Usaha", "nama": "Pak/Bu Kaur Umum & Tata Usaha" },
-        { "jabatan": "Kaur Keuangan", "nama": "Pak/Bu Kaur Keuangan" },
-        { "jabatan": "Kaur Perencanaan", "nama": "Pak/Bu Kaur Perencanaan" }
+        {
+          "jabatan": "Kaur Umum & Tata Usaha",
+          "nama": "Pak/Bu Kaur Umum & Tata Usaha"
+        },
+        {
+          "jabatan": "Kaur Keuangan",
+          "nama": "Pak/Bu Kaur Keuangan"
+        },
+        {
+          "jabatan": "Kaur Perencanaan",
+          "nama": "Pak/Bu Kaur Perencanaan"
+        }
       ],
       "kasi": [
-        { "jabatan": "Kasi Pemerintahan", "nama": "Pak/Bu Kasi Pemerintahan" },
-        { "jabatan": "Kasi Kesejahteraan", "nama": "Pak/Bu Kasi Kesejahteraan" },
-        { "jabatan": "Kasi Pelayanan", "nama": "Pak/Bu Kasi Pelayanan" }
+        {
+          "jabatan": "Kasi Pemerintahan",
+          "nama": "Pak/Bu Kasi Pemerintahan"
+        },
+        {
+          "jabatan": "Kasi Kesejahteraan",
+          "nama": "Pak/Bu Kasi Kesejahteraan"
+        },
+        {
+          "jabatan": "Kasi Pelayanan",
+          "nama": "Pak/Bu Kasi Pelayanan"
+        }
       ]
     },
     {
@@ -87,14 +105,39 @@
   ],
   "tokoh_adat": [
     {
-      "nama": "H. Zainal Abidin",
-      "peran": "Tokoh Adat Lampung",
-      "foto": "https://ui-avatars.com/api/?name=Zainal+Abidin&background=7a4a3a&color=fff&size=200"
+      "nama": "Pak/Bu Tokoh Adat I",
+      "peran": "Tokoh Adat Lampung / Penyimbang",
+      "foto": "https://ui-avatars.com/api/?name=Tokoh+Adat+I&background=7a4a3a&color=fff&size=200"
     },
     {
-      "nama": "Hj. Rohana",
+      "nama": "Pak/Bu Sesepuh Desa",
       "peran": "Sesepuh Desa",
-      "foto": "https://ui-avatars.com/api/?name=Rohana&background=7a4a3a&color=fff&size=200"
+      "foto": "https://ui-avatars.com/api/?name=Sesepuh+Desa&background=7a4a3a&color=fff&size=200"
+    },
+    {
+      "nama": "Pak/Bu Tokoh Agama",
+      "peran": "Tokoh Agama & Imam Desa",
+      "foto": "https://ui-avatars.com/api/?name=Tokoh+Agama&background=7a4a3a&color=fff&size=200"
+    },
+    {
+      "nama": "Pak/Bu Tokoh Pemuda",
+      "peran": "Ketua Pemuda / Karang Taruna",
+      "foto": "https://ui-avatars.com/api/?name=Tokoh+Pemuda&background=7a4a3a&color=fff&size=200"
+    },
+    {
+      "nama": "Pak/Bu Pembina Adat",
+      "peran": "Pembina Lembaga Adat Desa",
+      "foto": "https://ui-avatars.com/api/?name=Pembina+Adat&background=7a4a3a&color=fff&size=200"
+    },
+    {
+      "nama": "Pak/Bu Tokoh Masyarakat",
+      "peran": "Tokoh Masyarakat Kewilayahan",
+      "foto": "https://ui-avatars.com/api/?name=Tokoh+Masyarakat&background=7a4a3a&color=fff&size=200"
+    },
+    {
+      "nama": "Pak/Bu Pelestari Budaya",
+      "peran": "Pelestari Budaya & Seni Tradisional",
+      "foto": "https://ui-avatars.com/api/?name=Pelestari+Budaya&background=7a4a3a&color=fff&size=200"
     }
   ]
 }

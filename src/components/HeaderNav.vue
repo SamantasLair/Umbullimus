@@ -1,5 +1,5 @@
 <template>
-  <header :class="['nav', { 'nav--scrolled': isScrolled, 'nav--open': menuOpen, 'nav--maroon': isMaroonTheme }]">
+  <header :class="['nav', { 'nav--scrolled': isScrolled, 'nav--open': menuOpen, 'nav--maroon': isMaroonTheme, 'nav--bagan': isBaganTheme }]">
     <div class="nav-container">
       <!-- Wordmark -->
       <RouterLink to="/" class="nav-wordmark" @click="closeMenu">
@@ -81,6 +81,8 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 // biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const isMaroonTheme = computed(() => route.path === '/infografis')
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
+const isBaganTheme = computed(() => route.path === '/bagan')
 const isScrolled = ref(false)
 const menuOpen   = ref(false)
 const ctaEl      = ref(null)
@@ -384,6 +386,24 @@ defineExpose({
 .nav--maroon.nav--scrolled .nav-link--active { color: var(--c-cream); }
 .nav--maroon.nav--scrolled .nav-link::after { background: var(--c-siger); }
 .nav--maroon.nav--scrolled .hb-bar { background: var(--c-cream); }
+
+/* Tema Arsip Desa: menyesuaikan halaman Struktur Desa/Bagan (lihat isBaganTheme) */
+.nav--bagan .nav-link::after { background: #b6924a; }
+.nav--bagan.nav--scrolled {
+  background: rgba(246, 241, 228, 0.94);
+  box-shadow: 0 1px 0 rgba(42, 33, 24, 0.12);
+}
+.nav--bagan.nav--scrolled .wordmark-main { color: #2a2118; }
+.nav--bagan.nav--scrolled .wordmark-sub { color: #6b5f4c; }
+.nav--bagan.nav--scrolled .nav-sep { background: rgba(42, 33, 24, 0.15); }
+.nav--bagan.nav--scrolled .nav-link,
+.nav--bagan.nav--scrolled .nav-link--anchor { color: #6b5f4c; }
+.nav--bagan.nav--scrolled .nav-link:hover,
+.nav--bagan.nav--scrolled .nav-link--active { color: #2a2118; }
+.nav--bagan.nav--scrolled .hb-bar { background: #2a2118; }
+.nav--bagan .nav-overlay { background: #1a140d; }
+.nav--bagan .ov-link--active,
+.nav--bagan .ov-link--page:hover { color: #ded2ab; }
 
 /* Responsive */
 @media (max-width:960px) {
