@@ -25,7 +25,30 @@
 
     <section v-else class="bagan-tree-section" ref="secTree">
       <div class="tree-outer">
-        <OrgChart v-if="data.struktur?.length" :items="data.struktur" />
+        <div v-if="data.struktur?.length" class="tree-toolbar">
+          <span class="tree-hint">Geser mendatar untuk melihat seluruh bagan</span>
+          <div class="tree-actions">
+            <button
+              type="button"
+              class="dl-btn"
+              :disabled="exporting !== ''"
+              @click="unduh(false)"
+            >
+              {{ exporting === 'solid' ? 'Menyiapkan…' : 'Unduh PNG' }}
+            </button>
+            <button
+              type="button"
+              class="dl-btn dl-btn--ghost"
+              :disabled="exporting !== ''"
+              @click="unduh(true)"
+            >
+              {{ exporting === 'transparan' ? 'Menyiapkan…' : 'PNG Tanpa Latar' }}
+            </button>
+          </div>
+        </div>
+        <p v-if="exportError" class="dl-error" role="alert">{{ exportError }}</p>
+
+        <OrgChart v-if="data.struktur?.length" ref="chartRef" :items="data.struktur" />
       </div>
 
       <!-- Di luar struktur formal: Tokoh Adat / Tokoh Masyarakat — selalu di bawah tree -->
@@ -115,6 +138,35 @@ const loading = ref(true)
 // biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const secTree     = ref(null)
 const heroContent = ref(null)
+const chartRef    = ref(null)
+
+// '' = idle, 'solid' | 'transparan' = sedang menyiapkan varian tersebut
+const exporting   = ref('')
+const exportError = ref('')
+
+// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
+async function unduh(transparent) {
+  if (exporting.value) return
+  exporting.value = transparent ? 'transparan' : 'solid'
+  exportError.value = ''
+  try {
+    await chartRef.value?.exportPng({
+      transparent,
+      title: `Struktur Organisasi Desa ${data.value.desa || ''}`.trim(),
+      subtitle: data.value.kecamatan
+        ? `Kec. ${data.value.kecamatan} · Kab. ${data.value.kabupaten} · ${data.value.provinsi}`
+        : '',
+      filename: transparent
+        ? 'struktur-desa-umbul-limus-tanpa-latar.png'
+        : 'struktur-desa-umbul-limus.png',
+    })
+  } catch (e) {
+    console.error('Gagal mengunduh bagan:', e)
+    exportError.value = 'Gagal menyiapkan berkas PNG. Silakan coba lagi.'
+  } finally {
+    exporting.value = ''
+  }
+}
 
 // Tint tipis (bukan wash tebal) supaya foto aparat desa yang asli tetap terlihat jelas,
 // dipadu overlay gelap-ke-transparan (.page-hero__overlay) khusus untuk keterbacaan teks.
@@ -150,7 +202,7 @@ onMounted(async () => {
 
 })
 
-defineExpose({ bgStyle, fallbackAvatar })
+defineExpose({ bgStyle, fallbackAvatar, unduh })
 </script>
 
 <style scoped>
@@ -237,6 +289,64 @@ defineExpose({ bgStyle, fallbackAvatar })
 .tree-outer {
   max-width: var(--max-w);
   margin: 0 auto;
+}
+
+/* Toolbar unduh + petunjuk geser */
+.tree-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .75rem 1rem;
+  margin-bottom: 1.5rem;
+}
+.tree-hint {
+  font-size: .72rem;
+  letter-spacing: .04em;
+  color: var(--c-stone-muted);
+}
+.tree-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+.dl-btn {
+  font-family: inherit;
+  font-size: .76rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--c-white);
+  background: var(--c-terra-dark);
+  border: 1px solid var(--c-terra-dark);
+  border-radius: 50px;
+  padding: .5rem 1.15rem;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.dl-btn:hover:not(:disabled) {
+  background: var(--c-terra);
+  border-color: var(--c-terra);
+  transform: translateY(-1px);
+}
+.dl-btn:disabled { opacity: .55; cursor: progress; }
+
+.dl-btn--ghost {
+  background: transparent;
+  color: var(--c-terra-dark);
+}
+.dl-btn--ghost:hover:not(:disabled) {
+  background: var(--c-terra);
+  color: var(--c-white);
+}
+
+.dl-error {
+  font-size: .78rem;
+  color: #a3341f;
+  margin-bottom: 1rem;
+}
+
+/* Petunjuk geser hanya relevan saat bagan memang lebih lebar dari layar */
+@media (min-width: 1264px) {
+  .tree-hint { display: none; }
+  .tree-toolbar { justify-content: flex-end; }
 }
 
 /* Tokoh Adat: eksplisit di luar struktur formal (border putus-putus + label), selalu di bawah tree */

@@ -33,7 +33,7 @@
 
       <!-- Tagline -->
       <p class="hero-tagline" ref="taglineEl">
-        Surga tersembunyi, mata air jernih,<br>hutan tropis, dan warisan budaya Lampung.
+        Surga tersembunyi, mata air jernih,<br>suasana pedesaan yang asri, dan warisan budaya Lampung.
       </p>
 
       <!-- CTA Actions -->

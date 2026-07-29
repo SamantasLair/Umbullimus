@@ -68,6 +68,7 @@
 
 <script setup>
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { exportChartPng } from '../composables/useChartExport.js'
 // biome-ignore lint/correctness/noUnusedImports: Used in template
 import { fallbackAvatar, groupByTier } from '../composables/useOrgTree.js'
 
@@ -270,15 +271,34 @@ onUnmounted(() => {
   window.removeEventListener('resize', scheduleCompute)
   cancelAnimationFrame(rafId)
 })
+
+// Ekspor PNG: pastikan garis penghubung sudah dihitung ulang untuk ukuran
+// terkini sebelum dipotret, supaya hasil unduhan tidak memakai koordinat basi.
+const exportPng = async (options) => {
+  computeConnectors()
+  await nextTick()
+  return exportChartPng(wrapRef.value, options)
+}
+
+defineExpose({ exportPng })
 </script>
 
 <style scoped>
+/* Bagan dikunci pada lebar desain tetap (--chart-design-w) supaya susunan
+   percabangannya PERSIS SAMA di semua ukuran layar — di layar sempit yang
+   terjadi hanyalah geser mendatar, bukan tata letak yang menyusun ulang diri
+   dan merusak hubungan induk-anak. */
 .chart-scroll {
   width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: .5rem;
 }
 
 .chart-wrap {
+  --chart-design-w: 1200px;
   position: relative;
+  width: var(--chart-design-w);
   padding-left: 0;
 }
 
@@ -405,38 +425,9 @@ onUnmounted(() => {
 .kk-person-jabatan { font-size: .68rem; font-weight: 600; color: var(--c-stone); line-height: 1.3; }
 .kk-person-nama { font-size: .75rem; color: var(--c-stone-muted); font-family: var(--font-serif); }
 
-/* Layar sempit: JANGAN paksa tree jadi lurus/bertumpuk (merusak percabangan) —
-   kecilkan ukuran kartu & biarkan baris tetap horizontal, dengan scroll/slider
-   di dalam wadahnya sendiri (bukan scroll seluruh halaman). */
-@media (max-width: 640px) {
-  .chart-scroll {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: .5rem;
-  }
-  .chart-row {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    gap: 1.25rem .9rem;
-  }
-  .chart-row--tier-3 {
-    padding-left: 0;
-    gap: 1.25rem .9rem;
-  }
-  .org-box { width: 128px; padding: .8rem .6rem; flex-shrink: 0; }
-  .org-box--kepala { width: 190px; padding: 1.25rem 1rem; flex-shrink: 0; }
-  .org-box--kaurkasi { width: 320px; flex-shrink: 0; }
-  .org-box--branch-right,
-  .org-box--push-right {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .org-img { width: 44px; height: 44px; }
-  .org-img--lead { width: 68px; height: 68px; }
-  .org-img--kaurkasi { width: 68px; height: 68px; }
-  .org-img--sm { width: 34px; height: 34px; }
-  .org-bio { display: none; }
-  .kk-person-img { width: 38px; height: 38px; }
-}
+/* Sengaja TIDAK ada media query yang mengubah ukuran kartu, flex-wrap, atau
+   margin --branch-right/--push-right. Override semacam itu membuat bagan
+   menyusun ulang diri di layar sempit sehingga garis komando tidak lagi
+   sejajar dengan kartunya. Bagan tetap pada lebar desainnya dan digeser
+   mendatar di dalam .chart-scroll. */
 </style>

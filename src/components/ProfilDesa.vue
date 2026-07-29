@@ -11,7 +11,7 @@
           <p class="profil-sejarah" ref="textEl" v-if="data.sejarah">{{ data.sejarah }}</p>
           <p class="profil-sejarah" ref="textEl" v-else>
             Desa Umbul Limus terletak di Kecamatan Marga Punduh, Kabupaten Pesawaran, Lampung.
-            Dikenal dengan sumber mata air alaminya, hutan tropis yang lebat, dan kearifan budaya Lampung yang lestari.
+            Dikenal dengan sumber mata air alaminya, suasana pedesaan yang asri, dan kearifan budaya Lampung yang lestari.
           </p>
           <RouterLink to="/infografis" class="profil-cta" ref="ctaEl">
             Cari Tahu Data Infografis Lengkap
