@@ -1,3 +1,9 @@
+/**
+ * @file useSeo.js
+ * @author @SamantasLair (https://github.com/SamantasLair)
+ * @description Composable pengelolaan Dynamic Meta Tags, Open Graph, Canonical URL, dan Schema JSON-LD per rute.
+ */
+
 // Manajemen meta tag per rute tanpa dependensi eksternal (@unhead/vue dsb).
 //
 // Situs ini SPA yang dirender di browser, jadi keempat rute mewarisi satu

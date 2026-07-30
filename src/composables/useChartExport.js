@@ -1,3 +1,10 @@
+/**
+ * @file useChartExport.js
+ * @author @SamantasLair (https://github.com/SamantasLair)
+ * @description Composable ekspor bagan struktur organisasi ke format PNG resolusi tinggi berbasis Canvas 2D murni.
+ * Fitur: Menggambar Ulang Geometri & Style DOM, Opsi Transparan & Latar Solid, Support Line-Dash (BPD).
+ */
+
 // Ekspor bagan struktur ke PNG tanpa dependensi eksternal (html2canvas dsb).
 //
 // Pendekatan: baca ulang geometri + computed style dari DOM yang SUDAH dirender,
