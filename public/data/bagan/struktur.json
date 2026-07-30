@@ -24,13 +24,13 @@
       "keterangan": "Sejajar Kepala Desa, berbeda tugas pokok & fungsi",
       "ketua": {
         "jabatan": "Ketua BPD",
-        "nama": "Ahmad Judin",
+        "nama": "Madjudin",
         "foto": "https://ui-avatars.com/api/?name=Ahmad+Judin&background=8a6f38&color=fff&size=200&bold=true"
       },
       "anggota": [
         {
           "jabatan": "Wakil Ketua",
-          "nama": "Anthony",
+          "nama": "Antoni",
           "foto": "https://ui-avatars.com/api/?name=Anthony&background=8a6f38&color=fff&size=200&bold=true"
         },
         {
@@ -232,10 +232,10 @@
     },
     {
       "rank": 4,
-      "nama": "Ismail D.",
+      "nama": "Ismail Denan",
       "gelar": "Minak Panglima",
       "peran": "Pembesar Adat / Pengawal Hukum",
-      "foto": "https://ui-avatars.com/api/?name=Ismail+D.&background=7a4a3a&color=fff&size=200&bold=true"
+      "foto": "https://ui-avatars.com/api/?name=Ismail+Denan&background=7a4a3a&color=fff&size=200&bold=true"
     },
     {
       "rank": 5,
@@ -246,10 +246,10 @@
     },
     {
       "rank": 6,
-      "nama": "Buang B.",
+      "nama": "Buang Berahim",
       "gelar": "Khadin Jaksa",
       "peran": "Pelaksana Penegakan Kehakiman Adat",
-      "foto": "https://ui-avatars.com/api/?name=Buang+B.&background=7a4a3a&color=fff&size=200&bold=true"
+      "foto": "https://ui-avatars.com/api/?name=Buang+Berahim&background=7a4a3a&color=fff&size=200&bold=true"
     },
     {
       "rank": 7,

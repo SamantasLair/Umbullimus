@@ -83,23 +83,28 @@ export function useSeo(source) {
 
     const url = absolute(m.path || '/')
     const img = absolute(m.image || DEFAULT_IMAGE)
+    const desc = m.description || ''
 
     document.title = m.title
-    metaName('description', m.description)
+    metaName('description', desc)
     linkRel('canonical', url)
 
+    // Open Graph (Facebook, WhatsApp, LinkedIn, etc.)
     metaProp('og:site_name', SITE_NAME)
     metaProp('og:locale', 'id_ID')
     metaProp('og:type', m.type || 'website')
     metaProp('og:title', m.title)
-    metaProp('og:description', m.description)
+    metaProp('og:description', desc)
     metaProp('og:url', url)
     metaProp('og:image', img)
+    metaProp('og:image:alt', m.title)
 
+    // Twitter / X Card Meta Tags
     metaName('twitter:card', 'summary_large_image')
     metaName('twitter:title', m.title)
-    metaName('twitter:description', m.description)
+    metaName('twitter:description', desc)
     metaName('twitter:image', img)
+    metaName('twitter:image:alt', m.title)
 
     routeJsonLd(m.jsonLd)
   })
