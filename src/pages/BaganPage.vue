@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <section v-else class="bagan-tree-section" ref="secTree">
+    <section v-else class="bagan-tree-section">
       <div class="tree-outer">
         <div v-if="data.struktur?.length" class="tree-toolbar">
           <div class="tree-toolbar__left">
@@ -59,20 +59,40 @@
           <div class="tree-canvas" ref="captureRef">
             <OrgChart v-if="data.struktur?.length" ref="chartRef" :items="data.struktur" />
 
-            <!-- Di luar struktur formal: Tokoh Adat / Tokoh Masyarakat — di samping tree -->
+            <!-- Di luar struktur formal: Hierarki Garis Lurus Tokoh Adat Saibatin -->
             <aside v-if="punyaTokohAdat" class="tokoh-adat-panel">
               <div class="tap-header">
-                <span class="tap-label">Di Luar Struktur Formal</span>
-                <h4 class="tap-title">Tokoh Adat</h4>
+                <span class="tap-label">Ketua Adat Saibatin *</span>
+                <h4 class="tap-title">Hierarki Tokoh Adat</h4>
               </div>
-              <div class="tap-list">
-                <div v-for="t in data.tokoh_adat" :key="t.nama" class="tap-card">
-                  <img :src="t.foto || fallbackAvatar(t.nama)" :alt="t.nama" class="tap-img" />
-                  <div class="tap-info">
-                    <span class="tap-nama">{{ t.nama }}</span>
-                    <span class="tap-peran">{{ t.peran }}</span>
+              <div class="tap-list tap-list--linear">
+                <!-- Elemen DOM garis lurus vertikal kontinu dari badge 1 s/d 8 (100% terbaca di web & PNG) -->
+                <div class="tap-spine-line" aria-hidden="true"></div>
+
+                <div
+                  v-for="t in data.tokoh_adat"
+                  :key="t.nama"
+                  class="tap-row"
+                  :class="{ 'tap-row--top': t.rank === 1 }"
+                >
+                  <div class="tap-spine-node">
+                    <div class="tap-node-badge">{{ t.rank }}</div>
+                    <div class="tap-branch-line"></div>
+                  </div>
+
+                  <div class="tap-card" :class="{ 'tap-card--top': t.rank === 1 }">
+                    <img :src="t.foto || fallbackAvatar(t.nama)" :alt="t.nama" class="tap-img" />
+                    <div class="tap-info">
+                      <span class="tap-nama">{{ t.nama }}</span>
+                      <span class="tap-gelar">{{ t.gelar }}</span>
+                      <span class="tap-peran">{{ t.peran }}</span>
+                    </div>
                   </div>
                 </div>
+              </div>
+              <div class="tap-note">
+                <span class="tap-note-asterisk">*</span>
+                <p>Meskipun sebagian besar adat warga Desa Umbul Limus berbasis <strong>Lampung Pepadun</strong>, struktur Pemimpin/Ketua Adat setempat bergelar dan beradat <strong>Lampung Saibatin</strong>.</p>
               </div>
             </aside>
           </div>
@@ -110,6 +130,32 @@
       </div>
     </section>
 
+    <!-- Gelar & Peran Struktur Tokoh Adat Saibatin -->
+    <section class="info-section info-section--adat">
+      <div class="info-wrap">
+        <span class="info-label">Struktur Kebudayaan Lokal</span>
+        <h2 class="info-title">Gelar &amp; Peran Tokoh Adat Saibatin</h2>
+        <div class="role-grid role-grid--2">
+          <article class="role-card role-card--adat">
+            <h3>Khaghya (Khaghya Susunan Adat)</h3>
+            <p>Pemimpin adat tertinggi (Puncak Hierarki) yang memegang kewenangan mutlak dalam musyawarah adat, pengayom norma kemasyarakatan, serta penyimbang utama dalam tradisi Lampung Saibatin di Desa Umbul Limus.</p>
+          </article>
+          <article class="role-card role-card--adat">
+            <h3>Khaja (Khaja Simbangan)</h3>
+            <p>Wakil pimpinan adat (Simbangan) yang mendampingi Khaghya dalam memimpin persidangan adat, mengoordinasikan jajaran pembesar adat, dan tata laksana upacara kebudayaan.</p>
+          </article>
+          <article class="role-card role-card--adat">
+            <h3>Minak (Minak Setya &amp; Minak Panglima)</h3>
+            <p>Pembesar adat yang bertugas menjaga keutuhan tatanan sosial, pengawalan nilai-nilai luhur adat, serta penegakan ketertiban hukum adat di lingkungan desa.</p>
+          </article>
+          <article class="role-card role-card--adat">
+            <h3>Khadin (Khadin Pemuka, Jaksa, Mulya, Pengkhamban)</h3>
+            <p>Jajaran pelaksana operasional adat yang mengurusi tata laksana ritual kebudayaan, kehakiman adat (Jaksa), penghormatan adat (Mulya), serta pengabdian pelayanan warga (Pengkhamban).</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- Lembaga Kemasyarakatan Desa -->
     <section class="info-section info-section--dark">
       <div class="info-wrap">
@@ -141,36 +187,42 @@ import { computed, nextTick, onMounted, ref } from 'vue'
 import OrgChart from '../components/OrgChart.vue'
 import { exportChartPng } from '../composables/useChartExport.js'
 import { fallbackAvatar } from '../composables/useOrgTree.js'
+import { breadcrumb, useSeo } from '../composables/useSeo.js'
 
 const data = ref({})
 const loading = ref(true)
 
-// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
-const secTree     = ref(null)
 const heroContent = ref(null)
 const chartRef    = ref(null)
 const captureRef  = ref(null)
 
-// '' = idle, 'solid' | 'transparan' = sedang menyiapkan varian tersebut
 const exporting   = ref('')
 const exportError = ref('')
 
-// Panel "di luar struktur formal" selalu tampil di halaman; centang ini hanya
-// menentukan apakah ia ikut terpotret ke dalam berkas PNG.
-// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const sertakanTokoh = ref(true)
-// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
 const punyaTokohAdat = computed(() => !!data.value.tokoh_adat?.length)
 
-// biome-ignore lint/correctness/noUnusedVariables: Used in Vue template
+useSeo(() => ({
+  title: 'Struktur Organisasi & Lembaga Desa Umbul Limus',
+  description:
+    'Situs resmi struktur organisasi Pemerintah Desa Umbul Limus, BPD, perangkat desa, serta lembaga adat Saibatin.',
+  path: '/bagan',
+  jsonLd: breadcrumb([
+    { name: 'Beranda', path: '/' },
+    { name: 'Struktur Organisasi', path: '/bagan' },
+  ]),
+}))
+
 async function unduh(transparent) {
   if (exporting.value) return
   exporting.value = transparent ? 'transparan' : 'solid'
   exportError.value = ''
   try {
-    // Hitung ulang garis penghubung dulu supaya koordinatnya tidak basi
+    await document.fonts?.ready
     chartRef.value?.refresh()
     await nextTick()
+    await new Promise(resolve => setTimeout(resolve, 80))
+    chartRef.value?.refresh()
 
     const ikutTokoh = sertakanTokoh.value && punyaTokohAdat.value
     const target = ikutTokoh ? captureRef.value : chartRef.value?.wrapEl
@@ -193,13 +245,12 @@ async function unduh(transparent) {
   }
 }
 
-// Tint tipis (bukan wash tebal) supaya foto aparat desa yang asli tetap terlihat jelas,
-// dipadu overlay gelap-ke-transparan (.page-hero__overlay) khusus untuk keterbacaan teks.
-const bgStyle = computed(() => ({
-  backgroundImage: data.value.background
-    ? `linear-gradient(135deg, rgba(58,50,30,0.45), rgba(26,20,12,0.5)), url(${data.value.background})`
-    : 'linear-gradient(135deg, #3a3220, #1a140d)',
-}))
+const bgStyle = computed(() => {
+  const bg = data.value.background || '/images/profil/header-aparat-desa.jpg'
+  return {
+    backgroundImage: `linear-gradient(135deg, rgba(58,50,30,0.45), rgba(26,20,12,0.5)), url(${bg})`,
+  }
+})
 
 onMounted(async () => {
   try {
@@ -213,7 +264,6 @@ onMounted(async () => {
 
   await nextTick()
 
-  // ── Hero: teks muncul dari bawah + label badge fade-in ──
   if (heroContent.value) {
     anime({
       targets: heroContent.value.querySelectorAll('.page-hero__label, .page-hero__title, .page-hero__sub'),
@@ -224,18 +274,12 @@ onMounted(async () => {
       easing: 'easeOutExpo',
     })
   }
-
 })
 
 defineExpose({ bgStyle, fallbackAvatar, unduh })
 </script>
 
 <style scoped>
-/* ─── Palet "Arsip Desa": diturunkan dari foto sepia/olive header ──
-   Menggantikan hijau neon global (--c-terra dkk) di seluruh halaman
-   bagan (termasuk OrgChart.vue, yang mewarisi custom property ini
-   lewat cascade DOM meski style-nya scoped) supaya selaras dengan
-   foto aparat desa yang bertone khaki/olive/coklat tua. */
 .bagan-page {
   --c-terra: #b6924a;
   --c-terra-dark: #8a6f38;
@@ -247,7 +291,6 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
   --c-cream: #f6f1e4;
   --c-cream-dark: #ecdfc2;
   --c-white: #fbf8f0;
-
   background: var(--c-cream); min-height: 100vh;
 }
 
@@ -285,7 +328,7 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
 .page-hero__title em { font-style: italic; color: rgba(245,240,232,.65); }
 .page-hero__sub { font-size: .85rem; color: rgba(245,240,232,.5); letter-spacing: .06em; }
 
-/* ─── Skeleton: mengikuti bentuk tree organisasi (unik, bukan spinner generik) ── */
+/* Skeleton */
 .bagan-skeleton {
   display: flex; flex-direction: column; align-items: center;
   gap: 0; padding: var(--sp-lg) var(--sp-md);
@@ -304,7 +347,7 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
   .skel-row { flex-direction: column; align-items: center; }
 }
 
-/* ─── Tree Section ── */
+/* Tree Section */
 .bagan-tree-section {
   background: var(--c-cream-dark);
   padding: var(--sp-xl) var(--sp-md);
@@ -316,7 +359,6 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
   margin: 0 auto;
 }
 
-/* Toolbar unduh + opsi + petunjuk geser */
 .tree-toolbar {
   display: flex;
   align-items: center;
@@ -352,16 +394,33 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
 }
 .tree-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
 
-/* Viewport bergulir: tree + panel di luar struktur bergeser sebagai satu kesatuan */
 .tree-viewport {
   overflow-x: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: .5rem;
+  padding: 0.5rem 0.5rem 1rem;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
 }
+.tree-viewport::-webkit-scrollbar {
+  height: 10px;
+}
+.tree-viewport::-webkit-scrollbar-track {
+  background: rgba(42, 33, 24, 0.08);
+  border-radius: 10px;
+}
+.tree-viewport::-webkit-scrollbar-thumb {
+  background: var(--c-terra-dark);
+  border-radius: 10px;
+}
+.tree-viewport::-webkit-scrollbar-thumb:hover {
+  background: var(--c-terra);
+}
+
 .tree-canvas {
   display: flex;
-  align-items: flex-start;
-  gap: 2rem;
+  align-items: stretch;
+  gap: 1.75rem;
   width: max-content;
 }
 
@@ -401,40 +460,144 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
   margin-bottom: 1rem;
 }
 
-/* Tokoh Adat: eksplisit di luar struktur formal (border putus-putus + label),
-   berdiri sebagai kolom terpisah DI SAMPING tree — bukan di bawahnya — supaya
-   terbaca sebagai jalur yang sejajar, bukan bawahan dari bagan. */
+/* ─── Tokoh Adat: Hierarki Garis Lurus (Saibatin) ─── */
 .tokoh-adat-panel {
-  width: 320px;
+  width: 325px;
   flex-shrink: 0;
-  background: rgba(122, 74, 58, 0.05);
+  background: rgba(122, 74, 58, 0.06);
   border: 1.5px dashed var(--c-terra);
   border-radius: var(--radius-md);
-  padding: 1.5rem;
-}
-.tap-header { margin-bottom: 1.25rem; }
-.tap-label {
-  display: block;
-  font-size: .62rem; font-weight: 700;
-  letter-spacing: .16em; text-transform: uppercase;
-  color: var(--c-terra);
-  margin-bottom: .35rem;
-}
-.tap-title { font-family: var(--font-serif); font-size: 1.15rem; color: var(--c-stone); }
-/* Satu kolom: panel kini berupa sidebar sempit di samping tree */
-.tap-list {
+  padding: 1.25rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  justify-content: space-between;
 }
-.tap-card { display: flex; align-items: center; gap: .8rem; }
-.tap-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid var(--c-cream-dark); }
-.tap-info { display: flex; flex-direction: column; gap: .1rem; }
-.tap-nama { font-family: var(--font-serif); font-size: .92rem; font-weight: 600; color: var(--c-stone); }
-.tap-peran { font-size: .68rem; color: var(--c-stone-muted); }
+.tap-header { margin-bottom: .75rem; }
+.tap-label {
+  display: inline-block;
+  font-size: .62rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--c-white);
+  background: var(--c-terra-dark);
+  padding: .25rem .75rem;
+  border-radius: 50px;
+  margin-bottom: .45rem;
+}
+.tap-title { font-family: var(--font-serif); font-size: 1.15rem; color: var(--c-stone); }
 
-/* ─── Tugas & Fungsi / Lembaga Kemasyarakatan ── */
+.tap-list--linear {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  gap: .65rem;
+  margin: .5rem 0;
+}
+
+/* Elemen DOM nyata: garis lurus vertikal kontinu dari badge 1 s/d 8 (100% nyambung & 100% terbaca di PNG) */
+.tap-spine-line {
+  position: absolute;
+  top: 18px;
+  bottom: 18px;
+  left: 11px;
+  width: 2.5px;
+  background: var(--c-terra-dark);
+  z-index: 0;
+}
+
+.tap-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.tap-spine-node {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+
+.tap-node-badge {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--c-terra-dark);
+  color: var(--c-white);
+  font-size: .68rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2.5px var(--c-cream-dark);
+}
+.tap-row--top .tap-node-badge {
+  background: var(--c-terra-dark);
+  box-shadow: 0 0 0 3px #8a6f38, 0 2px 5px rgba(0,0,0,0.18);
+}
+
+.tap-branch-line {
+  width: 8px;
+  height: 2px;
+  background: var(--c-terra);
+  flex-shrink: 0;
+}
+
+.tap-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  background: var(--c-white);
+  border-radius: var(--radius-sm);
+  padding: .55rem .65rem;
+  box-shadow: var(--shadow-card);
+  border-left: 3px solid var(--c-sage);
+  transition: transform .2s, box-shadow .2s;
+  min-width: 0;
+}
+.tap-card:hover {
+  transform: translateX(3px);
+  box-shadow: var(--shadow-lift);
+}
+.tap-card--top {
+  border-left: 4px solid var(--c-terra-dark);
+  background: var(--c-cream);
+}
+.tap-img {
+  width: 40px; height: 40px;
+  border-radius: 50%; object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--c-cream-dark);
+}
+.tap-info { display: flex; flex-direction: column; min-width: 0; }
+.tap-nama { font-family: var(--font-serif); font-size: .86rem; font-weight: 700; color: var(--c-stone); line-height: 1.2; }
+.tap-gelar { font-size: .7rem; font-weight: 600; color: var(--c-terra-dark); margin-top: .1rem; }
+.tap-peran { font-size: .6rem; color: var(--c-stone-muted); margin-top: .05rem; }
+
+.tap-note {
+  display: flex;
+  gap: .4rem;
+  margin-top: 1.25rem;
+  padding-top: .85rem;
+  border-top: 1px dashed var(--c-terra);
+  font-size: .72rem;
+  line-height: 1.5;
+  color: var(--c-stone-muted);
+}
+.tap-note-asterisk {
+  font-weight: 700;
+  color: var(--c-terra-dark);
+  font-size: .95rem;
+  line-height: 1;
+}
+
+/* Info Sections */
 .info-section { padding: var(--sp-lg) var(--sp-md); background: var(--c-cream); }
+.info-section--adat {
+  background: var(--c-cream-dark);
+  border-top: 1px solid var(--c-cream);
+}
 .info-section--dark { background: var(--c-stone); }
 .info-wrap { max-width: var(--max-w); margin: 0 auto; }
 
@@ -464,6 +627,10 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
   padding: 1.5rem;
   box-shadow: var(--shadow-card);
   border-left: 3px solid var(--c-terra);
+}
+.role-card--adat {
+  border-left: 3.5px solid var(--c-terra-dark);
+  background: var(--c-white);
 }
 .role-card h3 {
   font-family: var(--font-serif); font-size: 1.05rem;

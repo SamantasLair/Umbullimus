@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Panel CMS dan endpoint OAuth: tidak ada nilai pencarian, dan halaman login
+# yang terindeks hanya memboroskan anggaran crawl.
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://umbullimus.my.id/sitemap.xml

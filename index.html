@@ -5,11 +5,135 @@
     <link rel="icon" type="image/png" href="/images/logopesawaran.png" />
     <link rel="apple-touch-icon" href="/images/logopesawaran.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Desa Wisata Umbul Limus - Pesawaran, Lampung. Destinasi wisata alam, air terjun, dan budaya Lampung yang menakjubkan." />
-    <title>Umbul Limus - Desa Wisata Alam & Budaya Lampung</title>
+    <meta name="theme-color" content="#1a140d" />
+
+    <!-- Nilai bawaan. Rute selain beranda menimpanya lewat src/composables/useSeo.js.
+         Crawler yang tidak menjalankan JS (mis. bot pratinjau WhatsApp) hanya
+         membaca nilai statis di bawah ini, jadi isinya sengaja dibuat lengkap. -->
+    <title>Desa Wisata Umbul Limus – Pesawaran, Lampung</title>
+    <meta
+      name="description"
+      content="Desa Umbul Limus, Kecamatan Marga Punduh, Kabupaten Pesawaran, Lampung. Wisata alam mata air jernih, air terjun, suasana pedesaan asri, dan warisan budaya Lampung."
+    />
+    <link rel="canonical" href="https://umbullimus.my.id/" />
+
+    <meta property="og:site_name" content="Desa Wisata Umbul Limus" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Desa Wisata Umbul Limus – Pesawaran, Lampung" />
+    <meta
+      property="og:description"
+      content="Wisata alam mata air jernih, air terjun, dan warisan budaya Lampung di Kecamatan Marga Punduh, Kabupaten Pesawaran."
+    />
+    <meta property="og:url" content="https://umbullimus.my.id/" />
+    <meta property="og:image" content="https://umbullimus.my.id/AirTerjun.jpg" />
+    <meta property="og:image:alt" content="Air terjun di Desa Umbul Limus, Pesawaran, Lampung" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Desa Wisata Umbul Limus – Pesawaran, Lampung" />
+    <meta
+      name="twitter:description"
+      content="Wisata alam mata air jernih, air terjun, dan warisan budaya Lampung di Kecamatan Marga Punduh, Kabupaten Pesawaran."
+    />
+    <meta name="twitter:image" content="https://umbullimus.my.id/AirTerjun.jpg" />
+
+    <!-- Entitas inti situs. Sengaja statis (bukan disuntik JS) supaya terbaca
+         crawler tanpa eksekusi JavaScript.
+         Nama jalan belum diketahui, jadi streetAddress diisi nama desa saja —
+         lebih baik kosong daripada dikarang, karena Google mencocokkan alamat
+         ini dengan sumber lain untuk memverifikasi lokasi. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://umbullimus.my.id/#website",
+            "url": "https://umbullimus.my.id/",
+            "name": "Desa Wisata Umbul Limus",
+            "inLanguage": "id-ID",
+            "publisher": { "@id": "https://umbullimus.my.id/#organization" }
+          },
+          {
+            "@type": "GovernmentOrganization",
+            "@id": "https://umbullimus.my.id/#organization",
+            "name": "Pemerintah Desa Umbul Limus",
+            "alternateName": "Desa Umbul Limus",
+            "url": "https://umbullimus.my.id/",
+            "logo": "https://umbullimus.my.id/images/logopesawaran.png",
+            "telephone": "+62-813-8666-6693",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Desa Umbul Limus",
+              "addressLocality": "Marga Punduh",
+              "addressRegion": "Lampung",
+              "postalCode": "35453",
+              "addressCountry": "ID"
+            },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "customer service",
+              "name": "Rudi Saputra, S.I.P. — Bendahara Desa",
+              "telephone": "+62-813-8666-6693",
+              "availableLanguage": ["id", "Indonesian"]
+            },
+            "areaServed": { "@id": "https://umbullimus.my.id/#place" }
+          },
+          {
+            "@type": "TouristAttraction",
+            "@id": "https://umbullimus.my.id/#place",
+            "name": "Desa Wisata Umbul Limus",
+            "url": "https://umbullimus.my.id/",
+            "image": "https://umbullimus.my.id/AirTerjun.jpg",
+            "description": "Desa wisata di Kecamatan Marga Punduh, Kabupaten Pesawaran, Lampung, dengan mata air alami, air terjun, dan warisan budaya Lampung Saibatin.",
+            "isAccessibleForFree": true,
+            "publicAccess": true,
+            "telephone": "+62-813-8666-6693",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Desa Umbul Limus",
+              "addressLocality": "Marga Punduh",
+              "addressRegion": "Lampung",
+              "postalCode": "35453",
+              "addressCountry": "ID"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": -5.685974,
+              "longitude": 105.159717
+            },
+            "hasMap": "https://www.google.com/maps?q=-5.685974,105.159717"
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>
+
+    <!-- Konten cadangan untuk crawler dan pengunjung tanpa JavaScript.
+         Isinya harus tetap SEPADAN dengan yang dirender aplikasi — kalau berbeda
+         jauh, itu masuk kategori cloaking dan justru dihukum mesin pencari. -->
+    <noscript>
+      <h1>Desa Wisata Umbul Limus</h1>
+      <p>
+        Desa Umbul Limus terletak di Kecamatan Marga Punduh, Kabupaten Pesawaran,
+        Provinsi Lampung. Nama <em>Umbul</em> merujuk pada mata air, sementara
+        <em>Limus</em> adalah nama lokal mangga kuweni yang dahulu tumbuh liar di
+        sekitar permukiman. Desa ini dikenal dengan sumber mata air alaminya,
+        suasana pedesaan yang asri, dan kearifan budaya Lampung yang lestari.
+      </p>
+      <ul>
+        <li><a href="/">Beranda</a></li>
+        <li><a href="/bagan">Struktur Organisasi Pemerintah Desa</a></li>
+        <li><a href="/infografis">Infografis dan Data Desa</a></li>
+        <li><a href="/galeri">Galeri Foto Desa</a></li>
+      </ul>
+      <p>
+        Situs ini membutuhkan JavaScript untuk menampilkan versi lengkapnya.
+      </p>
+    </noscript>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

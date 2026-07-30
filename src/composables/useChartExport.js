@@ -6,7 +6,7 @@
 // perlu menduplikasi satu pun nilai warna di file ini.
 
 const PAD = 40
-const HEADER_H = 96
+const HEADER_H = 115
 
 const isTransparent = (c) =>
   !c || c === 'transparent' || /^rgba\(\s*0,\s*0,\s*0,\s*0\s*\)$/.test(c)
@@ -26,9 +26,47 @@ const radiusOf = (cs, w, h) => {
   return px(raw)
 }
 
-const lineHeightOf = (cs) => {
-  const lh = cs.lineHeight
-  return lh === 'normal' ? px(cs.fontSize) * 1.2 : px(lh)
+// Ambil kotak setiap BARIS teks persis seperti hasil layout browser.
+//
+// Penting: baris TIDAK boleh dihitung ulang dengan ctx.measureText. Metrik font
+// canvas sedikit berbeda dari metrik layout, sehingga teks panjang (mis. nama
+// jabatan) bisa terpecah jadi lebih banyak baris daripada yang tampil, lalu
+// meluber ke bawah kotaknya dan menimpa teks di bawahnya. Dengan membaca kotak
+// baris asli, pemenggalan dan posisi vertikalnya dijamin sama dengan layar.
+const textLineBoxes = (el) => {
+  const range = document.createRange()
+  const lines = []
+
+  for (const node of el.childNodes) {
+    if (node.nodeType !== Node.TEXT_NODE) continue
+    const s = node.nodeValue
+    if (!s.trim()) continue
+
+    let cur = null
+    for (let i = 0; i < s.length; i++) {
+      range.setStart(node, i)
+      range.setEnd(node, i + 1)
+      const r = range.getBoundingClientRect()
+
+      // Spasi di ujung baris tidak menghasilkan kotak — ikutkan ke baris berjalan
+      if (!r.width && !r.height) {
+        if (cur) cur.text += s[i]
+        continue
+      }
+
+      if (!cur || Math.abs(r.top - cur.top) > 1) {
+        cur = { top: r.top, bottom: r.bottom, left: r.left, right: r.right, text: s[i] }
+        lines.push(cur)
+      } else {
+        cur.text += s[i]
+        cur.left = Math.min(cur.left, r.left)
+        cur.right = Math.max(cur.right, r.right)
+        cur.top = Math.min(cur.top, r.top)
+        cur.bottom = Math.max(cur.bottom, r.bottom)
+      }
+    }
+  }
+  return lines
 }
 
 const fontOf = (cs) =>
@@ -51,22 +89,6 @@ const roundRectPath = (ctx, x, y, w, h, r) => {
   ctx.lineTo(x, y + rr)
   ctx.quadraticCurveTo(x, y, x + rr, y)
   ctx.closePath()
-}
-
-const wrapLines = (ctx, text, maxW) => {
-  const words = text.split(' ')
-  const lines = []
-  let line = ''
-  for (const word of words) {
-    const test = line ? `${line} ${word}` : word
-    if (!line || ctx.measureText(test).width <= maxW) line = test
-    else {
-      lines.push(line)
-      line = word
-    }
-  }
-  if (line) lines.push(line)
-  return lines
 }
 
 // Foto lintas-origin (mis. ui-avatars.com) akan "menodai" canvas sehingga
@@ -217,17 +239,19 @@ export async function exportChartPng(wrapEl, opts = {}) {
   }
 
   if (title) {
+    ctx.save()
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
     ctx.fillStyle = titleColor
-    ctx.font = `600 30px ${serif}`
-    ctx.fillText(title, (W + PAD * 2) / 2, PAD + 20)
+    ctx.font = `700 28px ${serif}`
+    ctx.fillText(title, (W + PAD * 2) / 2, PAD + 24)
     if (subtitle) {
-      ctx.globalAlpha = 0.6
-      ctx.font = `400 13px ${sans}`
-      ctx.fillText(subtitle, (W + PAD * 2) / 2, PAD + 48)
+      ctx.globalAlpha = 0.65
+      ctx.font = `500 13px ${sans}`
+      ctx.fillText(subtitle, (W + PAD * 2) / 2, PAD + 58)
       ctx.globalAlpha = 1
     }
+    ctx.restore()
   }
 
   ctx.translate(PAD, PAD + headerH)
@@ -249,6 +273,16 @@ export async function exportChartPng(wrapEl, opts = {}) {
       ctx.lineWidth = px(cs.strokeWidth) || 2
       ctx.lineJoin = 'round'
       ctx.lineCap = 'round'
+
+      const isDash =
+        p.classList.contains('chart-line--dash') ||
+        (cs.strokeDasharray && cs.strokeDasharray !== 'none')
+      if (isDash) {
+        ctx.setLineDash([6, 4])
+      } else {
+        ctx.setLineDash([])
+      }
+
       ctx.stroke(new Path2D(p.getAttribute('d')))
       ctx.restore()
     }
@@ -326,10 +360,10 @@ export async function exportChartPng(wrapEl, opts = {}) {
 
     drawBorders(ctx, cs, x, y, w, h, radius)
 
-    // Teks langsung milik elemen ini (bukan milik anaknya)
-    let text = directText(el)
-    if (text) {
-      if (cs.textTransform === 'uppercase') text = text.toUpperCase()
+    // Teks langsung milik elemen ini (bukan milik anaknya). directText dipakai
+    // sebagai penyaring murah lebih dulu supaya elemen wadah (tanpa teks) tidak
+    // ikut menjalani pengukuran per karakter yang mahal.
+    if (directText(el)) {
       ctx.fillStyle = cs.color
       ctx.font = fontOf(cs)
       // Canvas hanya menerima panjang eksplisit; 'normal' harus diabaikan.
@@ -337,28 +371,32 @@ export async function exportChartPng(wrapEl, opts = {}) {
       if ('letterSpacing' in ctx) ctx.letterSpacing = spacing
       ctx.textBaseline = 'middle'
 
-      const padL = px(cs.paddingLeft) + px(cs.borderLeftWidth)
-      const padR = px(cs.paddingRight) + px(cs.borderRightWidth)
-      const padT = px(cs.paddingTop) + px(cs.borderTopWidth)
-      const innerW = Math.max(1, w - padL - padR)
-      const lh = lineHeightOf(cs)
-      const lines = wrapLines(ctx, text, innerW)
-
       const align = cs.textAlign
-      let tx = x + padL
-      if (align === 'center') {
-        ctx.textAlign = 'center'
-        tx = x + padL + innerW / 2
-      } else if (align === 'right' || align === 'end') {
-        ctx.textAlign = 'right'
-        tx = x + w - padR
-      } else {
-        ctx.textAlign = 'left'
-      }
+      ctx.textAlign =
+        align === 'center' ? 'center' : align === 'right' || align === 'end' ? 'right' : 'left'
 
-      lines.forEach((ln, i) => {
-        ctx.fillText(ln, tx, y + padT + lh * (i + 0.5))
-      })
+      for (const ln of textLineBoxes(el)) {
+        let t = ln.text.trim()
+        if (!t) continue
+        if (cs.textTransform === 'uppercase') t = t.toUpperCase()
+        else if (cs.textTransform === 'lowercase') t = t.toLowerCase()
+
+        const lx =
+          ctx.textAlign === 'center'
+            ? (ln.left + ln.right) / 2
+            : ctx.textAlign === 'right'
+              ? ln.right
+              : ln.left
+
+        // maxWidth = lebar baris aslinya: kalau font canvas ternyata merender
+        // sedikit lebih lebar, teks dirapatkan alih-alih melewati batas kotak.
+        ctx.fillText(
+          t,
+          lx - wrapRect.left,
+          (ln.top + ln.bottom) / 2 - wrapRect.top,
+          Math.max(1, ln.right - ln.left) + 1,
+        )
+      }
       if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'
     }
 

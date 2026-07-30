@@ -10,35 +10,61 @@
       "tier": 1,
       "parent": 0,
       "jabatan": "Kepala Desa",
-      "nama": "Ismail Alvian, S.IP.",
-      "periode": "2022 – 2028",
-      "bio": "Memimpin desa dengan visi pengembangan pariwisata berbasis masyarakat dan pelestarian budaya lokal Lampung.",
+      "nama": "Ismail Alfian, S.I.P.",
+      "periode": "2008 – 2030",
+      "bio": "Memimpin desa selama 3 periode (2008-2014, 2015-2021, 2022-2030) dengan visi tata kelola berbasis masyarakat dan pelestarian budaya lokal Lampung.",
       "foto": "/images/profil/kepala-desa.jpg"
+    },
+    {
+      "id": 20,
+      "tier": 1,
+      "parent": 0,
+      "kelompok": "bpd",
+      "jabatan": "Badan Permusyawaratan Desa",
+      "keterangan": "Sejajar Kepala Desa, berbeda tugas pokok & fungsi",
+      "ketua": {
+        "jabatan": "Ketua BPD",
+        "nama": "Ahmad Judin",
+        "foto": "https://ui-avatars.com/api/?name=Ahmad+Judin&background=8a6f38&color=fff&size=200&bold=true"
+      },
+      "anggota": [
+        {
+          "jabatan": "Wakil Ketua",
+          "nama": "Anthony",
+          "foto": "https://ui-avatars.com/api/?name=Anthony&background=8a6f38&color=fff&size=200&bold=true"
+        },
+        {
+          "jabatan": "Sekretaris",
+          "nama": "Lilis Santika",
+          "foto": "https://ui-avatars.com/api/?name=Lilis+Santika&background=8a6f38&color=fff&size=200&bold=true"
+        },
+        {
+          "jabatan": "Anggota",
+          "nama": "Zainadi",
+          "foto": "https://ui-avatars.com/api/?name=Zainadi&background=8a6f38&color=fff&size=200&bold=true"
+        },
+        {
+          "jabatan": "Anggota",
+          "nama": "Windasari",
+          "foto": "https://ui-avatars.com/api/?name=Windasari&background=8a6f38&color=fff&size=200&bold=true"
+        }
+      ]
     },
     {
       "id": 2,
       "tier": 2,
       "parent": 1,
       "jabatan": "Sekretaris Desa",
-      "nama": "Thohir",
-      "periode": "2022 – 2028",
+      "nama": "Thohir, S.I.P.",
       "foto": "/images/profil/sekretaris-desa.jpg"
-    },
-    {
-      "id": 3,
-      "tier": 3,
-      "parent": 1,
-      "jabatan": "Bendahara Desa",
-      "nama": "Rudy",
-      "foto": "https://ui-avatars.com/api/?name=Rudy&background=2d5a3f&color=fff&size=200"
     },
     {
       "id": 4,
       "tier": 3,
       "parent": 1,
-      "jabatan": "Operator Desa",
-      "nama": "Alin",
-      "foto": "https://ui-avatars.com/api/?name=Alin&background=2d5a3f&color=fff&size=200"
+      "jabatan": "Operator / Staf Desa",
+      "nama": "Sujalin, S.I.P.",
+      "foto": "https://ui-avatars.com/api/?name=Sujalin+S.I.P&background=2d5a3f&color=fff&size=200"
     },
     {
       "id": 14,
@@ -49,29 +75,35 @@
       "kaur": [
         {
           "jabatan": "Kaur Umum & Tata Usaha",
-          "nama": "Pak/Bu Kaur Umum & Tata Usaha"
+          "nama": "Azwar",
+          "foto": "https://ui-avatars.com/api/?name=Azwar&background=2d5a3f&color=fff&size=200"
         },
         {
           "jabatan": "Kaur Keuangan",
-          "nama": "Pak/Bu Kaur Keuangan"
+          "nama": "Rudi Saputra, S.I.P.",
+          "foto": "https://ui-avatars.com/api/?name=Rudi+Saputra+S.I.P&background=2d5a3f&color=fff&size=200"
         },
         {
           "jabatan": "Kaur Perencanaan",
-          "nama": "Pak/Bu Kaur Perencanaan"
+          "nama": "Ismail Denan",
+          "foto": "https://ui-avatars.com/api/?name=Ismail+Denan&background=2d5a3f&color=fff&size=200"
         }
       ],
       "kasi": [
         {
           "jabatan": "Kasi Pemerintahan",
-          "nama": "Pak/Bu Kasi Pemerintahan"
+          "nama": "Andi Gunawan",
+          "foto": "https://ui-avatars.com/api/?name=Andi+Gunawan&background=2d5a3f&color=fff&size=200"
         },
         {
           "jabatan": "Kasi Kesejahteraan",
-          "nama": "Pak/Bu Kasi Kesejahteraan"
+          "nama": "Herozi",
+          "foto": "https://ui-avatars.com/api/?name=Herozi&background=2d5a3f&color=fff&size=200"
         },
         {
           "jabatan": "Kasi Pelayanan",
-          "nama": "Pak/Bu Kasi Pelayanan"
+          "nama": "Ismail",
+          "foto": "https://ui-avatars.com/api/?name=Ismail&background=2d5a3f&color=fff&size=200"
         }
       ]
     },
@@ -81,8 +113,9 @@
       "parent": 2,
       "kelompok": "kadus",
       "jabatan": "Kepala Dusun I",
-      "nama": "Pak/Bu Kepala Dusun I",
-      "foto": "https://ui-avatars.com/api/?name=Kepala+Dusun+I&background=2d5a3f&color=fff&size=200"
+      "nama": "Sahroni",
+      "rw": "RW 001",
+      "foto": "https://ui-avatars.com/api/?name=Sahroni&background=2d5a3f&color=fff&size=200"
     },
     {
       "id": 12,
@@ -90,8 +123,9 @@
       "parent": 2,
       "kelompok": "kadus",
       "jabatan": "Kepala Dusun II",
-      "nama": "Pak/Bu Kepala Dusun II",
-      "foto": "https://ui-avatars.com/api/?name=Kepala+Dusun+II&background=2d5a3f&color=fff&size=200"
+      "nama": "Maimul",
+      "rw": "RW 002",
+      "foto": "https://ui-avatars.com/api/?name=Maimul&background=2d5a3f&color=fff&size=200"
     },
     {
       "id": 13,
@@ -99,45 +133,137 @@
       "parent": 2,
       "kelompok": "kadus",
       "jabatan": "Kepala Dusun III",
-      "nama": "Pak/Bu Kepala Dusun III",
-      "foto": "https://ui-avatars.com/api/?name=Kepala+Dusun+III&background=2d5a3f&color=fff&size=200"
+      "nama": "Sukur Talip",
+      "rw": "RW 003",
+      "foto": "https://ui-avatars.com/api/?name=Sukur+Talip&background=2d5a3f&color=fff&size=200"
+    },
+    {
+      "id": 101,
+      "tier": 5,
+      "parent": 11,
+      "kelompok": "rt",
+      "dusun": "Dusun I",
+      "jabatan": "RT 001/001",
+      "nama": "Evi Rusniyati",
+      "foto": "https://ui-avatars.com/api/?name=Evi+Rusniyati&background=7d7350&color=fff&size=200"
+    },
+    {
+      "id": 102,
+      "tier": 5,
+      "parent": 11,
+      "kelompok": "rt",
+      "dusun": "Dusun I",
+      "jabatan": "RT 001/002",
+      "nama": "Ismail",
+      "foto": "https://ui-avatars.com/api/?name=Ismail&background=7d7350&color=fff&size=200"
+    },
+    {
+      "id": 103,
+      "tier": 5,
+      "parent": 11,
+      "kelompok": "rt",
+      "dusun": "Dusun I",
+      "jabatan": "RT 001/003",
+      "nama": "Hasrudin",
+      "foto": "https://ui-avatars.com/api/?name=Hasrudin&background=7d7350&color=fff&size=200"
+    },
+    {
+      "id": 104,
+      "tier": 5,
+      "parent": 12,
+      "kelompok": "rt",
+      "dusun": "Dusun II",
+      "jabatan": "RT 002/004",
+      "nama": "Murdani",
+      "foto": "https://ui-avatars.com/api/?name=Murdani&background=7d7350&color=fff&size=200"
+    },
+    {
+      "id": 105,
+      "tier": 5,
+      "parent": 12,
+      "kelompok": "rt",
+      "dusun": "Dusun II",
+      "jabatan": "RT 002/005",
+      "nama": "Riyanto",
+      "foto": "https://ui-avatars.com/api/?name=Riyanto&background=7d7350&color=fff&size=200"
+    },
+    {
+      "id": 106,
+      "tier": 5,
+      "parent": 13,
+      "kelompok": "rt",
+      "dusun": "Dusun III",
+      "jabatan": "RT 003/006",
+      "nama": "M Pa,i",
+      "foto": "https://ui-avatars.com/api/?name=M+Pa,i&background=7d7350&color=fff&size=200"
+    },
+    {
+      "id": 107,
+      "tier": 5,
+      "parent": 13,
+      "kelompok": "rt",
+      "dusun": "Dusun III",
+      "jabatan": "RT 003/007",
+      "nama": "Nasrudin",
+      "foto": "https://ui-avatars.com/api/?name=Nasrudin&background=7d7350&color=fff&size=200"
     }
   ],
   "tokoh_adat": [
     {
-      "nama": "Pak/Bu Tokoh Adat I",
-      "peran": "Tokoh Adat Lampung / Penyimbang",
-      "foto": "https://ui-avatars.com/api/?name=Tokoh+Adat+I&background=7a4a3a&color=fff&size=200"
+      "rank": 1,
+      "nama": "Hermansyah",
+      "gelar": "Khaghya Susunan Adat",
+      "peran": "Pemimpin Adat Tertinggi Saibatin",
+      "foto": "https://ui-avatars.com/api/?name=Hermansyah&background=7a4a3a&color=fff&size=200&bold=true"
     },
     {
-      "nama": "Pak/Bu Sesepuh Desa",
-      "peran": "Sesepuh Desa",
-      "foto": "https://ui-avatars.com/api/?name=Sesepuh+Desa&background=7a4a3a&color=fff&size=200"
+      "rank": 2,
+      "nama": "A. Matzaini",
+      "gelar": "Khaja Simbangan",
+      "peran": "Wakil / Pengapit Pimpinan Adat",
+      "foto": "https://ui-avatars.com/api/?name=A.+Matzaini&background=7a4a3a&color=fff&size=200&bold=true"
     },
     {
-      "nama": "Pak/Bu Tokoh Agama",
-      "peran": "Tokoh Agama & Imam Desa",
-      "foto": "https://ui-avatars.com/api/?name=Tokoh+Agama&background=7a4a3a&color=fff&size=200"
+      "rank": 3,
+      "nama": "Bachtiar",
+      "gelar": "Minak Setya",
+      "peran": "Pembesar Adat / Penjaga Trah",
+      "foto": "https://ui-avatars.com/api/?name=Bachtiar&background=7a4a3a&color=fff&size=200&bold=true"
     },
     {
-      "nama": "Pak/Bu Tokoh Pemuda",
-      "peran": "Ketua Pemuda / Karang Taruna",
-      "foto": "https://ui-avatars.com/api/?name=Tokoh+Pemuda&background=7a4a3a&color=fff&size=200"
+      "rank": 4,
+      "nama": "Ismail D.",
+      "gelar": "Minak Panglima",
+      "peran": "Pembesar Adat / Pengawal Hukum",
+      "foto": "https://ui-avatars.com/api/?name=Ismail+D.&background=7a4a3a&color=fff&size=200&bold=true"
     },
     {
-      "nama": "Pak/Bu Pembina Adat",
-      "peran": "Pembina Lembaga Adat Desa",
-      "foto": "https://ui-avatars.com/api/?name=Pembina+Adat&background=7a4a3a&color=fff&size=200"
+      "rank": 5,
+      "nama": "Hasbi",
+      "gelar": "Khadin Pemuka",
+      "peran": "Pelaksana Utama Ritual Adat",
+      "foto": "https://ui-avatars.com/api/?name=Hasbi&background=7a4a3a&color=fff&size=200&bold=true"
     },
     {
-      "nama": "Pak/Bu Tokoh Masyarakat",
-      "peran": "Tokoh Masyarakat Kewilayahan",
-      "foto": "https://ui-avatars.com/api/?name=Tokoh+Masyarakat&background=7a4a3a&color=fff&size=200"
+      "rank": 6,
+      "nama": "Buang B.",
+      "gelar": "Khadin Jaksa",
+      "peran": "Pelaksana Penegakan Kehakiman Adat",
+      "foto": "https://ui-avatars.com/api/?name=Buang+B.&background=7a4a3a&color=fff&size=200&bold=true"
     },
     {
-      "nama": "Pak/Bu Pelestari Budaya",
-      "peran": "Pelestari Budaya & Seni Tradisional",
-      "foto": "https://ui-avatars.com/api/?name=Pelestari+Budaya&background=7a4a3a&color=fff&size=200"
+      "rank": 7,
+      "nama": "Fairulloh",
+      "gelar": "Khadin Mulya",
+      "peran": "Pelaksana Tata Kehormatan Adat",
+      "foto": "https://ui-avatars.com/api/?name=Fairulloh&background=7a4a3a&color=fff&size=200&bold=true"
+    },
+    {
+      "rank": 8,
+      "nama": "Yusuf T.",
+      "gelar": "Khadin Pengkhamban",
+      "peran": "Pelaksana Pelayanan Masyarakat Adat",
+      "foto": "https://ui-avatars.com/api/?name=Yusuf+T.&background=7a4a3a&color=fff&size=200&bold=true"
     }
   ]
 }

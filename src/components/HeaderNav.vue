@@ -30,7 +30,7 @@
 
       <!-- CTA Siger -->
       <a
-        href="https://wa.me/6281234567890"
+        href="https://wa.me/6281386666693"
         target="_blank"
         rel="noopener"
         class="nav-cta"
@@ -65,7 +65,7 @@
           <div class="ov-sep"></div>
           <RouterLink to="/galeri" class="ov-link ov-link--anchor" @click="closeMenu">Galeri</RouterLink>
         </nav>
-        <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="ov-cta" @click="closeMenu">
+        <a href="https://wa.me/6281386666693" target="_blank" rel="noopener" class="ov-cta" @click="closeMenu">
           Hubungi Kami via WhatsApp
         </a>
       </div>

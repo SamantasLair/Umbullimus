@@ -2,8 +2,25 @@
   <section id="home" class="hero" ref="heroSection">
     <div class="hero-overlay"></div>
 
-    <video autoplay loop muted playsinline class="hero-video" aria-hidden="true" ref="videoEl">
-      <source src="https://cdn.pixabay.com/video/2019/11/17/29168-373809623_large.mp4" type="video/mp4" />
+    <!-- Footage asli desa, dihosting sendiri (bukan lagi stok dari CDN pihak
+         ketiga). Sudah diolah dari AirTerjun.mp4: audio dibuang, 10% bagian
+         akhir dipotong, gerak dilambatkan 2x, dan bidang gambar dipangkas
+         permanen ke rentang vertikal 0.3–0.8 — jadi framing-nya sudah benar
+         tanpa perlu object-position.
+         poster: tanpa ini hero kosong sampai video termuat, sehingga elemen
+         terbesar yang dicat (LCP) bergantung pada unduhan video. -->
+    <video
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="metadata"
+      poster="/hero-umbul-limus-poster.jpg"
+      class="hero-video"
+      aria-hidden="true"
+      ref="videoEl"
+    >
+      <source src="/hero-umbul-limus.mp4" type="video/mp4" />
     </video>
 
     <!-- Siger decor -->

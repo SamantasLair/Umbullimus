@@ -214,6 +214,18 @@
 import anime from 'animejs'
 import { computed, nextTick, onMounted, ref } from 'vue'
 import { useScrollExit } from '../composables/useScrollExit.js'
+import { breadcrumb, useSeo } from '../composables/useSeo.js'
+
+useSeo({
+  title: 'Infografis & Data Desa Umbul Limus',
+  description:
+    'Data statistik Desa Umbul Limus, Marga Punduh, Pesawaran: jumlah penduduk, luas wilayah, jumlah dusun, RT dan RW, serta profil kependudukan desa.',
+  path: '/infografis',
+  jsonLd: breadcrumb([
+    { name: 'Beranda', path: '/' },
+    { name: 'Infografis', path: '/infografis' },
+  ]),
+})
 
 const data = ref({})
 const loading = ref(true)

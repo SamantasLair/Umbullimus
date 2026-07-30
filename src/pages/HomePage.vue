@@ -9,6 +9,17 @@ import VisiMisiSection from '../components/VisiMisiSection.vue'
 import PreviewWisata from '../components/PreviewWisata.vue'
 // biome-ignore lint/correctness/noUnusedImports: Used in Vue template
 import PreviewGaleri from '../components/PreviewGaleri.vue'
+import { useSeo } from '../composables/useSeo.js'
+
+// Beranda memakai judul dan deskripsi yang sama dengan bawaan index.html supaya
+// tidak terjadi perbedaan antara versi statis (yang dibaca bot pratinjau) dan
+// versi hasil render JS.
+useSeo({
+  title: 'Desa Wisata Umbul Limus – Pesawaran, Lampung',
+  description:
+    'Desa Umbul Limus, Kecamatan Marga Punduh, Kabupaten Pesawaran, Lampung. Wisata alam mata air jernih, air terjun, suasana pedesaan asri, dan warisan budaya Lampung.',
+  path: '/',
+})
 </script>
 
 <template>

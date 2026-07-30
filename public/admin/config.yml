@@ -2,10 +2,10 @@ backend:
   name: github
   repo: SamantasLair/Umbullimus
   branch: main
-  # PENTING: ganti dengan domain Vercel/IDwebhost asli setelah deploy.
   # Harus persis sama dengan "Authorization callback URL" di GitHub OAuth App
-  # (tanpa trailing slash), contoh: https://umbullimus.vercel.app atau https://umbullimus.id
-  base_url: https://REPLACE-WITH-YOUR-DOMAIN
+  # (tanpa trailing slash). Kalau login CMS gagal, cek dulu kecocokan nilai ini
+  # dengan setelan OAuth App di GitHub.
+  base_url: https://umbullimus.my.id
   auth_endpoint: api/auth
 
 # Lokasi penyimpanan gambar yang di-upload via CMS

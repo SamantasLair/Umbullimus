@@ -2,24 +2,31 @@
   <div class="chart-scroll">
     <div class="chart-wrap" ref="wrapRef">
       <svg class="chart-lines" :width="size.w" :height="size.h" aria-hidden="true">
-        <path v-for="c in connectors" :key="c.id" :d="c.d" />
+        <path
+          v-for="c in connectors"
+          :key="c.id"
+          :d="c.d"
+          :class="{ 'chart-line--dash': c.isCoordination }"
+        />
       </svg>
 
       <div v-for="grp in tiers" :key="grp.tier" class="chart-row" :class="`chart-row--tier-${grp.tier}`">
-        <!-- Kartu gabungan Kaur & Kasi: 2 kolom dalam 1 kartu (kiri Kaur, kanan Kasi) -->
         <div
           v-for="node in grp.nodes"
           :key="node.id"
           class="org-box"
           :class="[
             boxClass(node),
+            `org-box--node-${node.id}`,
             {
               'org-box--branch-right': node.tier > 1 && parentIds.has(node.id),
-              'org-box--push-right': isPushRight(node, grp.nodes)
+              'org-box--push-right': isPushRight(node, grp.nodes),
+              'rt-group-start': node.id === 104 || node.id === 106
             }
           ]"
           :ref="el => setNodeRef(node.id, el)"
         >
+          <!-- Kartu gabungan Kaur & Kasi: 2 kolom dalam 1 kartu -->
           <template v-if="node.kelompok === 'kaurkasi'">
             <span class="org-jabatan">Kaur &amp; Kasi</span>
             <div class="kk-columns">
@@ -46,8 +53,39 @@
             </div>
           </template>
 
+          <!-- BPD: kedudukan sejajar Kepala Desa -->
+          <template v-else-if="node.kelompok === 'bpd'">
+            <span class="org-jabatan">{{ node.jabatan }}</span>
+            <div class="bpd-table">
+              <div v-if="node.ketua" class="bpd-ketua">
+                <img
+                  :src="node.ketua.foto || fallbackAvatar(node.ketua.nama)"
+                  :alt="node.ketua.nama"
+                  class="bpd-img"
+                  @load="scheduleCompute"
+                />
+                <span class="bpd-jabatan bpd-jabatan--ketua">{{ node.ketua.jabatan }}</span>
+                <span class="bpd-nama">{{ node.ketua.nama }}</span>
+              </div>
+              <div class="bpd-anggota">
+                <div v-for="a in node.anggota" :key="a.nama" class="bpd-cell">
+                  <img
+                    :src="a.foto || fallbackAvatar(a.nama)"
+                    :alt="a.nama"
+                    class="bpd-img bpd-img--sm"
+                    @load="scheduleCompute"
+                  />
+                  <span class="bpd-jabatan">{{ a.jabatan }}</span>
+                  <span class="bpd-nama">{{ a.nama }}</span>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <!-- Kartu Standar (Kepala Desa, Sekretaris Desa, Staf, Kadus, RT) -->
           <template v-else>
             <span v-if="node.tier === 1" class="pf-crown">Pimpinan Tertinggi Desa</span>
+            <span v-if="node.kelompok === 'rt'" class="org-dusun-badge">{{ node.dusun }}</span>
             <img
               :src="node.foto || fallbackAvatar(node.nama)"
               :alt="node.nama"
@@ -55,8 +93,8 @@
               :class="imgClass(node)"
               @load="scheduleCompute"
             />
-            <span class="org-jabatan" :class="{ 'org-jabatan--sm': node.tier > 1 }">{{ node.jabatan }}</span>
-            <span class="org-nama" :class="{ 'org-nama--lead': node.tier === 1, 'org-nama--sm': node.tier > 1 }">{{ node.nama }}</span>
+            <span class="org-jabatan" :class="{ 'org-jabatan--sm': node.tier > 1, 'org-jabatan--rt': node.kelompok === 'rt' }">{{ node.jabatan }}</span>
+            <span class="org-nama" :class="{ 'org-nama--lead': node.tier === 1, 'org-nama--sm': node.tier > 1, 'org-nama--rt': node.kelompok === 'rt' }">{{ node.nama }}</span>
             <span v-if="node.periode" class="org-periode">{{ node.periode }}</span>
             <p v-if="node.bio" class="org-bio">{{ node.bio }}</p>
           </template>
@@ -83,10 +121,6 @@ const connectors = ref([])
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const tiers = computed(() => groupByTier(props.items))
 
-// Id yang jadi induk dari orang lain (punya cabang sendiri) — dipakai untuk
-// menggeser kartunya ke kanan dalam barisnya (mis. Sekdes), supaya garis
-// komandonya ke bawah (mis. ke Kadus) tidak menabrak kartu/garis lain yang
-// kebetulan sebaris (mis. Bendahara & Operator).
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const parentIds = computed(() => new Set(props.items.filter(n => n.parent).map(n => n.parent)))
 
@@ -104,9 +138,11 @@ const setNodeRef = (id, el) => {
 
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const boxClass = (node) => {
+  if (node.kelompok === 'bpd') return 'org-box--bpd'
   if (node.tier === 1) return 'org-box--kepala'
   if (node.kelompok === 'kaurkasi') return 'org-box--kaurkasi'
   if (node.kelompok === 'kadus') return 'org-box--kadus'
+  if (node.kelompok === 'rt') return 'org-box--rt'
   return 'org-box--staff'
 }
 
@@ -115,6 +151,7 @@ const imgClass = (node) => {
   if (node.tier === 1) return 'org-img--lead'
   if (node.kelompok === 'kaur' || node.kelompok === 'kasi') return 'org-img--kaurkasi'
   if (node.kelompok === 'kadus') return 'org-img--sm'
+  if (node.kelompok === 'rt') return 'org-img--rt'
   return ''
 }
 
@@ -130,9 +167,6 @@ const rectIn = (el, wrapRect) => {
 
 const DODGE_PAD = 16
 
-// Segmen turun vertikal (dari fromY ke toY, pada sumbu cX) yang otomatis memutar
-// kalau ada kotak LAIN (bukan induk/anak grup ini sendiri) menghalangi jalurnya —
-// mis. garis Sekdes → Kadus yang harus melewati baris Bendahara/Operator.
 const dropSegment = (cX, fromY, toY, obstacles) => {
   const blocking = obstacles.filter(
     b => b.top < toY - 1 && b.bottom > fromY + 1 && cX > b.left - DODGE_PAD && cX < b.right + DODGE_PAD,
@@ -162,7 +196,22 @@ const computeConnectors = () => {
 
   const paths = []
 
-  // Grouping anak berdasarkan parentId
+  // 1. Garis Koordinasi Kepala Desa (id: 1) <-> BPD (id: 20)
+  const kadesEl = nodeEls[1]
+  const bpdEl = nodeEls[20]
+  if (kadesEl && bpdEl) {
+    const kRect = rectIn(kadesEl, wrapRect)
+    const bRect = rectIn(bpdEl, wrapRect)
+
+    const lineY = Math.round(kRect.top + 72)
+    paths.push({
+      id: 'kades-bpd-coordination',
+      d: `M ${Math.round(kRect.right)} ${lineY} H ${Math.round(bRect.left)}`,
+      isCoordination: true,
+    })
+  }
+
+  // 2. Grouping anak berdasarkan parentId
   const parentMap = new Map()
   for (const node of props.items) {
     if (!node.parent) continue
@@ -170,9 +219,14 @@ const computeConnectors = () => {
     parentMap.get(node.parent).push(node)
   }
 
-  // Rect semua kotak (dipakai sebagai daftar "penghalang" saat garis anak tertentu
-  // harus melewati baris tingkat lain yang bukan induk/saudaranya sendiri).
+  const connectedIds = new Set()
+  for (const [parentId, children] of parentMap.entries()) {
+    connectedIds.add(parentId)
+    for (const child of children) connectedIds.add(child.id)
+  }
+
   const allRects = props.items
+    .filter(n => connectedIds.has(n.id))
     .map(n => ({ id: n.id, rect: nodeEls[n.id] && rectIn(nodeEls[n.id], wrapRect) }))
     .filter(r => r.rect)
 
@@ -187,7 +241,6 @@ const computeConnectors = () => {
     const ownIds = new Set([parentId, ...children.map(c => c.id)])
     const obstacles = allRects.filter(r => !ownIds.has(r.id)).map(r => r.rect)
 
-    // Kelompokkan anak berdasarkan posisi baris vertikal (tier/row)
     const rowGroups = new Map()
     for (const child of children) {
       const cEl = nodeEls[child.id]
@@ -196,7 +249,6 @@ const computeConnectors = () => {
       const cX = (cRect.left + cRect.right) / 2
       const cY = cRect.top
 
-      // Bulatkan cY ke kelipatan 30px untuk mengelompokkan anak di baris visual yang sama
       const rowKey = Math.round(cY / 30) * 30
       if (!rowGroups.has(rowKey)) rowGroups.set(rowKey, { cY, items: [] })
       rowGroups.get(rowKey).items.push({ id: child.id, cX })
@@ -205,30 +257,22 @@ const computeConnectors = () => {
     for (const { cY, items } of rowGroups.values()) {
       if (!items.length) continue
 
-      // Bus bar dibuat SEGERA di bawah induk (bukan pertengahan) — supaya kalau
-      // ada anak yang "melompati" beberapa tingkat (mis. Bendahara/Operator yang
-      // levelnya di bawah Sekretaris tapi sama-sama anak Kepala Desa), garisnya
-      // sudah menyamping dulu SEBELUM masuk ke baris tingkat yang dilewati,
-      // supaya tidak menembus kartu tingkat tersebut.
       const midY = pY + 18
+      const allX = items.map(it => it.cX)
+      const childrenMinX = Math.min(...allX)
+      const childrenMaxX = Math.max(...allX)
 
-      // Jika hanya ada 1 anak dan letak X-nya sama persis dengan induk: buat garis lurus
-      if (items.length === 1 && Math.abs(items[0].cX - pX) < 3) {
-        paths.push({
-          id: `${parentId}-${items[0].id}`,
-          d: dropSegment(pX, pY, cY, obstacles),
-        })
-        continue
+      let d = `M ${pX} ${pY} V ${midY}`
+      if (pX < childrenMinX) {
+        d += ` H ${childrenMinX}`
+      } else if (pX > childrenMaxX) {
+        d += ` H ${childrenMaxX}`
       }
 
-      // Cari batas X terkiri & terkanan untuk membuat 1 bus bar horizontal bersama
-      const allX = items.map(it => it.cX)
-      const minX = Math.min(pX, ...allX)
-      const maxX = Math.max(pX, ...allX)
+      if (items.length > 1) {
+        d += ` M ${childrenMinX} ${midY} H ${childrenMaxX}`
+      }
 
-      // Jalur tunggal induk -> bus bar -> cabang anak (tiap cabang mengecek sendiri
-      // apakah perlu memutar kalau ada kotak lain menghalangi turunannya)
-      let d = `M ${pX} ${pY} V ${midY} M ${minX} ${midY} H ${maxX}`
       for (const it of items) {
         d += ` ${dropSegment(it.cX, midY, cY, obstacles)}`
       }
@@ -271,23 +315,21 @@ onUnmounted(() => {
   cancelAnimationFrame(rafId)
 })
 
-// Dibuka untuk halaman induk: `wrapEl` dipakai sebagai area potret saat
-// mengekspor bagan saja (tanpa panel di luar struktur), `refresh` untuk
-// memastikan garis penghubung sudah dihitung ulang sebelum dipotret.
-defineExpose({ wrapEl: wrapRef, refresh: computeConnectors })
+defineExpose({
+  wrapEl: wrapRef,
+  refresh: () => {
+    computeConnectors()
+  }
+})
 </script>
 
 <style scoped>
-/* Bagan dikunci pada lebar desain tetap (--chart-design-w) supaya susunan
-   percabangannya PERSIS SAMA di semua ukuran layar. Komponen ini sengaja
-   TIDAK menggulir sendiri: halaman induk yang menyediakan viewport bergulir,
-   supaya tree dan panel di sampingnya ikut bergeser sebagai satu kesatuan. */
 .chart-scroll {
   width: max-content;
 }
 
 .chart-wrap {
-  --chart-design-w: 1200px;
+  --chart-design-w: 1350px;
   position: relative;
   width: var(--chart-design-w);
   padding-left: 0;
@@ -306,7 +348,14 @@ defineExpose({ wrapEl: wrapRef, refresh: computeConnectors })
   stroke-width: 2;
   stroke-linejoin: round;
   stroke-linecap: round;
-  opacity: 0.8;
+  opacity: 0.85;
+}
+
+.chart-line--dash {
+  stroke: var(--c-terra-dark) !important;
+  stroke-width: 2.2px !important;
+  stroke-dasharray: 6 4 !important;
+  opacity: 0.95 !important;
 }
 
 .chart-row {
@@ -314,16 +363,80 @@ defineExpose({ wrapEl: wrapRef, refresh: computeConnectors })
   z-index: 1;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
-  gap: 2rem 1.25rem;
-  margin-top: 3.5rem;
+  gap: 1.5rem 1.25rem;
+  margin-top: 2.5rem;
 }
 .chart-row:first-child { margin-top: 0; }
-.chart-row--tier-3 {
+
+/* Tier 1: Kades di pertengahan antara Operator (93px) & Sekdes (540px) pada sumbu 316px (padding-left: 196px), BPD tetap di sumbu 884px (margin-left: 28rem) */
+.chart-row--tier-1 {
+  display: flex;
   justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 196px;
+}
+.chart-row--tier-1 .org-box--bpd {
+  margin-left: 28rem;
+}
+
+/* Tier 2: Sekretaris Desa (100% tegak lurus sempurna di sumbu 540px di bawah Kepala Desa) */
+.chart-row--tier-2 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 455px;
+}
+
+/* Tier 3: Operator / Staf Desa (Paling kiri sejajar di atas Kaur & Kasi) */
+.chart-row--tier-3 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
   padding-left: 0.5rem;
-  gap: 3.75rem;
+}
+
+/* Tier 4: Kaur & Kasi + Kadus I, II, III */
+.chart-row--tier-4 {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding-left: 0.5rem;
+}
+.org-box--kadus {
+  width: 170px;
+  border-top: 3px solid var(--c-stone);
+}
+
+/*
+ * Presisi alignment Kepala Dusun I, II, III di atas kelompok RT masing-masing
+ * serta bebas 100% dari tabrakan dengan kartu Kaur & Kasi.
+ */
+.org-box--node-11 {
+  margin-left: 104px !important;
+}
+.org-box--node-12 {
+  margin-left: 124px !important;
+}
+.org-box--node-13 {
+  margin-left: 80px !important;
+}
+
+/* Tier 5: Kartu RT — padding-left 410px menjamin garis cabang RT1 terpisah 100% dari Kaur & Kasi */
+.chart-row--tier-5 {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: .55rem;
+  padding-left: 410px;
+}
+
+.rt-group-start {
+  margin-left: 24px !important;
 }
 
 /* ─── Boxes ── */
@@ -334,29 +447,35 @@ defineExpose({ wrapEl: wrapRef, refresh: computeConnectors })
   background: var(--c-white);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
-  padding: 1.1rem 1rem;
-  width: 180px;
+  padding: 1rem 0.85rem;
+  width: 170px;
+  flex-shrink: 0;
   transition: box-shadow .25s;
 }
 .org-box:hover { box-shadow: var(--shadow-lift); }
 
-.org-img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; margin-bottom: .5rem; border: 2px solid var(--c-cream-dark); }
-.org-img--lead { width: 96px; height: 96px; border-width: 3px; }
-.org-img--kaurkasi { width: 96px; height: 96px; border-width: 2.5px; }
-.org-img--sm { width: 44px; height: 44px; }
+.org-img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; margin-bottom: .4rem; border: 2px solid var(--c-cream-dark); }
+.org-img--lead { width: 90px; height: 90px; border-width: 3px; }
+.org-img--kaurkasi { width: 90px; height: 90px; border-width: 2.5px; }
+.org-img--sm { width: 42px; height: 42px; }
+.org-img--rt { width: 34px; height: 34px; border-width: 1.5px; margin-bottom: .25rem; }
 
 .org-jabatan { font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-terra); text-align: center; }
 .org-jabatan--sm { font-size: .58rem; }
-.org-nama { font-family: var(--font-serif); font-size: 1rem; font-weight: 600; color: var(--c-stone); margin-top: .15rem; text-align: center; }
-.org-nama--lead { font-size: 1.35rem; }
+.org-jabatan--rt { font-size: .52rem; font-weight: 700; color: var(--c-terra-dark); letter-spacing: .02em; }
+
+.org-nama { font-family: var(--font-serif); font-size: .95rem; font-weight: 600; color: var(--c-stone); margin-top: .15rem; text-align: center; }
+.org-nama--lead { font-size: 1.3rem; }
 .org-nama--sm { font-size: .82rem; text-align: center; }
+.org-nama--rt { font-size: .72rem; font-weight: 600; color: var(--c-stone); margin-top: .05rem; }
+
 .org-periode { font-size: .68rem; color: var(--c-stone-muted); margin-top: .2rem; }
-.org-bio { font-size: .8rem; color: var(--c-stone-muted); line-height: 1.6; margin-top: .6rem; text-align: center; }
+.org-bio { font-size: .78rem; color: var(--c-stone-muted); line-height: 1.5; margin-top: .5rem; text-align: center; }
 
 /* Kepala Desa: box unggulan paling atas */
 .org-box--kepala {
-  width: 250px;
-  padding: 1.75rem 1.5rem;
+  width: 240px;
+  padding: 1.5rem 1.25rem;
   border-top: 5px solid var(--c-terra-dark);
   box-shadow: var(--shadow-lift);
 }
@@ -372,53 +491,129 @@ defineExpose({ wrapEl: wrapRef, refresh: computeConnectors })
 }
 
 .org-box--staff { border-top: 3px solid var(--c-stone-muted); }
-.org-box--kadus { border-top: 3px solid var(--c-stone); }
 
-/* Node yang punya cabang sendiri (mis. Sekdes) digeser ke kanan barisnya dan
-   disepadankan posisinya di atas Kepala Dusun II (anak tengahnya). */
+/* Kartu RT Terpisah */
+.org-box--rt {
+  width: 112px;
+  padding: .65rem .35rem .5rem;
+  border-top: 3px solid var(--c-sage);
+  border-radius: var(--radius-sm);
+  position: relative;
+}
+
+.org-dusun-badge {
+  font-size: .48rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--c-white);
+  background: var(--c-terra-dark);
+  padding: .15rem .4rem;
+  border-radius: 4px;
+  margin-bottom: .3rem;
+  line-height: 1;
+}
+
+/* BPD */
+.org-box--bpd {
+  --bpd-line: rgba(42, 33, 24, .16);
+
+  width: 250px;
+  padding: 1rem .7rem .8rem;
+  border-top: 4px solid var(--c-sage);
+  align-items: stretch;
+  text-align: center;
+}
+.org-box--bpd .org-jabatan {
+  display: block;
+  font-size: .65rem;
+  letter-spacing: .1em;
+  margin-bottom: .6rem;
+}
+
+.bpd-table {
+  border: 1px solid var(--bpd-line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.bpd-ketua {
+  display: flex; flex-direction: column; align-items: center;
+  padding: .55rem .4rem;
+  background: var(--c-cream);
+  border-bottom: 1px solid var(--bpd-line);
+}
+.bpd-anggota {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.bpd-cell {
+  display: flex; flex-direction: column; align-items: center;
+  padding: .45rem .3rem;
+}
+.bpd-cell:nth-child(odd) { border-right: 1px solid var(--bpd-line); }
+.bpd-cell:nth-child(-n + 2) { border-bottom: 1px solid var(--bpd-line); }
+
+.bpd-img {
+  width: 44px; height: 44px; border-radius: 50%;
+  object-fit: cover; margin-bottom: .3rem;
+  border: 2px solid var(--c-cream-dark);
+}
+.bpd-img--sm { width: 32px; height: 32px; border-width: 1.5px; }
+
+.bpd-jabatan {
+  font-size: .5rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--c-sage);
+  line-height: 1.3;
+}
+.bpd-jabatan--ketua { font-size: .54rem; color: var(--c-terra); }
+.bpd-nama {
+  font-family: var(--font-serif);
+  font-size: .7rem; font-weight: 600;
+  color: var(--c-stone);
+  line-height: 1.3;
+  margin-top: .08rem;
+}
+.bpd-ketua .bpd-nama { font-size: .8rem; }
+
 .org-box--branch-right {
-  margin-left: auto;
-  margin-right: calc(180px + 1.25rem);
+  margin-left: 0;
+  margin-right: 0;
 }
 .org-box--push-right {
-  margin-left: auto;
+  margin-left: 0;
 }
 
-/* Kartu gabungan Kaur & Kasi: 2 kolom dalam 1 kartu, kiri Kaur - kanan Kasi */
+/* Kartu gabungan Kaur & Kasi */
 .org-box--kaurkasi {
-  width: 420px;
+  width: 380px;
   border-top: 3px solid var(--c-terra);
   align-items: stretch;
+  flex-shrink: 0;
 }
 .kk-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0 1rem;
-  margin-top: .6rem;
-  padding-top: .6rem;
+  margin-top: .5rem;
+  padding-top: .5rem;
   border-top: 1px dashed var(--c-cream-dark);
 }
-.kk-col { display: flex; flex-direction: column; gap: .75rem; }
-.kk-col:first-child { border-right: 1px dashed var(--c-cream-dark); padding-right: 1rem; }
-.kk-col:last-child { padding-left: .5rem; }
+.kk-col { display: flex; flex-direction: column; gap: .65rem; }
+.kk-col:first-child { border-right: 1px dashed var(--c-cream-dark); padding-right: .75rem; }
+.kk-col:last-child { padding-left: .25rem; }
 .kk-col-title {
   font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
   margin-bottom: .1rem;
 }
 .kk-col-title--kaur { color: var(--c-terra); }
 .kk-col-title--kasi { color: var(--c-sage); }
-.kk-person { display: flex; align-items: center; gap: .6rem; }
+.kk-person { display: flex; align-items: center; gap: .5rem; }
 .kk-person-img {
-  width: 48px; height: 48px; border-radius: 50%; object-fit: cover;
+  width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
   flex-shrink: 0; border: 2px solid var(--c-cream-dark);
 }
 .kk-person-text { display: flex; flex-direction: column; min-width: 0; }
-.kk-person-jabatan { font-size: .68rem; font-weight: 600; color: var(--c-stone); line-height: 1.3; }
-.kk-person-nama { font-size: .75rem; color: var(--c-stone-muted); font-family: var(--font-serif); }
-
-/* Sengaja TIDAK ada media query yang mengubah ukuran kartu, flex-wrap, atau
-   margin --branch-right/--push-right. Override semacam itu membuat bagan
-   menyusun ulang diri di layar sempit sehingga garis komando tidak lagi
-   sejajar dengan kartunya. Bagan tetap pada lebar desainnya dan digeser
-   mendatar di dalam .chart-scroll. */
+.kk-person-jabatan { font-size: .66rem; font-weight: 600; color: var(--c-stone); line-height: 1.25; }
+.kk-person-nama { font-size: .74rem; color: var(--c-stone-muted); font-family: var(--font-serif); }
 </style>

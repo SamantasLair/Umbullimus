@@ -108,6 +108,18 @@ import anime from 'animejs'
 import { nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { useCardHover } from '../composables/useCardHover.js'
 import { useScrollExit } from '../composables/useScrollExit.js'
+import { breadcrumb, useSeo } from '../composables/useSeo.js'
+
+useSeo({
+  title: 'Galeri Foto Desa Wisata Umbul Limus',
+  description:
+    'Galeri foto Desa Wisata Umbul Limus, Pesawaran, Lampung: panorama alam, air terjun, mata air, kegiatan masyarakat, dan budaya Lampung.',
+  path: '/galeri',
+  jsonLd: breadcrumb([
+    { name: 'Beranda', path: '/' },
+    { name: 'Galeri', path: '/galeri' },
+  ]),
+})
 
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const { onEnter, onLeave } = useCardHover({ lift: -6, scale: 1.015 })
