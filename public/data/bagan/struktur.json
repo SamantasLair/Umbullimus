@@ -25,7 +25,7 @@
       "ketua": {
         "jabatan": "Ketua BPD",
         "nama": "Madjudin",
-        "foto": "https://ui-avatars.com/api/?name=Ahmad+Judin&background=8a6f38&color=fff&size=200&bold=true"
+        "foto": "https://ui-avatars.com/api/?name=Madjudin&background=8a6f38&color=fff&size=200&bold=true"
       },
       "anggota": [
         {
@@ -218,7 +218,7 @@
     },
     {
       "rank": 2,
-      "nama": "A. Matzaini",
+      "nama": "Ahmat Zaini",
       "gelar": "Khaja Simbangan",
       "peran": "Wakil / Pengapit Pimpinan Adat",
       "foto": "https://ui-avatars.com/api/?name=A.+Matzaini&background=7a4a3a&color=fff&size=200&bold=true"
@@ -260,10 +260,10 @@
     },
     {
       "rank": 8,
-      "nama": "Yusuf T.",
+      "nama": "Yusuf Talip",
       "gelar": "Khadin Pengkhamban",
       "peran": "Pelaksana Pelayanan Masyarakat Adat",
-      "foto": "https://ui-avatars.com/api/?name=Yusuf+T.&background=7a4a3a&color=fff&size=200&bold=true"
+      "foto": "https://ui-avatars.com/api/?name=Yusuf+Talip&background=7a4a3a&color=fff&size=200&bold=true"
     }
   ]
 }
