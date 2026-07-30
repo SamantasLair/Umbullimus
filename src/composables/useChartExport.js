@@ -395,13 +395,10 @@ export async function exportChartPng(wrapEl, opts = {}) {
               ? ln.right
               : ln.left
 
-        // maxWidth = lebar baris aslinya: kalau font canvas ternyata merender
-        // sedikit lebih lebar, teks dirapatkan alih-alih melewati batas kotak.
         ctx.fillText(
           t,
           lx - wrapRect.left,
           (ln.top + ln.bottom) / 2 - wrapRect.top,
-          Math.max(1, ln.right - ln.left) + 1,
         )
       }
       if ('letterSpacing' in ctx) ctx.letterSpacing = '0px'
