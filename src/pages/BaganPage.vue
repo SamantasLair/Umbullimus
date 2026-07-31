@@ -123,8 +123,12 @@
             <p>Setara hierarkinya, langsung di bawah Kepala Desa. Kaur menjalankan pelayanan administratif (umum, keuangan, perencanaan). Kasi menjadi unsur pelaksana teknis di lapangan (pemerintahan, kesejahteraan, pelayanan) seperti urusan kependudukan, sosial budaya, dan keagamaan.</p>
           </article>
           <article class="role-card">
-            <h3>Kepala Dusun</h3>
-            <p>Unsur satuan tugas kewilayahan di bawah koordinasi Sekretaris Desa, membantu di wilayah dusun masing-masing: menjaga ketenteraman dan ketertiban, penanggulangan bencana, mobilitas kependudukan, serta penataan wilayah.</p>
+            <h3>Kepala Dusun &amp; Ketua RT</h3>
+            <p>Kepala Dusun merupakan unsur pelaksana kewilayahan di bawah Sekretaris Desa. Ketua RT menjadi garda terdepan pelayanan kependudukan dan kemasyarakatan di tingkat lingkungan terdepan.</p>
+          </article>
+          <article class="role-card">
+            <h3>Kader Pemberdayaan Masyarakat (KPM)</h3>
+            <p>Unsur masyarakat desa yang bertugas menumbuhkan dan menggerakkan partisipasi warga, mendampingi proses perencanaan serta pelaksanaan pembangunan desa, dan memfasilitasi kegiatan pemberdayaan masyarakat secara berkelanjutan.</p>
           </article>
         </div>
       </div>
@@ -500,7 +504,7 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
   position: absolute;
   top: 18px;
   bottom: 18px;
-  left: 11px;
+  left: 12.75px;
   width: 2.5px;
   background: var(--c-terra-dark);
   z-index: 0;
@@ -511,7 +515,7 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: .4rem;
+  gap: 0;
 }
 
 .tap-spine-node {
@@ -522,11 +526,11 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
 }
 
 .tap-node-badge {
-  width: 24px; height: 24px;
+  width: 28px; height: 28px;
   border-radius: 50%;
   background: var(--c-terra-dark);
   color: var(--c-white);
-  font-size: .68rem; font-weight: 700;
+  font-size: .78rem; font-weight: 700;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   box-shadow: 0 0 0 2.5px var(--c-cream-dark);
@@ -537,9 +541,9 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
 }
 
 .tap-branch-line {
-  width: 8px;
-  height: 2px;
-  background: var(--c-terra);
+  width: 14px;
+  height: 2.5px;
+  background: var(--c-terra-dark);
   flex-shrink: 0;
 }
 
@@ -565,15 +569,15 @@ defineExpose({ bgStyle, fallbackAvatar, unduh })
   background: var(--c-cream);
 }
 .tap-img {
-  width: 40px; height: 40px;
+  width: 54px; height: 54px;
   border-radius: 50%; object-fit: cover;
   flex-shrink: 0;
   border: 2px solid var(--c-cream-dark);
 }
 .tap-info { display: flex; flex-direction: column; min-width: 0; }
-.tap-nama { font-family: var(--font-serif); font-size: .86rem; font-weight: 700; color: var(--c-stone); line-height: 1.2; }
-.tap-gelar { font-size: .7rem; font-weight: 600; color: var(--c-terra-dark); margin-top: .1rem; }
-.tap-peran { font-size: .6rem; color: var(--c-stone-muted); margin-top: .05rem; }
+.tap-nama { font-family: var(--font-serif); font-size: .98rem; font-weight: 700; color: var(--c-stone); line-height: 1.2; }
+.tap-gelar { font-size: .78rem; font-weight: 600; color: var(--c-terra-dark); margin-top: .1rem; }
+.tap-peran { font-size: .68rem; color: var(--c-stone-muted); margin-top: .05rem; }
 
 .tap-note {
   display: flex;

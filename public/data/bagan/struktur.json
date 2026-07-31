@@ -25,28 +25,28 @@
       "ketua": {
         "jabatan": "Ketua BPD",
         "nama": "Madjudin",
-        "foto": "https://ui-avatars.com/api/?name=Madjudin&background=8a6f38&color=fff&size=200&bold=true"
+        "foto": "/images/profil/KetuaBPD.jpeg"
       },
       "anggota": [
         {
           "jabatan": "Wakil Ketua",
           "nama": "Antoni",
-          "foto": "https://ui-avatars.com/api/?name=Anthony&background=8a6f38&color=fff&size=200&bold=true"
+          "foto": "/images/profil/WakilBPD.jpeg"
         },
         {
           "jabatan": "Sekretaris",
           "nama": "Lilis Santika",
-          "foto": "https://ui-avatars.com/api/?name=Lilis+Santika&background=8a6f38&color=fff&size=200&bold=true"
+          "foto": "/images/profil/SekertarisBPD.jpeg"
         },
         {
           "jabatan": "Anggota",
           "nama": "Zainadi",
-          "foto": "https://ui-avatars.com/api/?name=Zainadi&background=8a6f38&color=fff&size=200&bold=true"
+          "foto": "/images/profil/AnggotaBPD_Zainadi.jpeg"
         },
         {
           "jabatan": "Anggota",
           "nama": "Windasari",
-          "foto": "https://ui-avatars.com/api/?name=Windasari&background=8a6f38&color=fff&size=200&bold=true"
+          "foto": "/images/profil/AnggotaBPD_Windasari.jpeg"
         }
       ]
     },
@@ -64,7 +64,7 @@
       "parent": 1,
       "jabatan": "Operator / Staf Desa",
       "nama": "Sujalin, S.I.P.",
-      "foto": "https://ui-avatars.com/api/?name=Sujalin+S.I.P&background=2d5a3f&color=fff&size=200"
+      "foto": "/images/profil/OperatorDesa.jpg"
     },
     {
       "id": 14,
@@ -74,62 +74,62 @@
       "jabatan": "Kaur & Kasi",
       "kaur": [
         {
-          "jabatan": "Kaur Umum & Tata Usaha",
-          "nama": "Azwar",
-          "foto": "https://ui-avatars.com/api/?name=Azwar&background=2d5a3f&color=fff&size=200"
-        },
-        {
           "jabatan": "Kaur Keuangan",
           "nama": "Rudi Saputra, S.I.P.",
-          "foto": "https://ui-avatars.com/api/?name=Rudi+Saputra+S.I.P&background=2d5a3f&color=fff&size=200"
+          "foto": "/images/profil/kaur-keuangan.jpeg"
         },
         {
           "jabatan": "Kaur Perencanaan",
           "nama": "Ismail Denan",
-          "foto": "https://ui-avatars.com/api/?name=Ismail+Denan&background=2d5a3f&color=fff&size=200"
+          "foto": "/images/profil/Kaur_perencanaan.jpeg"
+        },
+        {
+          "jabatan": "Kaur Umum & Tata Usaha",
+          "nama": "Azwar",
+          "foto": "/images/profil/KaurUmum.jpeg"
         }
       ],
       "kasi": [
         {
           "jabatan": "Kasi Pemerintahan",
           "nama": "Andi Gunawan",
-          "foto": "https://ui-avatars.com/api/?name=Andi+Gunawan&background=2d5a3f&color=fff&size=200"
+          "foto": "/images/profil/kasi-pemerintahan.jpeg"
         },
         {
           "jabatan": "Kasi Kesejahteraan",
           "nama": "Herozi",
-          "foto": "https://ui-avatars.com/api/?name=Herozi&background=2d5a3f&color=fff&size=200"
+          "foto": "/images/profil/Kasi_Herozi.jpeg"
         },
         {
           "jabatan": "Kasi Pelayanan",
           "nama": "Ismail",
-          "foto": "https://ui-avatars.com/api/?name=Ismail&background=2d5a3f&color=fff&size=200"
+          "foto": "/images/profil/kasi-pelayanan.jpeg"
         }
       ]
     },
     {
       "id": 11,
-      "tier": 4,
+      "tier": 3,
       "parent": 2,
       "kelompok": "kadus",
       "jabatan": "Kepala Dusun I",
       "nama": "Sahroni",
       "rw": "RW 001",
-      "foto": "https://ui-avatars.com/api/?name=Sahroni&background=2d5a3f&color=fff&size=200"
+      "foto": "/images/profil/Kadus1.jpeg"
     },
     {
       "id": 12,
-      "tier": 4,
+      "tier": 3,
       "parent": 2,
       "kelompok": "kadus",
       "jabatan": "Kepala Dusun II",
       "nama": "Maimul",
       "rw": "RW 002",
-      "foto": "https://ui-avatars.com/api/?name=Maimul&background=2d5a3f&color=fff&size=200"
+      "foto": "/images/profil/Kadus2.jpeg"
     },
     {
       "id": 13,
-      "tier": 4,
+      "tier": 3,
       "parent": 2,
       "kelompok": "kadus",
       "jabatan": "Kepala Dusun III",
@@ -139,27 +139,27 @@
     },
     {
       "id": 101,
-      "tier": 5,
+      "tier": 4,
       "parent": 11,
       "kelompok": "rt",
       "dusun": "Dusun I",
       "jabatan": "RT 001/001",
       "nama": "Evi Rusniyati",
-      "foto": "https://ui-avatars.com/api/?name=Evi+Rusniyati&background=7d7350&color=fff&size=200"
+      "foto": "/images/profil/RT_Evi.jpeg"
     },
     {
       "id": 102,
-      "tier": 5,
+      "tier": 4,
       "parent": 11,
       "kelompok": "rt",
       "dusun": "Dusun I",
       "jabatan": "RT 001/002",
       "nama": "Ismail",
-      "foto": "https://ui-avatars.com/api/?name=Ismail&background=7d7350&color=fff&size=200"
+      "foto": "/images/profil/RT_Ismailmail.jpeg"
     },
     {
       "id": 103,
-      "tier": 5,
+      "tier": 4,
       "parent": 11,
       "kelompok": "rt",
       "dusun": "Dusun I",
@@ -169,43 +169,64 @@
     },
     {
       "id": 104,
-      "tier": 5,
+      "tier": 4,
       "parent": 12,
       "kelompok": "rt",
       "dusun": "Dusun II",
       "jabatan": "RT 002/004",
       "nama": "Murdani",
-      "foto": "https://ui-avatars.com/api/?name=Murdani&background=7d7350&color=fff&size=200"
+      "foto": "/images/profil/RT_murdaini.jpeg"
     },
     {
       "id": 105,
-      "tier": 5,
+      "tier": 4,
       "parent": 12,
       "kelompok": "rt",
       "dusun": "Dusun II",
       "jabatan": "RT 002/005",
       "nama": "Riyanto",
-      "foto": "https://ui-avatars.com/api/?name=Riyanto&background=7d7350&color=fff&size=200"
+      "foto": "/images/profil/RT_Rianto.jpeg"
     },
     {
       "id": 106,
-      "tier": 5,
+      "tier": 4,
       "parent": 13,
       "kelompok": "rt",
       "dusun": "Dusun III",
       "jabatan": "RT 003/006",
       "nama": "M Pa,i",
-      "foto": "https://ui-avatars.com/api/?name=M+Pa,i&background=7d7350&color=fff&size=200"
+      "foto": "/images/profil/RT_MPai.jpeg"
     },
     {
       "id": 107,
-      "tier": 5,
+      "tier": 4,
       "parent": 13,
       "kelompok": "rt",
       "dusun": "Dusun III",
       "jabatan": "RT 003/007",
       "nama": "Nasrudin",
-      "foto": "https://ui-avatars.com/api/?name=Nasrudin&background=7d7350&color=fff&size=200"
+      "foto": "/images/profil/RT_Nasrudin.jpeg"
+    },
+    {
+      "id": 200,
+      "tier": 5,
+      "parent": 0,
+      "kelompok": "kpm",
+      "jabatan": "Kader Pemberdayaan Masyarakat (KPM)",
+      "anggota": [
+        {
+          "nama": "Yuliana",
+          "foto": "/images/profil/KPM_Yuliana.jpeg"
+        },
+        {
+          "nama": "Nurmanila",
+          "foto": "https://ui-avatars.com/api/?name=Nurmanila&background=2d5a3f&color=fff&size=200"
+        },
+        {
+          "nama": "Asma Novianti",
+          "foto": "/images/profil/AsmaNofianti.jpeg"
+        }
+      ]
     }
   ],
   "tokoh_adat": [
@@ -256,7 +277,7 @@
       "nama": "Khoirulloh",
       "gelar": "Khadin Mulya",
       "peran": "Pelaksana Tata Kehormatan Adat",
-      "foto": "https://ui-avatars.com/api/?name=Khoirulloh&background=7a4a3a&color=fff&size=200&bold=true"
+      "foto": "/images/profil/KhadinMulya.jpeg"
     },
     {
       "rank": 8,

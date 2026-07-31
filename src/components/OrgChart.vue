@@ -82,6 +82,22 @@
             </div>
           </template>
 
+          <!-- KPM: Kader Pemberdayaan Masyarakat -->
+          <template v-else-if="node.kelompok === 'kpm'">
+            <span class="org-jabatan">{{ node.jabatan }}</span>
+            <div class="kpm-members">
+              <div v-for="m in node.anggota" :key="m.nama" class="kpm-member">
+                <img
+                  :src="m.foto || fallbackAvatar(m.nama)"
+                  :alt="m.nama"
+                  class="kpm-img"
+                  @load="scheduleCompute"
+                />
+                <span class="kpm-nama">{{ m.nama }}</span>
+              </div>
+            </div>
+          </template>
+
           <!-- Kartu Standar (Kepala Desa, Sekretaris Desa, Staf, Kadus, RT) -->
           <template v-else>
             <span v-if="node.tier === 1" class="pf-crown">Pimpinan Tertinggi Desa</span>
@@ -141,6 +157,7 @@ const boxClass = (node) => {
   if (node.kelompok === 'bpd') return 'org-box--bpd'
   if (node.tier === 1) return 'org-box--kepala'
   if (node.kelompok === 'kaurkasi') return 'org-box--kaurkasi'
+  if (node.kelompok === 'kpm') return 'org-box--kpm'
   if (node.kelompok === 'kadus') return 'org-box--kadus'
   if (node.kelompok === 'rt') return 'org-box--rt'
   return 'org-box--staff'
@@ -214,7 +231,7 @@ const computeConnectors = () => {
   // 2. Grouping anak berdasarkan parentId
   const parentMap = new Map()
   for (const node of props.items) {
-    if (!node.parent) continue
+    if (!node.parent || node.kelompok === 'kpm') continue
     if (!parentMap.has(node.parent)) parentMap.set(node.parent, [])
     parentMap.get(node.parent).push(node)
   }
@@ -282,6 +299,37 @@ const computeConnectors = () => {
         d,
       })
     }
+  }
+
+  // 3. Connector dari seluruh RT (101..107) -> KPM (200)
+  const kpmEl = nodeEls[200]
+  const rtIds = [101, 102, 103, 104, 105, 106, 107]
+  const rtEls = rtIds.map(id => nodeEls[id]).filter(Boolean)
+  if (kpmEl && rtEls.length > 0) {
+    const kRect = rectIn(kpmEl, wrapRect)
+    const kpmTopX = (kRect.left + kRect.right) / 2
+    const kpmTopY = kRect.top
+
+    const rtCenters = rtEls.map(el => {
+      const r = rectIn(el, wrapRect)
+      return { cX: (r.left + r.right) / 2, cY: r.bottom }
+    })
+
+    const maxRtBottom = Math.max(...rtCenters.map(c => c.cY))
+    const busY = Math.round(maxRtBottom + (kpmTopY - maxRtBottom) * 0.38)
+    const minRtX = Math.min(...rtCenters.map(c => c.cX))
+    const maxRtX = Math.max(...rtCenters.map(c => c.cX))
+
+    let d = `M ${minRtX} ${busY} H ${maxRtX}`
+    for (const rt of rtCenters) {
+      d += ` M ${rt.cX} ${rt.cY} V ${busY}`
+    }
+    d += ` M ${kpmTopX} ${busY} V ${kpmTopY}`
+
+    paths.push({
+      id: 'rt-to-kpm',
+      d,
+    })
   }
 
   connectors.value = paths
@@ -365,8 +413,8 @@ defineExpose({
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 1.5rem 1.25rem;
-  margin-top: 2.5rem;
+  gap: 1.25rem 1.25rem;
+  margin-top: 1.85rem;
 }
 .chart-row:first-child { margin-top: 0; }
 
@@ -389,16 +437,8 @@ defineExpose({
   padding-left: 455px;
 }
 
-/* Tier 3: Operator / Staf Desa (Paling kiri sejajar di atas Kaur & Kasi) */
+/* Tier 3: Operator / Staf Desa (Paling kiri) + Kadus I, II, III (Tegak lurus di bawah Sekdes) */
 .chart-row--tier-3 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding-left: 0.5rem;
-}
-
-/* Tier 4: Kaur & Kasi + Kadus I, II, III */
-.chart-row--tier-4 {
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
@@ -413,10 +453,10 @@ defineExpose({
 
 /*
  * Presisi alignment Kepala Dusun I, II, III di atas kelompok RT masing-masing
- * serta bebas 100% dari tabrakan dengan kartu Kaur & Kasi.
+ * serta bebas 100% dari tabrakan dengan kartu Operator / Staf Desa.
  */
 .org-box--node-11 {
-  margin-left: 104px !important;
+  margin-left: 234px !important;
 }
 .org-box--node-12 {
   margin-left: 124px !important;
@@ -425,18 +465,31 @@ defineExpose({
   margin-left: 80px !important;
 }
 
-/* Tier 5: Kartu RT — padding-left 410px menjamin garis cabang RT1 terpisah 100% dari Kaur & Kasi */
-.chart-row--tier-5 {
+/* Tier 4: Kaur & Kasi (Paling kiri) + Kartu RT (Tegak lurus di bawah Kadus) */
+.chart-row--tier-4 {
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: flex-start;
   gap: .55rem;
-  padding-left: 410px;
+  padding-left: 0.5rem;
+}
+
+.org-box--node-101 {
+  margin-left: 30px !important;
 }
 
 .rt-group-start {
   margin-left: 24px !important;
+}
+
+/* Tier 5: KPM (Kader Pemberdayaan Masyarakat) — 100% presisi terpusat di bawah kelompok RT */
+.chart-row--tier-5 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 582px;
+  margin-top: 1.15rem !important;
 }
 
 /* ─── Boxes ── */
@@ -454,20 +507,20 @@ defineExpose({
 }
 .org-box:hover { box-shadow: var(--shadow-lift); }
 
-.org-img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; margin-bottom: .4rem; border: 2px solid var(--c-cream-dark); }
-.org-img--lead { width: 90px; height: 90px; border-width: 3px; }
-.org-img--kaurkasi { width: 90px; height: 90px; border-width: 2.5px; }
-.org-img--sm { width: 42px; height: 42px; }
-.org-img--rt { width: 34px; height: 34px; border-width: 1.5px; margin-bottom: .25rem; }
+.org-img { width: 76px; height: 76px; border-radius: 50%; object-fit: cover; margin-bottom: .45rem; border: 2px solid var(--c-cream-dark); }
+.org-img--lead { width: 116px; height: 116px; border-width: 3.5px; }
+.org-img--kaurkasi { width: 96px; height: 96px; border-width: 2.5px; }
+.org-img--sm { width: 72px; height: 72px; }
+.org-img--rt { width: 54px; height: 54px; border-width: 2px; margin-bottom: .3rem; }
 
-.org-jabatan { font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-terra); text-align: center; }
-.org-jabatan--sm { font-size: .58rem; }
-.org-jabatan--rt { font-size: .52rem; font-weight: 700; color: var(--c-terra-dark); letter-spacing: .02em; }
+.org-jabatan { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-terra); text-align: center; }
+.org-jabatan--sm { font-size: .64rem; }
+.org-jabatan--rt { font-size: .62rem; font-weight: 700; color: var(--c-terra-dark); letter-spacing: .02em; }
 
-.org-nama { font-family: var(--font-serif); font-size: .95rem; font-weight: 600; color: var(--c-stone); margin-top: .15rem; text-align: center; }
-.org-nama--lead { font-size: 1.3rem; }
-.org-nama--sm { font-size: .82rem; text-align: center; }
-.org-nama--rt { font-size: .72rem; font-weight: 600; color: var(--c-stone); margin-top: .05rem; }
+.org-nama { font-family: var(--font-serif); font-size: 1.08rem; font-weight: 600; color: var(--c-stone); margin-top: .15rem; text-align: center; }
+.org-nama--lead { font-size: 1.35rem; }
+.org-nama--sm { font-size: .92rem; text-align: center; }
+.org-nama--rt { font-size: .82rem; font-weight: 600; color: var(--c-stone); margin-top: .05rem; }
 
 .org-periode { font-size: .68rem; color: var(--c-stone-muted); margin-top: .2rem; }
 .org-bio { font-size: .78rem; color: var(--c-stone-muted); line-height: 1.5; margin-top: .5rem; text-align: center; }
@@ -554,27 +607,27 @@ defineExpose({
 .bpd-cell:nth-child(-n + 2) { border-bottom: 1px solid var(--bpd-line); }
 
 .bpd-img {
-  width: 44px; height: 44px; border-radius: 50%;
-  object-fit: cover; margin-bottom: .3rem;
-  border: 2px solid var(--c-cream-dark);
+  width: 72px; height: 72px; border-radius: 50%;
+  object-fit: cover; margin-bottom: .35rem;
+  border: 2.5px solid var(--c-cream-dark);
 }
-.bpd-img--sm { width: 32px; height: 32px; border-width: 1.5px; }
+.bpd-img--sm { width: 56px; height: 56px; border-width: 2px; }
 
 .bpd-jabatan {
-  font-size: .5rem; font-weight: 700;
+  font-size: .56rem; font-weight: 700;
   letter-spacing: .06em; text-transform: uppercase;
   color: var(--c-sage);
   line-height: 1.3;
 }
-.bpd-jabatan--ketua { font-size: .54rem; color: var(--c-terra); }
+.bpd-jabatan--ketua { font-size: .62rem; color: var(--c-terra); }
 .bpd-nama {
   font-family: var(--font-serif);
-  font-size: .7rem; font-weight: 600;
+  font-size: .82rem; font-weight: 600;
   color: var(--c-stone);
   line-height: 1.3;
   margin-top: .08rem;
 }
-.bpd-ketua .bpd-nama { font-size: .8rem; }
+.bpd-ketua .bpd-nama { font-size: .94rem; }
 
 .org-box--branch-right {
   margin-left: 0;
@@ -608,12 +661,59 @@ defineExpose({
 }
 .kk-col-title--kaur { color: var(--c-terra); }
 .kk-col-title--kasi { color: var(--c-sage); }
-.kk-person { display: flex; align-items: center; gap: .5rem; }
+.kk-person { display: flex; align-items: center; gap: .55rem; }
 .kk-person-img {
-  width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
+  width: 56px; height: 56px; border-radius: 50%; object-fit: cover;
   flex-shrink: 0; border: 2px solid var(--c-cream-dark);
 }
 .kk-person-text { display: flex; flex-direction: column; min-width: 0; }
-.kk-person-jabatan { font-size: .66rem; font-weight: 600; color: var(--c-stone); line-height: 1.25; }
-.kk-person-nama { font-size: .74rem; color: var(--c-stone-muted); font-family: var(--font-serif); }
+.kk-person-jabatan { font-size: .74rem; font-weight: 600; color: var(--c-stone); line-height: 1.25; }
+.kk-person-nama { font-size: .84rem; color: var(--c-stone-muted); font-family: var(--font-serif); }
+
+/* Kartu khusus KPM (Kader Pemberdayaan Masyarakat) */
+.org-box--kpm {
+  width: 540px !important;
+  border-top: 4px solid var(--c-sage) !important;
+  align-items: stretch !important;
+  flex-shrink: 0 !important;
+  padding: 1.1rem 1.25rem 1rem !important;
+}
+.org-box--kpm .org-jabatan {
+  font-size: .75rem !important;
+  letter-spacing: .12em !important;
+  color: var(--c-terra-dark) !important;
+  text-align: center !important;
+}
+.kpm-members {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr !important;
+  gap: 1.25rem !important;
+  margin-top: .65rem !important;
+  padding-top: .75rem !important;
+  border-top: 1px dashed var(--c-cream-dark) !important;
+}
+.kpm-member {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+.kpm-img {
+  width: 64px !important;
+  height: 64px !important;
+  flex-shrink: 0 !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  aspect-ratio: 1 / 1 !important;
+  margin-bottom: .45rem !important;
+  border: 2.5px solid var(--c-cream-dark) !important;
+}
+.kpm-nama {
+  font-family: var(--font-serif) !important;
+  font-size: .95rem !important;
+  font-weight: 600 !important;
+  color: var(--c-stone) !important;
+  text-align: center !important;
+  line-height: 1.25 !important;
+}
 </style>
