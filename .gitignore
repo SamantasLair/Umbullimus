@@ -28,4 +28,7 @@ dist-ssr
 # Autonomous Memory & Protocol Rules
 _memory/
 _doctrine/
+
+# Wiki Resource & Private Field Data
+wiki-resource/
 _fondasi/
