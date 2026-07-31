@@ -81,7 +81,7 @@
                   </div>
 
                   <div class="tap-card" :class="{ 'tap-card--top': t.rank === 1 }">
-                    <img :src="t.foto || fallbackAvatar(t.nama)" :alt="t.nama" class="tap-img" />
+                    <img :src="t.foto || fallbackAvatar(t.nama)" :alt="`Foto Profil ${t.nama} - ${t.gelar} Tokoh Adat Saibatin Desa Umbul Limus Pesawaran`" class="tap-img" />
                     <div class="tap-info">
                       <span class="tap-nama">{{ t.nama }}</span>
                       <span class="tap-gelar">{{ t.gelar }}</span>

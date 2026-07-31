@@ -33,7 +33,7 @@
               <div class="kk-col">
                 <span class="kk-col-title kk-col-title--kaur">Kaur</span>
                 <div v-for="p in node.kaur" :key="p.jabatan" class="kk-person">
-                  <img :src="p.foto || fallbackAvatar(p.nama)" :alt="p.nama" class="kk-person-img" />
+                  <img :src="p.foto || fallbackAvatar(p.nama)" :alt="`Foto Profil ${p.nama} - ${p.jabatan} Desa Umbul Limus Pesawaran`" class="kk-person-img" />
                   <div class="kk-person-text">
                     <span class="kk-person-jabatan">{{ p.jabatan }}</span>
                     <span class="kk-person-nama">{{ p.nama }}</span>
@@ -43,7 +43,7 @@
               <div class="kk-col">
                 <span class="kk-col-title kk-col-title--kasi">Kasi</span>
                 <div v-for="p in node.kasi" :key="p.jabatan" class="kk-person">
-                  <img :src="p.foto || fallbackAvatar(p.nama)" :alt="p.nama" class="kk-person-img" />
+                  <img :src="p.foto || fallbackAvatar(p.nama)" :alt="`Foto Profil ${p.nama} - ${p.jabatan} Desa Umbul Limus Pesawaran`" class="kk-person-img" />
                   <div class="kk-person-text">
                     <span class="kk-person-jabatan">{{ p.jabatan }}</span>
                     <span class="kk-person-nama">{{ p.nama }}</span>
@@ -60,7 +60,7 @@
               <div v-if="node.ketua" class="bpd-ketua">
                 <img
                   :src="node.ketua.foto || fallbackAvatar(node.ketua.nama)"
-                  :alt="node.ketua.nama"
+                  :alt="`Foto Profil ${node.ketua.nama} - ${node.ketua.jabatan} Desa Umbul Limus Pesawaran`"
                   class="bpd-img"
                   @load="scheduleCompute"
                 />
@@ -71,7 +71,7 @@
                 <div v-for="a in node.anggota" :key="a.nama" class="bpd-cell">
                   <img
                     :src="a.foto || fallbackAvatar(a.nama)"
-                    :alt="a.nama"
+                    :alt="`Foto Profil ${a.nama} - ${a.jabatan} Desa Umbul Limus Pesawaran`"
                     class="bpd-img bpd-img--sm"
                     @load="scheduleCompute"
                   />
@@ -89,7 +89,7 @@
               <div v-for="m in node.anggota" :key="m.nama" class="kpm-member">
                 <img
                   :src="m.foto || fallbackAvatar(m.nama)"
-                  :alt="m.nama"
+                  :alt="`Foto Profil ${m.nama} - KPM Desa Umbul Limus Pesawaran`"
                   class="kpm-img"
                   @load="scheduleCompute"
                 />
@@ -104,7 +104,7 @@
             <span v-if="node.kelompok === 'rt'" class="org-dusun-badge">{{ node.dusun }}</span>
             <img
               :src="node.foto || fallbackAvatar(node.nama)"
-              :alt="node.nama"
+              :alt="`Foto Profil ${node.nama} - ${node.jabatan} Desa Umbul Limus Pesawaran`"
               class="org-img"
               :class="imgClass(node)"
               @load="scheduleCompute"
