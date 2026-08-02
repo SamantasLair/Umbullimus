@@ -19,7 +19,7 @@
 import { watchEffect } from 'vue'
 
 export const SITE_URL = 'https://umbullimus.my.id'
-export const SITE_NAME = 'Desa Wisata Umbul Limus'
+export const SITE_NAME = 'Desa Wisata Budaya Umbul Limus'
 const DEFAULT_IMAGE = '/AirTerjun.jpg'
 
 const absolute = (path) =>

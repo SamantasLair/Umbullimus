@@ -51,7 +51,7 @@
       </div>
 
       <div class="footer-bottom">
-        <span>© {{ currentYear }} Desa Wisata Umbul Limus. Seluruh hak cipta dilindungi.</span>
+        <span>© {{ currentYear }} Desa Wisata Budaya Umbul Limus. Seluruh hak cipta dilindungi.</span>
         <span class="footer-credit">Dibuat oleh Tim KKN</span>
       </div>
     </div>

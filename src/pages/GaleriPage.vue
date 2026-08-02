@@ -111,9 +111,9 @@ import { useScrollExit } from '../composables/useScrollExit.js'
 import { breadcrumb, useSeo } from '../composables/useSeo.js'
 
 useSeo({
-  title: 'Galeri Foto Desa Wisata Umbul Limus',
+  title: 'Galeri Foto Desa Wisata Budaya Umbul Limus',
   description:
-    'Galeri foto Desa Wisata Umbul Limus, Pesawaran, Lampung: panorama alam, air terjun, mata air, kegiatan masyarakat, dan budaya Lampung.',
+    'Galeri foto Desa Wisata Budaya Umbul Limus, Pesawaran, Lampung: panorama alam, air terjun, mata air, kegiatan masyarakat, dan budaya Lampung Saibatin.',
   path: '/galeri',
   jsonLd: breadcrumb([
     { name: 'Beranda', path: '/' },

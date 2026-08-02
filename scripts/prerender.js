@@ -21,7 +21,7 @@ const routes = [
   {
     path: '/',
     dir: DIST_DIR,
-    title: 'Desa Wisata Umbul Limus – Pesawaran, Lampung',
+    title: 'Desa Wisata Budaya Umbul Limus – Pesawaran, Lampung',
     description:
       'Desa Umbul Limus, Kecamatan Marga Punduh, Kabupaten Pesawaran, Lampung. Wisata alam mata air jernih, air terjun, suasana pedesaan asri, dan warisan budaya Lampung.',
     image: DEFAULT_IMAGE,

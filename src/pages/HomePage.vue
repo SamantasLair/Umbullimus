@@ -15,9 +15,9 @@ import { useSeo } from '../composables/useSeo.js'
 // tidak terjadi perbedaan antara versi statis (yang dibaca bot pratinjau) dan
 // versi hasil render JS.
 useSeo({
-  title: 'Desa Wisata Umbul Limus – Pesawaran, Lampung',
+  title: 'Desa Wisata Budaya Umbul Limus – Pesawaran, Lampung',
   description:
-    'Desa Umbul Limus, Kecamatan Marga Punduh, Kabupaten Pesawaran, Lampung. Wisata alam mata air jernih, air terjun, suasana pedesaan asri, dan warisan budaya Lampung.',
+    'Desa Umbul Limus, Kecamatan Marga Punduh, Kabupaten Pesawaran, Lampung. Wisata alam mata air jernih, air terjun, suasana pedesaan asri, dan warisan budaya Lampung Saibatin.',
   path: '/',
 })
 </script>

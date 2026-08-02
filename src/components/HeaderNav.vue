@@ -6,7 +6,7 @@
         <img src="/images/logopesawaran.png" alt="Logo Kabupaten Pesawaran" class="nav-logo" />
         <div class="wordmark-text">
           <span class="wordmark-main">Umbul Limus</span>
-          <span class="wordmark-sub">Desa Wisata Lampung</span>
+          <span class="wordmark-sub">Desa Wisata Budaya</span>
         </div>
       </RouterLink>
 
