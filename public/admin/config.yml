@@ -113,8 +113,6 @@ collections:
               - {label: "Kategori", name: "kategori", widget: "string"}
               - {label: "Deskripsi", name: "deskripsi", widget: "text"}
               - {label: "Gambar", name: "gambar", widget: "image"}
-              - {label: "Jam Buka", name: "jam_buka", widget: "string"}
-              - {label: "Harga Tiket", name: "tiket", widget: "string"}
               - label: "Fasilitas"
                 name: "fasilitas"
                 widget: "list"
