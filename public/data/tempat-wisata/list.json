@@ -1,34 +1,28 @@
 {
   "items": [
     {
-      "id": "umbul-limus",
-      "nama": "Umbul Limus",
-      "kategori": "Air & Pemandian",
-      "deskripsi": "Sumber mata air alami dengan kejernihan luar biasa, dikelilingi suasana pedesaan yang asri. Airnya dingin dan segar, cocok untuk berenang dan refreshing keluarga.",
-      "gambar": "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?q=90&w=900&auto=format&fit=crop",
-      "jam_buka": "07.00 – 17.00 WIB",
-      "tiket": "Rp 10.000/orang",
-      "fasilitas": ["Parkir Luas", "Warung Makan", "Toilet Umum", "Gazebo"]
-    },
-    {
       "id": "air-terjun-way-curup",
       "nama": "Air Terjun Way Curup",
       "kategori": "Air Terjun",
-      "deskripsi": "Tersembunyi di antara perbukitan Marga Punduh, Way Curup adalah daya tarik alam desa yang hingga kini belum memiliki pengelola wisata resmi — sebuah potensi yang masih menanti untuk dikembangkan.",
-      "gambar": "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=90&w=900&auto=format&fit=crop",
-      "jam_buka": "Belum ada jam operasional resmi",
-      "tiket": "Belum ada pengelola resmi",
-      "fasilitas": ["Jalur Alami", "Spot Foto"]
+      "deskripsi": "Tersembunyi di antara perbukitan Marga Punduh, Way Curup adalah daya tarik alam utama desa yang dikelilingi lanskap hijau asri dan aliran air jernih alami.",
+      "gambar": "/AirTerjun.jpg",
+      "fasilitas": ["Jalur Alami", "Spot Foto Alami"]
+    },
+    {
+      "id": "umbul-limus",
+      "nama": "Mata Air Umbul Limus",
+      "kategori": "Air & Pemandian",
+      "deskripsi": "Sumber mata air alami dengan kejernihan luar biasa, dikelilingi suasana pedesaan yang asri. Airnya dingin dan segar dari tangkapan air hutan perbukitan desa.",
+      "gambar": "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?q=90&w=900&auto=format&fit=crop",
+      "fasilitas": ["Lahan Asri", "Sumber Mata Air Alami"]
     },
     {
       "id": "wisata-budaya",
-      "nama": "Sanggar Tapis Lampung",
+      "nama": "Warisan Budaya Saibatin",
       "kategori": "Wisata Budaya",
-      "deskripsi": "Pusat kerajinan tapis Lampung yang dikelola ibu-ibu PKK desa. Pengunjung dapat menyaksikan langsung proses tenun tradisional dan membawa pulang oleh-oleh autentik.",
+      "deskripsi": "Pusat kearifan budaya dan tradisi Lampung Saibatin di Desa Umbul Limus, mencakup rumah adat panggung (Lamban Panggung) dan tatanan kehormatan kelembagaan adat.",
       "gambar": "https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=90&w=900&auto=format&fit=crop",
-      "jam_buka": "08.00 – 16.00 WIB",
-      "tiket": "Gratis",
-      "fasilitas": ["Workshop Tenun", "Toko Oleh-oleh", "Ruang Pamer"]
+      "fasilitas": ["Rumah Adat Panggung", "Kearifan Lokal Saibatin"]
     }
   ]
 }
