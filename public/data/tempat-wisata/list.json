@@ -9,12 +9,12 @@
       "fasilitas": ["Jalur Alami", "Spot Foto Alami"]
     },
     {
-      "id": "umbul-limus",
-      "nama": "Mata Air Umbul Limus",
-      "kategori": "Air & Pemandian",
-      "deskripsi": "Sumber mata air alami dengan kejernihan luar biasa, dikelilingi suasana pedesaan yang asri. Airnya dingin dan segar dari tangkapan air hutan perbukitan desa.",
-      "gambar": "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?q=90&w=900&auto=format&fit=crop",
-      "fasilitas": ["Lahan Asri", "Sumber Mata Air Alami"]
+      "id": "suasana-pedesaan",
+      "nama": "Suasana Pedesaan Asri",
+      "kategori": "Pedesaan & Tradisi",
+      "deskripsi": "Suasana pedesaan yang hijau dan asri di Umbul Limus, di mana kehidupan bermasyarakat masih erat memegang kehangatan tradisi adat Lampung Saibatin serta budaya gotong royong warga yang terjaga lestari.",
+      "gambar": "/images/galeri/d01-001.jpg",
+      "fasilitas": ["Gotong Royong Warga", "Tradisi Adat Saibatin", "Panorama Asri"]
     },
     {
       "id": "wisata-budaya",
