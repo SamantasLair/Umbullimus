@@ -7,41 +7,180 @@ function siteOrigin(req) {
 }
 
 function renderMessage(resultWord, payload) {
-	// Protokol handshake postMessage Decap CMS:
-	// Memastikan sinyal "authorization:github:success:<json>" langsung dikirim ke window.opener
-	return `<!DOCTYPE html><html><body>
-<script>
-(function() {
-  function post() {
-    if (!window.opener) return;
-    try {
-      window.opener.postMessage('authorizing:github', '*');
-      window.opener.postMessage(
-        'authorization:github:${resultWord}:${payload}',
-        '*'
-      );
-    } catch(err) {
-      console.error(err);
+	const payloadEscaped = JSON.stringify(payload);
+
+	return `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Decap CMS - Auth Callback Debug Terminal</title>
+  <style>
+    body {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: #0f172a;
+      color: #f8fafc;
+      margin: 0;
+      padding: 1.5rem;
+      font-size: 13px;
+      line-height: 1.6;
     }
-  }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+    }
+    .title { font-weight: 700; font-size: 14px; color: #38bdf8; }
+    .status-badge {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    .status-success { background: #15803d; color: #dcfce7; }
+    .status-error { background: #b91c1c; color: #fef2f2; }
+    .log-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    .log-entry { margin-bottom: 4px; word-break: break-all; }
+    .log-info { color: #94a3b8; }
+    .log-send { color: #38bdf8; }
+    .log-success { color: #4ade80; font-weight: 700; }
+    .log-warn { color: #fbbf24; }
+    .log-error { color: #f87171; font-weight: 700; }
+    .token-box {
+      background: #020617;
+      border: 1px dashed #475569;
+      padding: 0.75rem;
+      border-radius: 6px;
+      word-break: break-all;
+      margin-bottom: 1rem;
+      font-size: 12px;
+      color: #38bdf8;
+    }
+    .btn {
+      background: #0284c7;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn:hover { background: #0369a1; }
+    .btn-secondary { background: #475569; margin-left: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="title">⚡ Decap CMS Auth Debug Terminal</span>
+    <span class="status-badge status-${resultWord === 'success' ? 'success' : 'error'}">${resultWord}</span>
+  </div>
 
-  // Kirim sinyal otentikasi secara langsung tanpa menanti balasan handshake
-  post();
+  <div class="log-box" id="log"></div>
 
-  // Interval penjamin (10x retries setiap 300ms) untuk peramban seperti Firefox Private Browsing
-  var count = 0;
-  var timer = setInterval(function() {
-    count++;
-    post();
-    if (count >= 10) clearInterval(timer);
-  }, 300);
+  <div id="manual-area" style="display:none;">
+    <div style="color: #fbbf24; margin-bottom: 0.5rem; font-weight: 700;">
+      ⚠️ Jika jendela ini tidak menutup otomatis (karena mode Private / Cross-Origin policy):
+    </div>
+    <div class="token-box" id="token-val">Tutup dan coba lagi.</div>
+    <button class="btn" onclick="copyToken()">📋 Salin Token Autentikasi</button>
+    <button class="btn btn-secondary" onclick="window.close()">❌ Tutup Jendela</button>
+  </div>
 
-  window.addEventListener('message', function() {
-    post();
-  }, false);
-})();
-</script>
-</body></html>`;
+  <script>
+    (function() {
+      const resultWord = "${resultWord}";
+      const rawPayload = ${payloadEscaped};
+      const logEl = document.getElementById('log');
+
+      function appendLog(msg, type) {
+        const div = document.createElement('div');
+        div.className = 'log-entry log-' + (type || 'info');
+        const time = new Date().toLocaleTimeString();
+        div.innerText = '[' + time + '] ' + msg;
+        logEl.appendChild(div);
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+
+      appendLog('Callback diproses: Result = ' + resultWord, 'info');
+
+      let tokenString = '';
+      try {
+        const parsed = typeof rawPayload === 'string' ? JSON.parse(rawPayload) : rawPayload;
+        if (parsed && parsed.token) {
+          tokenString = parsed.token;
+          document.getElementById('token-val').innerText = tokenString;
+        }
+      } catch(e) {}
+
+      if (resultWord === 'error') {
+        appendLog('ERROR: ' + JSON.stringify(rawPayload), 'error');
+        document.getElementById('manual-area').style.display = 'block';
+        return;
+      }
+
+      function sendHandshake() {
+        if (!window.opener) {
+          appendLog('CRITICAL: window.opener tidak ditemukan / terisolasi oleh peramban.', 'error');
+          document.getElementById('manual-area').style.display = 'block';
+          return false;
+        }
+
+        try {
+          appendLog('Mengirim sinyal authorizing:github ke window.opener...', 'send');
+          window.opener.postMessage('authorizing:github', '*');
+
+          appendLog('Mengirim sinyal authorization:github:success ke window.opener...', 'send');
+          window.opener.postMessage('authorization:github:success:' + rawPayload, '*');
+          return true;
+        } catch(err) {
+          appendLog('Gagal postMessage: ' + err.message, 'error');
+          document.getElementById('manual-area').style.display = 'block';
+          return false;
+        }
+      }
+
+      const success = sendHandshake();
+
+      if (success) {
+        let attempts = 0;
+        const timer = setInterval(() => {
+          attempts++;
+          appendLog('Pengulangan sinyal retry #' + attempts + '/10...', 'warn');
+          sendHandshake();
+          if (attempts >= 10) {
+            clearInterval(timer);
+            appendLog('Penjaminan sinyal selesai. Jika jendela belum menutup, gunakan tombol salin token.', 'info');
+            document.getElementById('manual-area').style.display = 'block';
+          }
+        }, 400);
+      }
+
+      window.copyToken = function() {
+        if (tokenString) {
+          navigator.clipboard.writeText(tokenString).then(() => {
+            alert('Token berhasil disalin! Tempelkan token ini di panel debug jendela utama CMS.');
+          }).catch(() => {
+            alert('Token: ' + tokenString);
+          });
+        }
+      };
+    })();
+  </script>
+</body>
+</html>`;
 }
 
 function getCookie(req, name) {

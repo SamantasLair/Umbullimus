@@ -13,31 +13,106 @@
         padding: 0;
         background-color: #f4f5f7;
       }
-      #cms-error-notice {
-        display: none;
-        margin: 2rem auto;
-        max-width: 600px;
-        padding: 1.5rem;
-        background: #fff0f0;
-        border: 1px solid #ff4d4d;
-        border-radius: 8px;
-        color: #900;
-        font-family: system-ui, -apple-system, sans-serif;
-        line-height: 1.5;
+      #cms-debug-toggle {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        z-index: 99999;
+        background: #0f172a;
+        color: #38bdf8;
+        border: 1px solid #334155;
+        border-radius: 50px;
+        padding: 0.5rem 1rem;
+        font-family: monospace;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       }
+      #cms-debug-drawer {
+        display: none;
+        position: fixed;
+        bottom: 4rem;
+        right: 1rem;
+        width: 380px;
+        max-width: 90vw;
+        max-height: 480px;
+        background: #0f172a;
+        color: #f8fafc;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 1rem;
+        z-index: 99999;
+        font-family: monospace;
+        font-size: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        overflow-y: auto;
+      }
+      .debug-title { font-weight: bold; color: #38bdf8; margin-bottom: 0.5rem; display: flex; justify-content: space-between; }
+      .debug-logs { background: #1e293b; border-radius: 4px; padding: 0.5rem; max-height: 180px; overflow-y: auto; font-size: 11px; margin-bottom: 0.75rem; }
+      .debug-entry { margin-bottom: 3px; word-break: break-all; }
+      .debug-input { width: 100%; box-sizing: border-box; background: #020617; border: 1px solid #475569; color: #fff; padding: 0.4rem; border-radius: 4px; font-family: inherit; font-size: 11px; margin-bottom: 0.5rem; }
+      .debug-btn { background: #0284c7; color: #fff; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; }
+      .debug-btn:hover { background: #0369a1; }
     </style>
   </head>
   <body>
-    <div id="cms-error-notice"></div>
+    <button id="cms-debug-toggle" onclick="toggleDebug()">⚡ DevMode Console</button>
+
+    <div id="cms-debug-drawer">
+      <div class="debug-title">
+        <span>⚡ DevMode Debug Console</span>
+        <span onclick="toggleDebug()" style="cursor:pointer">✖</span>
+      </div>
+      <div id="debug-logs" class="debug-logs">
+        <div class="debug-entry" style="color:#94a3b8">[INIT] DevMode console aktif. Menunggu sinyal autentikasi...</div>
+      </div>
+      <div style="margin-bottom:0.5rem; font-weight:bold; color:#fbbf24">🔑 Tempel Token Manual:</div>
+      <input type="text" id="manual-token-input" class="debug-input" placeholder="Tempel token GitHub (gho_...)" />
+      <button class="debug-btn" onclick="saveManualToken()">Simpan Token & Login</button>
+    </div>
 
     <script>
-      window.addEventListener('error', (e) => {
-        const box = document.getElementById('cms-error-notice');
-        if (box) {
-          box.style.display = 'block';
-          box.innerHTML = `<strong>Gagal Memuat Decap CMS:</strong><br>${e.message || e.reason || e}`;
+      function toggleDebug() {
+        const d = document.getElementById('cms-debug-drawer');
+        if (d) d.style.display = d.style.display === 'block' ? 'none' : 'block';
+      }
+
+      function logDebug(msg, color) {
+        const logs = document.getElementById('debug-logs');
+        if (logs) {
+          const div = document.createElement('div');
+          div.className = 'debug-entry';
+          if (color) div.style.color = color;
+          div.innerText = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+          logs.appendChild(div);
+          logs.scrollTop = logs.scrollHeight;
         }
+      }
+
+      // Catat seluruh error uncaught
+      window.addEventListener('error', (e) => {
+        logDebug('ERROR: ' + (e.message || e.reason || e), '#f87171');
       });
+
+      // Catat sinyal postMessage yang masuk
+      window.addEventListener('message', (e) => {
+        logDebug('postMessage Diterima: ' + JSON.stringify(e.data), '#4ade80');
+      });
+
+      function saveManualToken() {
+        const input = document.getElementById('manual-token-input');
+        const token = input ? input.value.trim() : '';
+        if (!token) {
+          alert('Masukkan token GitHub terlebih dahulu.');
+          return;
+        }
+        const userObj = { token: token, provider: 'github' };
+        localStorage.setItem('decap-cms-user', JSON.stringify(userObj));
+        localStorage.setItem('netlify-cms-user', JSON.stringify(userObj));
+        logDebug('Token manual disimpan ke localStorage. Memuat ulang halaman...', '#38bdf8');
+        setTimeout(() => { window.location.reload(); }, 500);
+      }
     </script>
 
     <!-- Script Decap CMS diletakkan di dalam BODY agar DOM body sudah siap sebelum React di-mount -->
