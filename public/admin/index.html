@@ -30,11 +30,11 @@
     <div id="cms-error-notice"></div>
 
     <script>
-      window.addEventListener('error', function(e) {
-        var box = document.getElementById('cms-error-notice');
+      window.addEventListener('error', (e) => {
+        const box = document.getElementById('cms-error-notice');
         if (box) {
           box.style.display = 'block';
-          box.innerHTML = '<strong>Gagal Memuat Decap CMS:</strong><br>' + (e.message || e.reason || e);
+          box.innerHTML = `<strong>Gagal Memuat Decap CMS:</strong><br>${e.message || e.reason || e}`;
         }
       });
     </script>
