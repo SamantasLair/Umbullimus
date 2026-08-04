@@ -8,7 +8,11 @@ export default defineConfig({
       name: 'admin-static-rewrite',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
-          if (req.url === '/admin' || req.url === '/admin/' || req.url.startsWith('/admin?')) {
+          if (req.url === '/admin') {
+            res.writeHead(301, { Location: '/admin/' })
+            return res.end()
+          }
+          if (req.url === '/admin/' || req.url.startsWith('/admin?')) {
             req.url = '/admin/index.html'
           }
           next()

@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Umbul Limus - Panel Admin Decap CMS</title>
-    <link href="config.yml" type="text/yaml" rel="cms-config-url" />
+    <!-- Penggunaan URL absolut /admin/config.yml agar tidak meleset ke /config.yml saat diakses via /admin tanpa slash -->
+    <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
     <style>
       html, body {
         height: 100%;
