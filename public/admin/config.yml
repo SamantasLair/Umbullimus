@@ -8,6 +8,8 @@ backend:
   base_url: https://umbullimus.my.id
   auth_endpoint: api/auth
 
+local_backend: true
+
 # Lokasi penyimpanan gambar yang di-upload via CMS
 media_folder: "public/uploads"
 public_folder: "/uploads"
@@ -40,7 +42,7 @@ collections:
           - label: "Daftar Misi Desa"
             name: "misi"
             widget: "list"
-            field: {label: "Butir Misi", name: "misi_item", widget: "string"}
+            field: {label: "Butir Misi", widget: "string"}
 
       - label: "Struktur Organisasi Desa"
         name: "bagan"
@@ -51,53 +53,68 @@ collections:
           - {label: "Kabupaten", name: "kabupaten", widget: "string"}
           - {label: "Provinsi", name: "provinsi", widget: "string"}
           - {label: "Foto Latar Header", name: "background", widget: "image", required: false}
-          - label: "Kepala Desa"
-            name: "kepala_desa"
-            widget: "object"
+          - label: "Struktur Organisasi (Aparat, BPD, Kadus, RT, KPM)"
+            name: "struktur"
+            widget: "list"
+            summary: "Tier {{tier}} - {{jabatan}}: {{nama}}"
             fields:
-              - {label: "Nama", name: "nama", widget: "string"}
-              - {label: "Jabatan", name: "jabatan", widget: "string"}
-              - {label: "Periode", name: "periode", widget: "string", required: false}
+              - {label: "ID Node", name: "id", widget: "number"}
+              - {label: "Tier (Baris Visual)", name: "tier", widget: "number"}
+              - {label: "ID Parent (Atasan Garis Komando)", name: "parent", widget: "number"}
+              - {label: "Jabatan / Label Posisi", name: "jabatan", widget: "string"}
+              - {label: "Nama Pejabat", name: "nama", widget: "string", required: false}
+              - {label: "Kelompok (kaurkasi/bpd/kadus/rt/kpm)", name: "kelompok", widget: "string", required: false}
+              - {label: "Periode Jabatan", name: "periode", widget: "string", required: false}
+              - {label: "RW", name: "rw", widget: "string", required: false}
+              - {label: "Dusun", name: "dusun", widget: "string", required: false}
+              - {label: "Keterangan", name: "keterangan", widget: "string", required: false}
               - {label: "Bio Singkat", name: "bio", widget: "text", required: false}
-              - {label: "Foto", name: "foto", widget: "image", required: false}
-          - label: "Sekretaris Desa"
-            name: "sekretaris_desa"
-            widget: "object"
-            fields:
-              - {label: "Nama", name: "nama", widget: "string"}
-              - {label: "Jabatan", name: "jabatan", widget: "string"}
-              - {label: "Periode", name: "periode", widget: "string", required: false}
-              - {label: "Bio Singkat", name: "bio", widget: "text", required: false}
-              - {label: "Foto", name: "foto", widget: "image", required: false}
-          - label: "Kepala Urusan (Kaur)"
-            name: "kaur"
-            widget: "list"
-            fields:
-              - {label: "Nama", name: "nama", widget: "string"}
-              - {label: "Jabatan", name: "jabatan", widget: "string"}
-              - {label: "Foto", name: "foto", widget: "image", required: false}
-          - label: "Kepala Seksi (Kasi)"
-            name: "kasi"
-            widget: "list"
-            fields:
-              - {label: "Nama", name: "nama", widget: "string"}
-              - {label: "Jabatan", name: "jabatan", widget: "string"}
-              - {label: "Foto", name: "foto", widget: "image", required: false}
-          - label: "Kepala Dusun (Kadus)"
-            name: "kadus"
-            widget: "list"
-            fields:
-              - {label: "Nama", name: "nama", widget: "string"}
-              - {label: "Jabatan", name: "jabatan", widget: "string"}
-              - {label: "Foto", name: "foto", widget: "image", required: false}
-          - label: "Tokoh Adat (di luar struktur formal)"
+              - {label: "Foto Profil", name: "foto", widget: "image", required: false}
+              - label: "Ketua BPD (khusus kelompok BPD)"
+                name: "ketua"
+                widget: "object"
+                required: false
+                fields:
+                  - {label: "Jabatan", name: "jabatan", widget: "string"}
+                  - {label: "Nama", name: "nama", widget: "string"}
+                  - {label: "Foto", name: "foto", widget: "image", required: false}
+              - label: "Kaur (khusus kelompok Kaur/Kasi)"
+                name: "kaur"
+                widget: "list"
+                required: false
+                summary: "{{jabatan}}: {{nama}}"
+                fields:
+                  - {label: "Jabatan", name: "jabatan", widget: "string"}
+                  - {label: "Nama", name: "nama", widget: "string"}
+                  - {label: "Foto", name: "foto", widget: "image", required: false}
+              - label: "Kasi (khusus kelompok Kaur/Kasi)"
+                name: "kasi"
+                widget: "list"
+                required: false
+                summary: "{{jabatan}}: {{nama}}"
+                fields:
+                  - {label: "Jabatan", name: "jabatan", widget: "string"}
+                  - {label: "Nama", name: "nama", widget: "string"}
+                  - {label: "Foto", name: "foto", widget: "image", required: false}
+              - label: "Daftar Anggota (khusus kelompok BPD & KPM)"
+                name: "anggota"
+                widget: "list"
+                required: false
+                summary: "{{jabatan}}: {{nama}}"
+                fields:
+                  - {label: "Jabatan", name: "jabatan", widget: "string", required: false}
+                  - {label: "Nama", name: "nama", widget: "string"}
+                  - {label: "Foto", name: "foto", widget: "image", required: false}
+          - label: "Tokoh Adat (Penyimbang / Saibatin)"
             name: "tokoh_adat"
             widget: "list"
-            required: false
+            summary: "Rank {{rank}} - {{nama}} ({{gelar}})"
             fields:
-              - {label: "Nama", name: "nama", widget: "string"}
-              - {label: "Peran/Sebutan", name: "peran", widget: "string"}
-              - {label: "Foto", name: "foto", widget: "image", required: false}
+              - {label: "Urutan / Rank", name: "rank", widget: "number"}
+              - {label: "Nama Tokoh", name: "nama", widget: "string"}
+              - {label: "Gelar Adat", name: "gelar", widget: "string"}
+              - {label: "Peran Adat", name: "peran", widget: "string"}
+              - {label: "Foto Profil", name: "foto", widget: "image", required: false}
 
       - label: "Tempat Wisata"
         name: "tempat_wisata"
@@ -116,7 +133,7 @@ collections:
               - label: "Fasilitas"
                 name: "fasilitas"
                 widget: "list"
-                field: {label: "Fasilitas", name: "fasilitas_item", widget: "string"}
+                field: {label: "Fasilitas", widget: "string"}
 
       - label: "Infografis Data Desa"
         name: "infografis"
@@ -238,4 +255,4 @@ collections:
             fields:
               - {label: "Gambar", name: "src", widget: "image"}
               - {label: "Judul / Keterangan", name: "alt", widget: "string"}
-              - {label: "Kategori (untuk filter)", name: "kategori", widget: "string"}
+              - {label: "Kategori (untuk filter)", name: "kategori", widget: "string", required: false}

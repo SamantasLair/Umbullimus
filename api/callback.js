@@ -26,9 +26,16 @@ function renderMessage(resultWord, payload) {
 </body></html>`;
 }
 
+function getCookie(req, name) {
+	if (req.cookies && req.cookies[name]) return req.cookies[name];
+	const cookieHeader = req.headers?.cookie || "";
+	const match = cookieHeader.match(new RegExp(`(?:^|; )\\s*${name}\\s*=\\s*([^;]+)`));
+	return match ? decodeURIComponent(match[1]) : null;
+}
+
 export default async function handler(req, res) {
 	const { code, state } = req.query;
-	const cookieState = req.cookies?.decap_oauth_state;
+	const cookieState = getCookie(req, "decap_oauth_state");
 
 	if (!code || !state || state !== cookieState) {
 		res.status(400).send("Invalid OAuth state or missing authorization code.");
