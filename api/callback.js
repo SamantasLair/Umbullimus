@@ -33,7 +33,7 @@ function renderMessage(resultWord, payload) {
 }
 
 function getCookie(req, name) {
-	if (req.cookies && req.cookies[name]) return req.cookies[name];
+	if (req.cookies?.[name]) return req.cookies[name];
 	const cookieHeader = req.headers?.cookie || "";
 	const match = cookieHeader.match(new RegExp(`(?:^|; )\\s*${name}\\s*=\\s*([^;]+)`));
 	return match ? decodeURIComponent(match[1]) : null;
