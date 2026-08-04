@@ -6,8 +6,10 @@ function siteOrigin(req) {
 	return `${protocol}://${host}`;
 }
 
-function renderMessage(resultWord, payload) {
-	const payloadEscaped = JSON.stringify(payload);
+function renderMessage(resultWord, payloadObj) {
+	// payloadObj adalah objek JS { token: "...", provider: "github" }
+	// JSON.stringify(payloadObj) menghasilkan string JSON murni 1x enkod (tanpa double-escaping)
+	const payloadJson = JSON.stringify(payloadObj);
 
 	return `<!DOCTYPE html>
 <html lang="id">
@@ -95,14 +97,15 @@ function renderMessage(resultWord, payload) {
       ⚠️ Jika jendela ini tidak menutup otomatis (karena mode Private / Cross-Origin policy):
     </div>
     <div class="token-box" id="token-val">Tutup dan coba lagi.</div>
-    <button class="btn" onclick="copyToken()">📋 Salin Token Autentikasi</button>
-    <button class="btn btn-secondary" onclick="window.close()">❌ Tutup Jendela</button>
+    <button type="button" class="btn" onclick="copyToken()">📋 Salin Token Autentikasi</button>
+    <button type="button" class="btn btn-secondary" onclick="window.close()">❌ Tutup Jendela</button>
   </div>
 
   <script>
     (function() {
       const resultWord = "${resultWord}";
-      const rawPayload = ${payloadEscaped};
+      const payloadObj = ${payloadJson};
+      const payloadString = JSON.stringify(payloadObj);
       const logEl = document.getElementById('log');
 
       function appendLog(msg, type) {
@@ -117,16 +120,13 @@ function renderMessage(resultWord, payload) {
       appendLog('Callback diproses: Result = ' + resultWord, 'info');
 
       let tokenString = '';
-      try {
-        const parsed = typeof rawPayload === 'string' ? JSON.parse(rawPayload) : rawPayload;
-        if (parsed && parsed.token) {
-          tokenString = parsed.token;
-          document.getElementById('token-val').innerText = tokenString;
-        }
-      } catch(e) {}
+      if (payloadObj && payloadObj.token) {
+        tokenString = payloadObj.token;
+        document.getElementById('token-val').innerText = tokenString;
+      }
 
       if (resultWord === 'error') {
-        appendLog('ERROR: ' + JSON.stringify(rawPayload), 'error');
+        appendLog('ERROR: ' + payloadString, 'error');
         document.getElementById('manual-area').style.display = 'block';
         return;
       }
@@ -143,7 +143,7 @@ function renderMessage(resultWord, payload) {
           window.opener.postMessage('authorizing:github', '*');
 
           appendLog('Mengirim sinyal authorization:github:success ke window.opener...', 'send');
-          window.opener.postMessage('authorization:github:success:' + rawPayload, '*');
+          window.opener.postMessage('authorization:github:success:' + payloadString, '*');
           return true;
         } catch(err) {
           appendLog('Gagal postMessage: ' + err.message, 'error');
@@ -198,7 +198,7 @@ export default async function handler(req, res) {
 
 	if (!code || !state || state !== cookieState) {
 		const errMsg = "Invalid OAuth state or missing authorization code.";
-		res.status(400).send(renderMessage("error", JSON.stringify(errMsg)));
+		res.status(400).send(renderMessage("error", { message: errMsg }));
 		return;
 	}
 
@@ -206,7 +206,7 @@ export default async function handler(req, res) {
 	const clientSecret = process.env.OAUTH_GITHUB_CLIENT_SECRET;
 	if (!clientId || !clientSecret) {
 		const errMsg = "Missing OAUTH_GITHUB_CLIENT_ID/OAUTH_GITHUB_CLIENT_SECRET env vars on Vercel.";
-		res.status(500).send(renderMessage("error", JSON.stringify(errMsg)));
+		res.status(500).send(renderMessage("error", { message: errMsg }));
 		return;
 	}
 
@@ -227,13 +227,13 @@ export default async function handler(req, res) {
 
 		if (!data.access_token) {
 			const errMsg = data.error_description || "OAuth error from GitHub";
-			res.status(400).send(renderMessage("error", JSON.stringify(errMsg)));
+			res.status(400).send(renderMessage("error", { message: errMsg }));
 			return;
 		}
 
-		const payload = JSON.stringify({ token: data.access_token, provider: "github" });
+		const payload = { token: data.access_token, provider: "github" };
 		res.status(200).send(renderMessage("success", payload));
 	} catch (err) {
-		res.status(500).send(renderMessage("error", JSON.stringify(err.message)));
+		res.status(500).send(renderMessage("error", { message: err.message }));
 	}
 }
