@@ -7,13 +7,15 @@ function siteOrigin(req) {
 }
 
 function renderMessage(resultWord, payload) {
-	// Protokol handshake postMessage yang diharapkan Decap CMS:
-	// "authorization:github:success:<json>" atau "authorization:github:error:<message>"
+	// Protokol handshake postMessage Decap CMS:
+	// Memastikan sinyal "authorization:github:success:<json>" langsung dikirim ke window.opener
 	return `<!DOCTYPE html><html><body>
 <script>
 (function() {
-  function receiveMessage(e) {
+  function post() {
+    if (!window.opener) return;
     try {
+      window.opener.postMessage('authorizing:github', '*');
       window.opener.postMessage(
         'authorization:github:${resultWord}:${payload}',
         '*'
@@ -21,12 +23,22 @@ function renderMessage(resultWord, payload) {
     } catch(err) {
       console.error(err);
     }
-    window.removeEventListener('message', receiveMessage, false);
   }
-  window.addEventListener('message', receiveMessage, false);
-  if (window.opener) {
-    window.opener.postMessage('authorizing:github', '*');
-  }
+
+  // Kirim sinyal otentikasi secara langsung tanpa menanti balasan handshake
+  post();
+
+  // Interval penjamin (10x retries setiap 300ms) untuk peramban seperti Firefox Private Browsing
+  var count = 0;
+  var timer = setInterval(function() {
+    count++;
+    post();
+    if (count >= 10) clearInterval(timer);
+  }, 300);
+
+  window.addEventListener('message', function() {
+    post();
+  }, false);
 })();
 </script>
 </body></html>`;
