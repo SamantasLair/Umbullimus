@@ -102,8 +102,11 @@
         const userObj = { token: token, provider: 'github' };
         localStorage.setItem('decap-cms-user', JSON.stringify(userObj));
         localStorage.setItem('netlify-cms-user', JSON.stringify(userObj));
-        logDebug('Token manual disimpan ke localStorage. Memuat ulang halaman...', '#38bdf8');
-        setTimeout(() => { window.location.reload(); }, 500);
+        logDebug(`Token manual (${token.slice(0, 8)}...) disimpan. Mengalihkan ke dashboard...`, '#38bdf8');
+        setTimeout(() => {
+          window.location.hash = '#/';
+          window.location.reload();
+        }, 300);
       };
 
       document.addEventListener('DOMContentLoaded', () => {
