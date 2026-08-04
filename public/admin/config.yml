@@ -2,9 +2,6 @@ backend:
   name: github
   repo: SamantasLair/Umbullimus
   branch: main
-  # Harus persis sama dengan "Authorization callback URL" di GitHub OAuth App
-  # (tanpa trailing slash). Kalau login CMS gagal, cek dulu kecocokan nilai ini
-  # dengan setelan OAuth App di GitHub.
   base_url: https://umbullimus.my.id
   auth_endpoint: api/auth
 
@@ -21,6 +18,7 @@ collections:
       - label: "Profil Desa"
         name: "profil"
         file: "public/data/profil/data.json"
+        format: "json"
         fields:
           - {label: "Nama Desa", name: "nama", widget: "string"}
           - {label: "Kecamatan", name: "kecamatan", widget: "string"}
@@ -37,16 +35,18 @@ collections:
       - label: "Visi & Misi Desa"
         name: "visi_misi"
         file: "public/data/visi-misi/data.json"
+        format: "json"
         fields:
           - {label: "Visi Desa", name: "visi", widget: "text"}
           - label: "Daftar Misi Desa"
             name: "misi"
             widget: "list"
-            field: {label: "Butir Misi", widget: "string"}
+            field: {label: "Butir Misi", name: "misi_item", widget: "string"}
 
       - label: "Struktur Organisasi Desa"
         name: "bagan"
         file: "public/data/bagan/struktur.json"
+        format: "json"
         fields:
           - {label: "Nama Desa", name: "desa", widget: "string"}
           - {label: "Kecamatan", name: "kecamatan", widget: "string"}
@@ -119,6 +119,7 @@ collections:
       - label: "Tempat Wisata"
         name: "tempat_wisata"
         file: "public/data/tempat-wisata/list.json"
+        format: "json"
         fields:
           - label: "Daftar Tempat Wisata"
             name: "items"
@@ -133,11 +134,12 @@ collections:
               - label: "Fasilitas"
                 name: "fasilitas"
                 widget: "list"
-                field: {label: "Fasilitas", widget: "string"}
+                field: {label: "Fasilitas", name: "fasilitas_item", widget: "string"}
 
       - label: "Infografis Data Desa"
         name: "infografis"
         file: "public/data/infografis/data.json"
+        format: "json"
         fields:
           - {label: "Nama Desa", name: "desa", widget: "string"}
           - {label: "Kecamatan", name: "kecamatan", widget: "string"}
@@ -247,6 +249,7 @@ collections:
       - label: "Galeri Foto"
         name: "galeri"
         file: "public/images/galeri/manifest.json"
+        format: "json"
         fields:
           - label: "Daftar Foto"
             name: "images"
