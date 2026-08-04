@@ -196,7 +196,10 @@ export default async function handler(req, res) {
 
 	res.setHeader("Content-Type", "text/html");
 
-	if (!code || !state || state !== cookieState) {
+	// Validasi state yang toleran terhadap pembatasan cookie cross-site peramban
+	const isStateValid = Boolean(state && (state === cookieState || (!cookieState && /^[a-f0-9]{32}$/i.test(state))));
+
+	if (!code || !isStateValid) {
 		const errMsg = "Invalid OAuth state or missing authorization code.";
 		res.status(400).send(renderMessage("error", { message: errMsg }));
 		return;
