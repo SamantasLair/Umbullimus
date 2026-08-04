@@ -1,12 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Umbul Limus - Content Manager</title>
-    <!-- Script utama Decap CMS -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <title>Umbul Limus - Panel Admin Decap CMS</title>
+    <link href="config.yml" type="text/yaml" rel="cms-config-url" />
+    <!-- CDN utama via jsDelivr (lebih andal terhadap VPN / Adblocker) -->
+    <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.3.3/dist/decap-cms.js" onerror="this.onerror=null;this.src='https://unpkg.com/decap-cms@3.3.3/dist/decap-cms.js';"></script>
   </head>
   <body>
+    <noscript>
+      <div style="padding: 2rem; font-family: sans-serif; text-align: center;">
+        <h2>JavaScript Diperlukan</h2>
+        <p>Aktifkan JavaScript pada peramban Anda untuk membuka Panel Admin Decap CMS.</p>
+      </div>
+    </noscript>
   </body>
 </html>
