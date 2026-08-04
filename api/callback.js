@@ -12,15 +12,21 @@ function renderMessage(resultWord, payload) {
 	return `<!DOCTYPE html><html><body>
 <script>
 (function() {
-  function receiveMessage(message) {
-    window.opener.postMessage(
-      'authorization:github:${resultWord}:${payload}',
-      message.origin
-    );
+  function receiveMessage(e) {
+    try {
+      window.opener.postMessage(
+        'authorization:github:${resultWord}:${payload}',
+        '*'
+      );
+    } catch(err) {
+      console.error(err);
+    }
     window.removeEventListener('message', receiveMessage, false);
   }
   window.addEventListener('message', receiveMessage, false);
-  window.opener.postMessage('authorizing:github', '*');
+  if (window.opener) {
+    window.opener.postMessage('authorizing:github', '*');
+  }
 })();
 </script>
 </body></html>`;
@@ -37,38 +43,46 @@ export default async function handler(req, res) {
 	const { code, state } = req.query;
 	const cookieState = getCookie(req, "decap_oauth_state");
 
+	res.setHeader("Content-Type", "text/html");
+
 	if (!code || !state || state !== cookieState) {
-		res.status(400).send("Invalid OAuth state or missing authorization code.");
+		const errMsg = "Invalid OAuth state or missing authorization code.";
+		res.status(400).send(renderMessage("error", JSON.stringify(errMsg)));
 		return;
 	}
 
 	const clientId = process.env.OAUTH_GITHUB_CLIENT_ID;
 	const clientSecret = process.env.OAUTH_GITHUB_CLIENT_SECRET;
 	if (!clientId || !clientSecret) {
-		res.status(500).send("Missing OAUTH_GITHUB_CLIENT_ID/OAUTH_GITHUB_CLIENT_SECRET env vars");
+		const errMsg = "Missing OAUTH_GITHUB_CLIENT_ID/OAUTH_GITHUB_CLIENT_SECRET env vars on Vercel.";
+		res.status(500).send(renderMessage("error", JSON.stringify(errMsg)));
 		return;
 	}
 
-	const tokenRes = await fetch(GITHUB_TOKEN_URL, {
-		method: "POST",
-		headers: { "Content-Type": "application/json", Accept: "application/json" },
-		body: JSON.stringify({
-			client_id: clientId,
-			client_secret: clientSecret,
-			code,
-			redirect_uri: `${siteOrigin(req)}/api/callback`,
-		}),
-	});
-	const data = await tokenRes.json();
+	try {
+		const tokenRes = await fetch(GITHUB_TOKEN_URL, {
+			method: "POST",
+			headers: { "Content-Type": "application/json", Accept: "application/json" },
+			body: JSON.stringify({
+				client_id: clientId,
+				client_secret: clientSecret,
+				code,
+				redirect_uri: `${siteOrigin(req)}/api/callback`,
+			}),
+		});
+		const data = await tokenRes.json();
 
-	res.setHeader("Content-Type", "text/html");
-	res.setHeader("Set-Cookie", "decap_oauth_state=; HttpOnly; Path=/; Max-Age=0");
+		res.setHeader("Set-Cookie", "decap_oauth_state=; HttpOnly; Path=/; Max-Age=0");
 
-	if (!data.access_token) {
-		res.status(400).send(`OAuth error: ${data.error_description || "unknown error"}`);
-		return;
+		if (!data.access_token) {
+			const errMsg = data.error_description || "OAuth error from GitHub";
+			res.status(400).send(renderMessage("error", JSON.stringify(errMsg)));
+			return;
+		}
+
+		const payload = JSON.stringify({ token: data.access_token, provider: "github" });
+		res.status(200).send(renderMessage("success", payload));
+	} catch (err) {
+		res.status(500).send(renderMessage("error", JSON.stringify(err.message)));
 	}
-
-	const payload = JSON.stringify({ token: data.access_token, provider: "github" });
-	res.status(200).send(renderMessage("success", payload));
 }
