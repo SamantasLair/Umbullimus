@@ -2,7 +2,6 @@ backend:
   name: github
   repo: SamantasLair/Umbullimus
   branch: main
-  base_url: https://umbullimus.my.id
   auth_endpoint: api/auth
 
 # Lokasi penyimpanan gambar yang di-upload via CMS
