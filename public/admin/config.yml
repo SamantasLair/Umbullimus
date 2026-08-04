@@ -5,8 +5,6 @@ backend:
   base_url: https://umbullimus.my.id
   auth_endpoint: api/auth
 
-local_backend: true
-
 # Lokasi penyimpanan gambar yang di-upload via CMS
 media_folder: "public/uploads"
 public_folder: "/uploads"

@@ -121,6 +121,30 @@
       window.addEventListener('message', (e) => {
         logDebug(`postMessage Diterima: ${JSON.stringify(e.data)}`, '#4ade80');
       });
+
+      // Interseptor jaringan Fetch API untuk memantau respons GitHub API
+      const originalFetch = window.fetch;
+      window.fetch = async function(...args) {
+        const url = typeof args[0] === 'string' ? args[0] : args[0]?.url || '';
+        try {
+          const res = await originalFetch.apply(this, args);
+          if (url.includes('github.com') || url.includes('api/')) {
+            if (!res.ok) {
+              const clone = res.clone();
+              const text = await clone.text();
+              logDebug(`API FAIL [${res.status}] ${url}: ${text.slice(0, 100)}`, '#f87171');
+            } else {
+              logDebug(`API OK [${res.status}] ${url}`, '#4ade80');
+            }
+          }
+          return res;
+        } catch(err) {
+          if (url.includes('github.com') || url.includes('api/')) {
+            logDebug(`API ERROR ${url}: ${err.message}`, '#f87171');
+          }
+          throw err;
+        }
+      };
     </script>
 
     <!-- Script Decap CMS diletakkan di dalam BODY agar DOM body sudah siap sebelum React di-mount -->
