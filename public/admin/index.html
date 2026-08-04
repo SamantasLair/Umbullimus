@@ -48,7 +48,9 @@
         box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         overflow-y: auto;
       }
-      .debug-title { font-weight: bold; color: #38bdf8; margin-bottom: 0.5rem; display: flex; justify-content: space-between; }
+      .debug-title { font-weight: bold; color: #38bdf8; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+      .debug-close-btn { background: transparent; border: none; color: #94a3b8; font-size: 14px; cursor: pointer; padding: 2px 6px; }
+      .debug-close-btn:hover { color: #fff; }
       .debug-logs { background: #1e293b; border-radius: 4px; padding: 0.5rem; max-height: 180px; overflow-y: auto; font-size: 11px; margin-bottom: 0.75rem; }
       .debug-entry { margin-bottom: 3px; word-break: break-all; }
       .debug-input { width: 100%; box-sizing: border-box; background: #020617; border: 1px solid #475569; color: #fff; padding: 0.4rem; border-radius: 4px; font-family: inherit; font-size: 11px; margin-bottom: 0.5rem; }
@@ -57,50 +59,40 @@
     </style>
   </head>
   <body>
-    <button id="cms-debug-toggle" onclick="toggleDebug()">⚡ DevMode Console</button>
+    <button type="button" id="cms-debug-toggle">⚡ DevMode Console</button>
 
     <div id="cms-debug-drawer">
       <div class="debug-title">
         <span>⚡ DevMode Debug Console</span>
-        <span onclick="toggleDebug()" style="cursor:pointer">✖</span>
+        <button type="button" id="cms-debug-close" class="debug-close-btn" aria-label="Tutup Console">✖</button>
       </div>
       <div id="debug-logs" class="debug-logs">
         <div class="debug-entry" style="color:#94a3b8">[INIT] DevMode console aktif. Menunggu sinyal autentikasi...</div>
       </div>
       <div style="margin-bottom:0.5rem; font-weight:bold; color:#fbbf24">🔑 Tempel Token Manual:</div>
       <input type="text" id="manual-token-input" class="debug-input" placeholder="Tempel token GitHub (gho_...)" />
-      <button class="debug-btn" onclick="saveManualToken()">Simpan Token & Login</button>
+      <button type="button" id="manual-token-btn" class="debug-btn">Simpan Token & Login</button>
     </div>
 
     <script>
-      function toggleDebug() {
+      const toggleDebug = () => {
         const d = document.getElementById('cms-debug-drawer');
         if (d) d.style.display = d.style.display === 'block' ? 'none' : 'block';
-      }
+      };
 
-      function logDebug(msg, color) {
+      const logDebug = (msg, color) => {
         const logs = document.getElementById('debug-logs');
         if (logs) {
           const div = document.createElement('div');
           div.className = 'debug-entry';
           if (color) div.style.color = color;
-          div.innerText = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+          div.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
           logs.appendChild(div);
           logs.scrollTop = logs.scrollHeight;
         }
-      }
+      };
 
-      // Catat seluruh error uncaught
-      window.addEventListener('error', (e) => {
-        logDebug('ERROR: ' + (e.message || e.reason || e), '#f87171');
-      });
-
-      // Catat sinyal postMessage yang masuk
-      window.addEventListener('message', (e) => {
-        logDebug('postMessage Diterima: ' + JSON.stringify(e.data), '#4ade80');
-      });
-
-      function saveManualToken() {
+      const saveManualToken = () => {
         const input = document.getElementById('manual-token-input');
         const token = input ? input.value.trim() : '';
         if (!token) {
@@ -112,7 +104,23 @@
         localStorage.setItem('netlify-cms-user', JSON.stringify(userObj));
         logDebug('Token manual disimpan ke localStorage. Memuat ulang halaman...', '#38bdf8');
         setTimeout(() => { window.location.reload(); }, 500);
-      }
+      };
+
+      document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('cms-debug-toggle')?.addEventListener('click', toggleDebug);
+        document.getElementById('cms-debug-close')?.addEventListener('click', toggleDebug);
+        document.getElementById('manual-token-btn')?.addEventListener('click', saveManualToken);
+      });
+
+      // Catat seluruh error uncaught
+      window.addEventListener('error', (e) => {
+        logDebug(`ERROR: ${e.message || e.reason || e}`, '#f87171');
+      });
+
+      // Catat sinyal postMessage yang masuk
+      window.addEventListener('message', (e) => {
+        logDebug(`postMessage Diterima: ${JSON.stringify(e.data)}`, '#4ade80');
+      });
     </script>
 
     <!-- Script Decap CMS diletakkan di dalam BODY agar DOM body sudah siap sebelum React di-mount -->
