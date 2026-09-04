@@ -5,78 +5,96 @@ backend:
   base_url: https://www.umbullimus.my.id
   auth_endpoint: api/auth
 
-# Lokasi penyimpanan gambar yang di-upload via CMS
+# Lokasi penyimpanan gambar yang diunggah via CMS
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
 
 collections:
-  - name: "data"
-    label: "Manajemen Data Web"
+  # ====================================================================
+  # 🏠 HALAMAN 1: BERANDA
+  # ====================================================================
+  - name: "beranda"
+    label: "🏠 1. Halaman Beranda"
     files:
-      - label: "Profil Desa"
+      - label: "Hero Banner & Sambutan Utama"
+        name: "hero"
+        file: "public/data/beranda/hero.json"
+        format: "json"
+        fields:
+          - {label: "📝 [Teks] Teks Badge Wilayah", name: "badge_teks", widget: "string", hint: "Teks kecil di atas judul utama, contoh: Pesawaran · Lampung"}
+          - {label: "📝 [Teks] Judul Baris 1 (Tebal)", name: "judul_baris_1", widget: "string", hint: "Kata pertama nama desa, contoh: Umbul"}
+          - {label: "📝 [Teks] Judul Baris 2 (Aksen)", name: "judul_baris_2", widget: "string", hint: "Kata kedua nama desa, contoh: Limus"}
+          - {label: "📝 [Teks] Kalimat Tagline Hero", name: "tagline", widget: "text", hint: "Deskripsi pengantar yang tampil di bawah judul hero"}
+          - {label: "🖼️ [Media] Gambar Poster Latar Video", name: "video_poster", widget: "image", hint: "Gambar awal sebelum video berputar (pilih foto lanskap horizontal)"}
+          - {label: "🔘 [Tombol] Teks Tombol Utama", name: "tombol_utama_teks", widget: "string", hint: "Contoh: Jelajahi Wisata"}
+          - {label: "🔘 [Tombol] Teks Tombol Kedua", name: "tombol_kedua_teks", widget: "string", hint: "Contoh: Lihat Galeri"}
+
+  # ====================================================================
+  # 🏛️ HALAMAN 2: PROFIL & VISI MISI DESA
+  # ====================================================================
+  - name: "profil_desa"
+    label: "🏛️ 2. Profil & Visi Misi"
+    files:
+      - label: "Profil Umum & Sejarah Desa"
         name: "profil"
         file: "public/data/profil/data.json"
         format: "json"
         fields:
-          - {label: "Nama Desa", name: "nama", widget: "string"}
-          - {label: "Kecamatan", name: "kecamatan", widget: "string"}
-          - {label: "Kabupaten", name: "kabupaten", widget: "string"}
-          - {label: "Provinsi", name: "provinsi", widget: "string"}
-          - {label: "Luas Wilayah", name: "luas_wilayah", widget: "string"}
-          - {label: "Jumlah Penduduk", name: "jumlah_penduduk", widget: "string"}
-          - {label: "Jumlah RT", name: "jumlah_rt", widget: "number"}
-          - {label: "Jumlah RW", name: "jumlah_rw", widget: "number"}
-          - {label: "Jumlah Dusun", name: "jumlah_dusun", widget: "number"}
-          - {label: "Tagline", name: "tagline", widget: "string"}
-          - {label: "Sejarah Desa", name: "sejarah", widget: "text"}
+          - {label: "📝 [Teks] Nama Resmi Desa", name: "nama", widget: "string", hint: "Contoh: Umbul Limus"}
+          - {label: "📝 [Teks] Tagline / Slogan Desa", name: "tagline", widget: "string", hint: "Contoh: Surga Tersembunyi di Jantung Lampung"}
+          - {label: "📝 [Teks] Cerita Sejarah Lengkap Desa", name: "sejarah", widget: "text", hint: "Tuliskan sejarah dan asal-usul pembentukan desa"}
+          - {label: "📝 [Teks] Kecamatan", name: "kecamatan", widget: "string"}
+          - {label: "📝 [Teks] Kabupaten", name: "kabupaten", widget: "string"}
+          - {label: "📝 [Teks] Provinsi", name: "provinsi", widget: "string"}
+          - {label: "🔢 [Angka] Luas Wilayah", name: "luas_wilayah", widget: "string", hint: "Contoh: 2.158 HA"}
+          - {label: "🔢 [Angka] Jumlah Penduduk (Jiwa)", name: "jumlah_penduduk", widget: "string", hint: "Contoh: 728"}
+          - {label: "🔢 [Angka] Jumlah RT", name: "jumlah_rt", widget: "number", hint: "Jumlah RT, contoh: 7"}
+          - {label: "🔢 [Angka] Jumlah RW", name: "jumlah_rw", widget: "number", hint: "Jumlah RW, contoh: 3"}
+          - {label: "🔢 [Angka] Jumlah Dusun", name: "jumlah_dusun", widget: "number", hint: "Jumlah Dusun di desa, contoh: 3"}
 
-      - label: "Visi & Misi Desa"
+      - label: "Visi & Misi Pembangunan Desa"
         name: "visi_misi"
         file: "public/data/visi-misi/data.json"
         format: "json"
         fields:
-          - {label: "Visi Desa", name: "visi", widget: "text"}
-          - label: "Daftar Misi Desa"
+          - {label: "📝 [Teks] Rumusan Visi Desa", name: "visi", widget: "text", hint: "Rumusan cita-cita masa depan Desa Umbul Limus"}
+          - label: "📝 [Daftar] Butir-Butir Misi Pembangunan"
             name: "misi"
             widget: "list"
-            field: {label: "Butir Misi", name: "misi_item", widget: "string"}
+            field: {label: "Butir Misi", widget: "string", hint: "Tuliskan 1 butir langkah nyata pembangunan desa"}
 
-      - label: "Struktur Organisasi Desa"
-        name: "bagan"
+  # ====================================================================
+  # 👥 HALAMAN 3: STRUKTUR ORGANISASI & TOKOH ADAT
+  # ====================================================================
+  - name: "bagan_desa"
+    label: "👥 3. Struktur Desa & Bagan"
+    files:
+      - label: "Bagan Aparatur Desa & Tokoh Adat"
+        name: "struktur_desa"
         file: "public/data/bagan/struktur.json"
         format: "json"
         fields:
-          - {label: "Nama Desa", name: "desa", widget: "string"}
-          - {label: "Kecamatan", name: "kecamatan", widget: "string"}
-          - {label: "Kabupaten", name: "kabupaten", widget: "string"}
-          - {label: "Provinsi", name: "provinsi", widget: "string"}
-          - {label: "Foto Latar Header", name: "background", widget: "image", required: false}
-          - label: "Struktur Organisasi (Aparat, BPD, Kadus, RT, KPM)"
+          - {label: "📝 [Teks] Nama Desa", name: "desa", widget: "string"}
+          - {label: "📝 [Teks] Kecamatan", name: "kecamatan", widget: "string"}
+          - {label: "📝 [Teks] Kabupaten", name: "kabupaten", widget: "string"}
+          - {label: "📝 [Teks] Provinsi", name: "provinsi", widget: "string"}
+          - {label: "🖼️ [Media] Foto Latar Header Bagan", name: "background", widget: "image", required: false, hint: "Foto pemandangan atau balai desa sebagai latar atas bagan"}
+          - label: "👥 [Daftar] Aparatur Pemerintahan Desa (CRUD)"
             name: "struktur"
             widget: "list"
             summary: "Tier {{tier}} - {{jabatan}}: {{nama}}"
             fields:
-              - {label: "ID Node", name: "id", widget: "number"}
-              - {label: "Tier (Baris Visual)", name: "tier", widget: "number"}
-              - {label: "ID Parent (Atasan Garis Komando)", name: "parent", widget: "number"}
-              - {label: "Jabatan / Label Posisi", name: "jabatan", widget: "string"}
-              - {label: "Nama Pejabat", name: "nama", widget: "string", required: false}
-              - {label: "Kelompok (kaurkasi/bpd/kadus/rt/kpm)", name: "kelompok", widget: "string", required: false}
-              - {label: "Periode Jabatan", name: "periode", widget: "string", required: false}
-              - {label: "RW", name: "rw", widget: "string", required: false}
-              - {label: "Dusun", name: "dusun", widget: "string", required: false}
-              - {label: "Keterangan", name: "keterangan", widget: "string", required: false}
-              - {label: "Bio Singkat", name: "bio", widget: "text", required: false}
-              - {label: "Foto Profil", name: "foto", widget: "image", required: false}
-              - label: "Ketua BPD (khusus kelompok BPD)"
-                name: "ketua"
-                widget: "object"
-                required: false
-                fields:
-                  - {label: "Jabatan", name: "jabatan", widget: "string"}
-                  - {label: "Nama", name: "nama", widget: "string"}
-                  - {label: "Foto", name: "foto", widget: "image", required: false}
-              - label: "Kaur (khusus kelompok Kaur/Kasi)"
+              - {label: "🔢 [Angka] ID Posisi", name: "id", widget: "number", hint: "Nomor penanda urutan hierarki (1 untuk Kades)"}
+              - {label: "🔢 [Angka] Tingkat Baris Visual (Tier)", name: "tier", widget: "number", hint: "Baris ke berapa kartu ini tampil di bagan (1: Kades, 2: Sekdes, 3: Kaur/Kasi, dst)"}
+              - {label: "🔢 [Angka] ID Atasan Langsung (Parent)", name: "parent", widget: "number", hint: "ID pejabat yang menjadi atasan garis komando (0 untuk Kades yang tidak punya atasan)"}
+              - {label: "📝 [Teks] Jabatan / Posisi", name: "jabatan", widget: "string", hint: "Contoh: Kepala Desa, Sekretaris Desa, Kadus I"}
+              - {label: "📝 [Teks] Nama Lengkap Pejabat", name: "nama", widget: "string", required: false, hint: "Nama pejabat beserta gelar jika ada"}
+              - {label: "⚙️ [Pengaturan] Kelompok Posisi", name: "kelompok", widget: "string", required: false, hint: "Pilihan: kaurkasi, bpd, kadus, rt, atau kpm"}
+              - {label: "📝 [Teks] Periode Jabatan", name: "periode", widget: "string", required: false, hint: "Contoh: 2021 - 2027"}
+              - {label: "📝 [Teks] Wilayah RW / Dusun", name: "dusun", widget: "string", required: false}
+              - {label: "📝 [Teks] Keterangan / Bio Singkat", name: "bio", widget: "text", required: false}
+              - {label: "🖼️ [Media] Foto Profil Pejabat", name: "foto", widget: "image", required: false, hint: "Unggah pas foto formal atau setengah badan"}
+              - label: "👥 Kaur (khusus kelompok Kaur/Kasi)"
                 name: "kaur"
                 widget: "list"
                 required: false
@@ -85,7 +103,7 @@ collections:
                   - {label: "Jabatan", name: "jabatan", widget: "string"}
                   - {label: "Nama", name: "nama", widget: "string"}
                   - {label: "Foto", name: "foto", widget: "image", required: false}
-              - label: "Kasi (khusus kelompok Kaur/Kasi)"
+              - label: "👥 Kasi (khusus kelompok Kaur/Kasi)"
                 name: "kasi"
                 widget: "list"
                 required: false
@@ -94,7 +112,7 @@ collections:
                   - {label: "Jabatan", name: "jabatan", widget: "string"}
                   - {label: "Nama", name: "nama", widget: "string"}
                   - {label: "Foto", name: "foto", widget: "image", required: false}
-              - label: "Daftar Anggota (khusus kelompok BPD & KPM)"
+              - label: "👥 Anggota (khusus kelompok BPD & KPM)"
                 name: "anggota"
                 widget: "list"
                 required: false
@@ -103,157 +121,133 @@ collections:
                   - {label: "Jabatan", name: "jabatan", widget: "string", required: false}
                   - {label: "Nama", name: "nama", widget: "string"}
                   - {label: "Foto", name: "foto", widget: "image", required: false}
-          - label: "Tokoh Adat (Penyimbang / Saibatin)"
+
+          - label: "👑 [Daftar] Tokoh Adat (Penyimbang / Saibatin)"
             name: "tokoh_adat"
             widget: "list"
             summary: "Rank {{rank}} - {{nama}} ({{gelar}})"
             fields:
-              - {label: "Urutan / Rank", name: "rank", widget: "number"}
-              - {label: "Nama Tokoh", name: "nama", widget: "string"}
-              - {label: "Gelar Adat", name: "gelar", widget: "string"}
-              - {label: "Peran Adat", name: "peran", widget: "string"}
-              - {label: "Foto Profil", name: "foto", widget: "image", required: false}
+              - {label: "🔢 [Angka] Urutan Ranking", name: "rank", widget: "number", hint: "1, 2, 3..."}
+              - {label: "📝 [Teks] Nama Tokoh Adat", name: "nama", widget: "string"}
+              - {label: "📝 [Teks] Gelar Adat", name: "gelar", widget: "string", hint: "Contoh: Sutan, Raden, Pangiran"}
+              - {label: "📝 [Teks] Peran / Sebutan Adat", name: "peran", widget: "string", hint: "Contoh: Saibatin Marga, Tokoh Adat Kampung"}
+              - {label: "🖼️ [Media] Foto Profil Tokoh", name: "foto", widget: "image", required: false}
 
-      - label: "Tempat Wisata"
+  # ====================================================================
+  # 🏞️ HALAMAN 4: DESTINASI WISATA
+  # ====================================================================
+  - name: "wisata_desa"
+    label: "🏞️ 4. Destinasi Wisata"
+    files:
+      - label: "Katalog Tempat Wisata Desa"
         name: "tempat_wisata"
         file: "public/data/tempat-wisata/list.json"
         format: "json"
         fields:
-          - label: "Daftar Tempat Wisata"
+          - label: "🏞️ [Daftar] Kartu Tempat Wisata (CRUD)"
             name: "items"
             widget: "list"
-            summary: "{{nama}}"
+            summary: "{{nama}} ({{kategori}})"
             fields:
-              - {label: "ID (unik, tanpa spasi)", name: "id", widget: "string"}
-              - {label: "Nama Tempat", name: "nama", widget: "string"}
-              - {label: "Kategori", name: "kategori", widget: "string"}
-              - {label: "Deskripsi", name: "deskripsi", widget: "text"}
-              - {label: "Gambar", name: "gambar", widget: "image"}
-              - label: "Fasilitas"
+              - {label: "📝 [Teks] ID Unik", name: "id", widget: "string", hint: "Nama tempat tanpa spasi/huruf kecil saja, misal: way-curup atau warisan-budaya"}
+              - {label: "📝 [Teks] Nama Destinasi Wisata", name: "nama", widget: "string", hint: "Contoh: Air Terjun Way Curup"}
+              - {label: "🏷️ [Kategori] Jenis Wisata", name: "kategori", widget: "select", options: ["Wisata Alam", "Wisata Budaya", "Wisata Religi", "Wisata Edukasi", "Ekowisata"], hint: "Pilih kategori wisata"}
+              - {label: "📝 [Teks] Deskripsi & Keistimewaan", name: "deskripsi", widget: "text", hint: "Ceritakan keindahan dan fasilitas tempat wisata ini"}
+              - {label: "🖼️ [Media] Foto Utama Wisata", name: "gambar", widget: "image", hint: "Pilih foto lanskap terbaik beresolusi tajam"}
+              - label: "🏷️ [Daftar] Fasilitas di Lokasi"
                 name: "fasilitas"
                 widget: "list"
-                field: {label: "Fasilitas", name: "fasilitas_item", widget: "string"}
+                field: {label: "Fasilitas", widget: "string", hint: "Contoh: Area Parkir, Kamar Mandi, Gazebo, Warung Warga"}
 
-      - label: "Infografis Data Desa"
+  # ====================================================================
+  # 📊 HALAMAN 5: INFOGRAFIS & STATISTIK DESA
+  # ====================================================================
+  - name: "infografis_desa"
+    label: "📊 5. Infografis Data Desa"
+    files:
+      - label: "Statistik, Batas Kompas & Ekonomi"
         name: "infografis"
         file: "public/data/infografis/data.json"
         format: "json"
         fields:
-          - {label: "Nama Desa", name: "desa", widget: "string"}
-          - {label: "Kecamatan", name: "kecamatan", widget: "string"}
-          - {label: "Kabupaten", name: "kabupaten", widget: "string"}
-          - {label: "Provinsi", name: "provinsi", widget: "string"}
-          - label: "Asal Usul Nama"
-            name: "asal_usul"
+          - {label: "🔢 [Angka] Tahun Pembaruan Data", name: "tahun_data", widget: "number", hint: "Tahun pencatatan data, contoh: 2026"}
+          - {label: "📍 [Peta] Link Embed Google Maps", name: "maps_embed", widget: "string", required: false, hint: "Tautan embed peta desa"}
+          - {label: "📍 [Peta] Label Lokasi Peta", name: "maps_label", widget: "string", required: false, hint: "Contoh: Desa Umbul Limus, Marga Punduh, Pesawaran"}
+          - label: "🔢 [Kependudukan] Statistik Penduduk"
+            name: "kependudukan"
             widget: "object"
             fields:
-              - {label: "Judul Section", name: "judul", widget: "string"}
-              - label: "Kata 'Umbul'"
-                name: "umbul"
-                widget: "object"
+              - {label: "Total Jiwa", name: "total", widget: "number", hint: "Contoh: 728"}
+              - {label: "Satuan", name: "satuan", widget: "string", hint: "Contoh: Jiwa"}
+              - {label: "Keterangan Sumber Data", name: "keterangan", widget: "string", required: false}
+              - label: "Rincian Komposisi"
+                name: "rincian"
+                widget: "list"
+                summary: "{{label}}: {{value}}"
                 fields:
-                  - {label: "Kata", name: "kata", widget: "string"}
-                  - {label: "Penjelasan", name: "penjelasan", widget: "text"}
-              - label: "Kata 'Limus'"
-                name: "limus"
-                widget: "object"
-                fields:
-                  - {label: "Kata", name: "kata", widget: "string"}
-                  - {label: "Penjelasan", name: "penjelasan", widget: "text"}
-          - label: "Statistik Utama (baris angka)"
-            name: "stats"
-            widget: "list"
-            summary: "{{value}} {{label}}"
-            fields:
-              - {label: "Nilai", name: "value", widget: "number"}
-              - {label: "Label", name: "label", widget: "string"}
-          - label: "Wilayah"
+                  - {label: "Label", name: "label", widget: "string"}
+                  - {label: "Jumlah / Persentase", name: "value", widget: "string"}
+          - label: "🧭 [Wilayah] Batas Wilayah & Kompas Mata Angin"
             name: "wilayah"
-            widget: "object"
-            fields:
-              - {label: "Luas Wilayah", name: "luas", widget: "string"}
-              - {label: "Catatan Luas (mis. perlu konfirmasi satuan)", name: "luas_catatan", widget: "string", required: false}
-              - label: "Batas Wilayah"
-                name: "batas"
-                widget: "object"
-                fields:
-                  - {label: "Utara", name: "utara", widget: "string"}
-                  - {label: "Selatan", name: "selatan", widget: "string"}
-                  - {label: "Timur", name: "timur", widget: "string"}
-                  - {label: "Barat", name: "barat", widget: "string"}
-              - {label: "Deskripsi Wilayah", name: "deskripsi", widget: "text"}
-              - {label: "Link Embed Google Maps", name: "maps_embed", widget: "string", required: false, hint: "Google Maps > Bagikan > Sematkan peta > salin URL di dalam src=\"...\""}
-          - label: "Jarak ke Pusat Pemerintahan"
-            name: "jarak"
             widget: "list"
-            summary: "{{label}}: {{km}} km"
+            summary: "{{label}}: {{value}}"
             fields:
-              - {label: "Label Tujuan", name: "label", widget: "string"}
-              - {label: "Estimasi Waktu Tempuh", name: "waktu", widget: "string"}
-              - {label: "Jarak (km)", name: "km", widget: "number"}
-          - label: "Penduduk & Ekonomi"
-            name: "penduduk_ekonomi"
-            widget: "object"
+              - {label: "Nama Label / Arah", name: "label", widget: "string", hint: "Contoh: Batas Utara, Batas Selatan, Luas Permukiman"}
+              - {label: "Isi Keterangan", name: "value", widget: "string", hint: "Contoh: Desa Tajur, Desa Banding Agung"}
+              - {label: "Ikon Emoji", name: "icon", widget: "string", required: false, hint: "Contoh: 🧭, 🌲, ⛰️"}
+          - label: "🎓 [Pendidikan] Tingkat Pendidikan Warga"
+            name: "pendidikan"
+            widget: "list"
+            summary: "{{label}}: {{value}}"
             fields:
-              - {label: "Judul Section", name: "judul", widget: "string"}
-              - label: "Komposisi Penduduk"
-                name: "komposisi"
-                widget: "object"
-                fields:
-                  - {label: "Persentase Laki-laki", name: "laki_persen", widget: "number"}
-                  - {label: "Persentase Perempuan", name: "perempuan_persen", widget: "number"}
-                  - {label: "Rata-rata Jiwa per KK", name: "rata_jiwa_per_kk", widget: "number"}
-              - label: "Mata Pencaharian"
-                name: "pekerjaan"
-                widget: "object"
-                fields:
-                  - {label: "Persentase Petani", name: "petani_persen", widget: "number"}
-                  - {label: "Persentase Lainnya", name: "lainnya_persen", widget: "number"}
-                  - {label: "Label Pekerjaan Lainnya", name: "lainnya_label", widget: "string"}
-                  - {label: "Deskripsi Hasil Pertanian", name: "hasil", widget: "text"}
-          - label: "Arsitektur"
-            name: "arsitektur"
-            widget: "object"
+              - {label: "Jenjang Pendidikan", name: "label", widget: "string"}
+              - {label: "Jumlah Warga", name: "value", widget: "number"}
+          - label: "💼 [Pekerjaan] Mata Pencaharian Warga"
+            name: "pekerjaan"
+            widget: "list"
+            summary: "{{label}}: {{value}}"
             fields:
-              - {label: "Judul", name: "judul", widget: "string"}
-              - {label: "Deskripsi", name: "deskripsi", widget: "text"}
-          - label: "Pariwisata"
-            name: "pariwisata"
-            widget: "object"
-            fields:
-              - {label: "Judul", name: "judul", widget: "string"}
-              - {label: "Deskripsi", name: "deskripsi", widget: "text"}
-          - label: "Infrastruktur & Fasilitas"
-            name: "infrastruktur"
-            widget: "object"
-            fields:
-              - label: "Infrastruktur Dasar"
-                name: "dasar"
-                widget: "list"
-                summary: "{{label}}"
-                fields:
-                  - {label: "Keterangan", name: "label", widget: "string"}
-                  - {label: "Sudah Ada?", name: "ada", widget: "boolean", default: true}
-              - label: "Kesehatan, Pendidikan & Ibadah"
-                name: "sosial"
-                widget: "list"
-                summary: "{{label}}"
-                fields:
-                  - {label: "Keterangan", name: "label", widget: "string"}
-                  - {label: "Sudah Ada?", name: "ada", widget: "boolean", default: true}
-          - {label: "Sosial & Budaya", name: "sosial_budaya", widget: "text"}
-          - {label: "Pemerintahan", name: "pemerintahan", widget: "text"}
+              - {label: "Sektor Profesi", name: "label", widget: "string"}
+              - {label: "Jumlah Warga / Persentase", name: "value", widget: "string"}
+              - {label: "Ikon Emoji", name: "icon", widget: "string", required: false}
 
-      - label: "Galeri Foto"
+  # ====================================================================
+  # 📸 HALAMAN 6: GALERI FOTO DOKUMENTASI
+  # ====================================================================
+  - name: "galeri_desa"
+    label: "📸 6. Galeri Dokumentasi Foto"
+    files:
+      - label: "Album Foto Dokumentasi & KKN"
         name: "galeri"
         file: "public/images/galeri/manifest.json"
         format: "json"
         fields:
-          - label: "Daftar Foto"
+          - label: "📸 [Daftar] Foto Dokumentasi (CRUD)"
             name: "images"
             widget: "list"
-            summary: "{{alt}}"
+            summary: "{{alt}} ({{src}})"
             fields:
-              - {label: "Gambar", name: "src", widget: "image"}
-              - {label: "Judul / Keterangan", name: "alt", widget: "string"}
-              - {label: "Kategori (untuk filter)", name: "kategori", widget: "string", required: false}
+              - {label: "🖼️ [Media] Berkas Foto", name: "src", widget: "image", hint: "Pilih foto dokumentasi yang ingin diunggah"}
+              - {label: "📝 [Teks] Judul / Keterangan Foto", name: "alt", widget: "string", hint: "Keterangan foto, contoh: Gotong royong renovasi balai desa"}
+              - {label: "🏷️ [Kategori] Kategori Foto", name: "kategori", widget: "string", required: false, hint: "Contoh: Budaya, Wisata, Kegiatan, Alam"}
+
+  # ====================================================================
+  # 📞 HALAMAN 7: KONTAK BALAI DESA & FOOTER
+  # ====================================================================
+  - name: "kontak_footer"
+    label: "📞 7. Kontak & Footer Web"
+    files:
+      - label: "Kontak Balai Desa & Media Sosial"
+        name: "kontak"
+        file: "public/data/kontak/data.json"
+        format: "json"
+        fields:
+          - {label: "📍 [Lokasi] Alamat Lengkap Kantor Balai Desa", name: "alamat_kantor", widget: "text", hint: "Tuliskan alamat kantor balai desa selengkapnya"}
+          - {label: "💬 [Kontak] Nomor WhatsApp Resmi", name: "whatsapp_nomor", widget: "string", hint: "Format: +62 813-8666-6693"}
+          - {label: "🔗 [Tautan] Link Chat WhatsApp", name: "whatsapp_link", widget: "string", hint: "Format: https://wa.me/6281386666693"}
+          - {label: "👤 [Teks] Nama & Jabatan Narahubung", name: "narahubung_nama", widget: "string", hint: "Contoh: Rudi Saputra, S.I.P. — Bendahara Desa"}
+          - {label: "🗺️ [Peta] Tautan Titik Google Maps", name: "google_maps_link", widget: "string", hint: "Link Google Maps koordinat presisi balai desa"}
+          - {label: "📷 [Media Sosial] Akun Instagram Desa", name: "instagram_link", widget: "string", required: false, hint: "Link profil instagram desa jika ada"}
+          - {label: "📝 [Teks] Slogan Penutup Footer", name: "footer_tagline", widget: "text", hint: "Slogan yang tampil di sebelah kiri footer bawah"}
+          - {label: "📝 [Teks] Teks Hak Cipta", name: "hak_cipta_teks", widget: "string", hint: "Contoh: Desa Wisata Budaya Umbul Limus. Seluruh hak cipta dilindungi."}
+          - {label: "📝 [Teks] Kredit Pembuat Website", name: "credit_teks", widget: "string", hint: "Contoh: Dibuat oleh Tim KKN"}

@@ -15,7 +15,7 @@
       muted
       playsinline
       preload="metadata"
-      poster="/hero-umbul-limus-poster.jpg"
+      :poster="heroData.video_poster || '/hero-umbul-limus-poster.jpg'"
       class="hero-video"
       aria-hidden="true"
       ref="videoEl"
@@ -35,22 +35,22 @@
       <!-- Badge -->
       <div class="hero-badge-wrap" ref="badgeEl">
         <span class="badge-dot"></span>
-        <span class="hero-badge">Pesawaran · Lampung</span>
+        <span class="hero-badge">{{ heroData.badge_teks }}</span>
       </div>
 
       <!-- Title split -->
-      <h1 class="hero-title" aria-label="Umbul Limus">
+      <h1 class="hero-title" :aria-label="`${heroData.judul_baris_1} ${heroData.judul_baris_2}`">
         <span class="title-line title-line--1" ref="line1El">
-          <span class="title-word">Umbul</span>
+          <span class="title-word">{{ heroData.judul_baris_1 }}</span>
         </span>
         <span class="title-line title-line--2" ref="line2El">
-          <em class="title-word">Limus</em>
+          <em class="title-word">{{ heroData.judul_baris_2 }}</em>
         </span>
       </h1>
 
       <!-- Tagline -->
-      <p class="hero-tagline" ref="taglineEl">
-        Surga tersembunyi, mata air jernih,<br>suasana pedesaan yang asri, dan warisan budaya Lampung.
+      <p class="hero-tagline" ref="taglineEl" style="white-space: pre-line">
+        {{ heroData.tagline }}
       </p>
 
       <!-- CTA Actions -->
@@ -59,13 +59,13 @@
           <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/>
           </svg>
-          Jelajahi Wisata
+          {{ heroData.tombol_utama_teks || 'Jelajahi Wisata' }}
         </RouterLink>
         <RouterLink to="/galeri" class="btn-ghost">
           <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
             <path fill-rule="evenodd" d="M1 5.25A2.25 2.25 0 013.25 3h13.5A2.25 2.25 0 0119 5.25v9.5A2.25 2.25 0 0116.75 17H3.25A2.25 2.25 0 011 14.75v-9.5zm1.5 5.81v3.69c0 .414.336.75.75.75h13.5a.75.75 0 00.75-.75v-2.69l-2.22-2.219a.75.75 0 00-1.06 0l-1.91 1.909.47.47a.75.75 0 11-1.06 1.06L6.53 11.091a.75.75 0 00-1.06 0l-2.97 2.97zM12 7a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"/>
           </svg>
-          Lihat Galeri
+          {{ heroData.tombol_kedua_teks || 'Lihat Galeri' }}
         </RouterLink>
       </div>
     </div>
@@ -96,6 +96,16 @@ const taglineEl   = ref(null)
 const actionsEl   = ref(null)
 const scrollEl    = ref(null)
 
+const heroData = ref({
+  badge_teks: 'Pesawaran · Lampung',
+  judul_baris_1: 'Umbul',
+  judul_baris_2: 'Limus',
+  tagline: 'Surga tersembunyi, mata air jernih,\nsuasana pedesaan yang asri, dan warisan budaya Lampung.',
+  video_poster: '/hero-umbul-limus-poster.jpg',
+  tombol_utama_teks: 'Jelajahi Wisata',
+  tombol_kedua_teks: 'Lihat Galeri',
+})
+
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 function scrollTo(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -116,7 +126,17 @@ const onScrollParallax = () => {
   })
 }
 
-onMounted(() => {
+onMounted(async () => {
+  try {
+    const res = await fetch('/data/beranda/hero.json', { cache: 'no-store' })
+    if (res.ok) {
+      const json = await res.json()
+      heroData.value = { ...heroData.value, ...json }
+    }
+  } catch (e) {
+    console.warn('Fallback ke data statis hero:', e)
+  }
+
   window.addEventListener('scroll', onScrollParallax, { passive: true })
 
   // Video entrance

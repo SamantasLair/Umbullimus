@@ -30,7 +30,7 @@
 
       <!-- CTA Siger -->
       <a
-        href="https://wa.me/6281386666693"
+        :href="whatsappLink || 'https://wa.me/6281386666693'"
         target="_blank"
         rel="noopener"
         class="nav-cta"
@@ -88,12 +88,23 @@ const menuOpen   = ref(false)
 const ctaEl      = ref(null)
 const navLinksEl     = ref(null)
 const overlayLinksEl = ref(null)
+const whatsappLink = ref('https://wa.me/6281386666693')
 
 const onScroll = () => { isScrolled.value = window.scrollY > 60 }
 
 let shimmerLoop = null
 
-onMounted(() => {
+onMounted(async () => {
+  try {
+    const res = await fetch('/data/kontak/data.json', { cache: 'no-store' })
+    if (res.ok) {
+      const json = await res.json()
+      if (json.whatsapp_link) whatsappLink.value = json.whatsapp_link
+    }
+  } catch (e) {
+    console.warn('Fallback ke kontak statis header:', e)
+  }
+
   window.addEventListener('scroll', onScroll)
 
   // Nav links reveal on load: target within navLinksEl ref only, never touch hamburger
