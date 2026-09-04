@@ -126,12 +126,36 @@
         logDebug(`postMessage Diterima: ${JSON.stringify(e.data)}`, '#4ade80');
       });
 
-      // Interseptor jaringan Fetch API untuk memantau respons GitHub API
+      // Interseptor window.open untuk memastikan popup OAuth tidak pernah meleset ke api.netlify.com
+      const originalOpen = window.open;
+      window.open = function(url, ...rest) {
+        if (typeof url === 'string' && url.includes('api.netlify.com/api/auth')) {
+          const dynamicUrl = url.replace('https://api.netlify.com', window.location.origin);
+          logDebug(`[AUTH] Mengarahkan popup OAuth Netlify ke origin aktif: ${dynamicUrl}`, '#38bdf8');
+          return originalOpen.call(this, dynamicUrl, ...rest);
+        }
+        return originalOpen.call(this, url, ...rest);
+      };
+
+      // Interseptor jaringan Fetch API untuk injeksi origin dinamis & log API
       const originalFetch = window.fetch;
       window.fetch = async function(...args) {
         const url = typeof args[0] === 'string' ? args[0] : args[0]?.url || '';
         try {
           const res = await originalFetch.apply(this, args);
+          if (url.includes('config.yml')) {
+            const text = await res.text();
+            const origin = window.location.origin;
+            const patched = text.includes('base_url:')
+              ? text.replace(/base_url:\s*[^\r\n]+/g, `base_url: ${origin}`)
+              : text.replace(/backend:\s*[\r\n]+/, `backend:\n  base_url: ${origin}\n`);
+            logDebug(`[CONFIG] Base URL dinamis aktif: ${origin}`, '#38bdf8');
+            return new Response(patched, {
+              status: res.status,
+              statusText: res.statusText,
+              headers: res.headers,
+            });
+          }
           if (url.includes('github.com') || url.includes('api/')) {
             if (!res.ok) {
               const clone = res.clone();
