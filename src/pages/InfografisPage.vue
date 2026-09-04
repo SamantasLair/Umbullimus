@@ -141,8 +141,8 @@
           <div>
             <span class="if-sub-label">Komposisi Penduduk</span>
             <div class="if-split-labels">
-              <span><strong>Laki-laki</strong> {{ komposisi.laki_persen }}%</span>
-              <span><strong>{{ komposisi.perempuan_persen }}%</strong> Perempuan</span>
+              <span><strong>Laki-laki</strong> {{ formatPercent(komposisi.laki_persen) }}%</span>
+              <span><strong>{{ formatPercent(komposisi.perempuan_persen) }}%</strong> Perempuan</span>
             </div>
             <div class="if-split-bar">
               <div class="if-split-fill if-split-fill--laki" :data-width="komposisi.laki_persen"></div>
@@ -157,8 +157,8 @@
           <div>
             <span class="if-sub-label">Mata Pencaharian</span>
             <div class="if-split-labels">
-              <span><strong>Petani</strong> {{ pekerjaan.petani_persen }}%</span>
-              <span><strong>{{ pekerjaan.lainnya_persen }}%</strong> {{ pekerjaan.lainnya_label }}</span>
+              <span><strong>Petani</strong> {{ formatPercent(pekerjaan.petani_persen) }}%</span>
+              <span><strong>{{ formatPercent(pekerjaan.lainnya_persen) }}%</strong> {{ pekerjaan.lainnya_label }}</span>
             </div>
             <div class="if-split-bar">
               <div class="if-split-fill if-split-fill--petani" :data-width="pekerjaan.petani_persen"></div>
@@ -313,6 +313,12 @@ const batas = computed(() => data.value.wilayah?.batas || {})
 const komposisi = computed(() => data.value.penduduk_ekonomi?.komposisi || {})
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const pekerjaan = computed(() => data.value.penduduk_ekonomi?.pekerjaan || {})
+
+// biome-ignore lint/correctness/noUnusedVariables: Used in template
+const formatPercent = (val) => {
+  if (val === undefined || val === null || val === '') return ''
+  return Number(val).toFixed(1)
+}
 
 // biome-ignore lint/correctness/noUnusedVariables: Used in template
 const jarakWidth = (km) => {
@@ -658,33 +664,52 @@ onMounted(async () => {
 .if-quote-card--sage .if-quote-word { color: var(--if-sage); }
 .if-quote-card p { font-size: .9rem; line-height: 1.75; color: var(--if-text-muted); }
 
-/* ─── Stats ── */
+/* ─── Stats (5 Kartu Berwarna Sesuai Referensi Poster) ── */
 .if-stats {
-  background: var(--if-maroon);
-  display: flex; flex-wrap: wrap; justify-content: center;
-  max-width: none;
-  padding: 2.25rem var(--sp-md);
-  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 1.5rem var(--sp-md) 2.5rem;
+  background: transparent;
+  position: relative;
+  z-index: 1;
 }
 .if-stat {
-  flex: 1 1 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.4rem 0.75rem;
+  border-radius: 18px;
   text-align: center;
-  padding: 0 1.5rem;
-  border-right: 1px solid rgba(212, 168, 83, .2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border: none;
 }
-.if-stat:last-child { border-right: none; }
+.if-stat:nth-child(1) { background: #581120; } /* Maroon */
+.if-stat:nth-child(2) { background: #d49200; } /* Mustard Gold */
+.if-stat:nth-child(3) { background: #137a4b; } /* Forest Green */
+.if-stat:nth-child(4) { background: #0891b2; } /* Teal Cyan */
+.if-stat:nth-child(5) { background: #ea580c; } /* Warm Orange */
+
 .if-stat-num {
   display: block;
   font-family: var(--font-serif);
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 700;
-  color: var(--if-gold);
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  color: #ffffff;
   line-height: 1;
+  margin-bottom: 0.45rem;
 }
 .if-stat-label {
-  font-size: .68rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
-  color: rgba(245, 240, 232, .6);
-  margin-top: .4rem; display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.95);
+  display: block;
 }
 
 /* ─── Wilayah: Kompas ── */
@@ -982,6 +1007,7 @@ onMounted(async () => {
 
 /* ─── Responsive ── */
 @media (max-width: 900px) {
+  .if-stats { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   .if-wilayah-grid { grid-template-columns: 1fr; gap: 2rem; }
   .if-compass-wrap { width: 100%; max-width: 380px; height: 320px; }
   .if-compass { width: 170px; height: 170px; }
@@ -992,8 +1018,8 @@ onMounted(async () => {
 @media (max-width: 600px) {
   .if-hero { padding: 6.5rem 1.25rem 2.25rem; }
   .if-section, .if-closing { padding: var(--sp-lg) 1.25rem; }
-  .if-stats { padding: 1.75rem 1.25rem; }
-  .if-stat { flex: 1 1 40%; border-right: none; margin-bottom: 1rem; }
+  .if-stats { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; padding: 1rem 1.25rem 2rem; }
+  .if-stat { padding: 1.25rem 0.5rem; }
   .if-siger--top-right { width: 120px; height: 70px; top: 10px; right: 10px; }
   .if-siger--bottom-left { width: 130px; height: 75px; bottom: 10px; left: 10px; }
   .compass-label span { font-size: .72rem; max-width: 80px; }

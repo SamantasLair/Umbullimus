@@ -5,8 +5,8 @@ backend:
   auth_endpoint: api/auth
 
 # Lokasi penyimpanan gambar yang di-upload via CMS
-media_folder: "public/uploads"
-public_folder: "/uploads"
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
 
 collections:
   - name: "data"

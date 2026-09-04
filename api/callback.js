@@ -16,7 +16,7 @@ function renderMessage(resultWord, payloadObj) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Decap CMS - Auth Callback Debug Terminal</title>
+  <title>Sveltia / Decap CMS - Auth Callback Debug Terminal</title>
   <style>
     body {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -86,7 +86,7 @@ function renderMessage(resultWord, payloadObj) {
 </head>
 <body>
   <div class="header">
-    <span class="title">⚡ Decap CMS Auth Debug Terminal</span>
+    <span class="title">⚡ Sveltia / Decap CMS Auth Debug Terminal</span>
     <span class="status-badge status-${resultWord === 'success' ? 'success' : 'error'}">${resultWord}</span>
   </div>
 

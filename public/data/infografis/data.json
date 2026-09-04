@@ -16,11 +16,11 @@
   },
   "stats": [
     {
-      "value": 651,
+      "value": 728,
       "label": "Jiwa"
     },
     {
-      "value": 193,
+      "value": 215,
       "label": "Kepala Keluarga"
     },
     {
@@ -38,15 +38,15 @@
   ],
   "wilayah": {
     "luas": "2.158 HA",
-    "luas_catatan": "Dihitung dari rincian penggunaan lahan pada sensus Data Dasar Profil Desa tahun 2017.",
+    "luas_catatan": "",
     "maps_embed": "https://maps.google.com/maps?q=-5.685974,105.159717&t=&z=14&ie=UTF8&iwloc=&output=embed",
     "batas": {
-      "utara": "Tajur & Kekatang",
-      "selatan": "Kunyaian",
-      "timur": "Pekon Ampai",
-      "barat": "Penyandingan & Banding Agung"
+      "utara": "Desa Tajur",
+      "selatan": "Desa Banding Agung",
+      "timur": "Desa Pekon Ampai",
+      "barat": "Desa Tajur/Penyandingan"
     },
-    "deskripsi": "Desa Umbul Limus terbagi ke dalam 3 dusun, 3 RW, dan 7 RT, dengan luas wilayah sekitar 2.158 HA berdasarkan Data Dasar Profil Desa 2017 — didominasi lahan perkebunan (±1.750 Ha) dan permukiman (±350 Ha). Terletak pada ketinggian ±25 mdpl dengan suhu rata-rata 28°C, tanah desa ini tergolong subur untuk pertanian serta perkebunan."
+    "deskripsi": "Desa Umbul Limus terbagi ke dalam 3 dusun, 3 RW, dan 7 RT, dengan luas permukiman sekitar 350 Ha dan luas sawah sekitar 40 Ha. Bentang alamnya terdiri dari dataran maupun perbukitan yang menjadi lahan perkebunan dan persawahan, berada pada ketinggian sekitar 25 meter di atas permukaan laut."
   },
   "jarak": [
     {
@@ -68,20 +68,20 @@
   "penduduk_ekonomi": {
     "judul": "Siapa dan Bagaimana Warga Umbul Limus Hidup",
     "komposisi": {
-      "laki_persen": 50.7,
-      "perempuan_persen": 49.3,
+      "laki_persen": 45.1,
+      "perempuan_persen": 54.9,
       "rata_jiwa_per_kk": 3.4
     },
     "pekerjaan": {
       "petani_persen": 90,
       "lainnya_persen": 10,
       "lainnya_label": "Nelayan & Pedagang",
-      "hasil": "Padi, kelapa, dan pisang menjadi hasil utama yang tumbuh dari lahan perbukitan desa ini. Selain bertani, warga juga berkebun, beternak (kambing, ayam, kerbau, dan itik), serta sebagian kecil menekuni pertambangan galian C dan perdagangan skala kecil."
+      "hasil": "Padi, kelapa, dan pisang menjadi hasil utama; sektor perkebunan menopang sekitar 205 warga, sementara pertanian tanaman pangan menopang sekitar 125 warga."
     }
   },
   "arsitektur": {
     "judul": "Rumah Lamban Panggung",
-    "deskripsi": "Mayoritas rumah warga masih mempertahankan bentuk lamban panggung — rumah panggung tradisional yang menjadi ciri khas permukiman Lampung, berdiri kokoh di atas topografi desa yang berbukit."
+    "deskripsi": "Mayoritas rumah warga masih mempertahankan bentuk lamban panggung — rumah panggung tradisional khas Lampung, berdiri kokoh di atas topografi desa yang berbukit."
   },
   "pariwisata": {
     "judul": "Air Terjun Way Curup",
@@ -98,7 +98,7 @@
         "ada": true
       },
       {
-        "label": "Akses air bersih di seluruh rumah",
+        "label": "Akses air bersih, dominan dari sumur gali",
         "ada": true
       },
       {
@@ -108,7 +108,7 @@
     ],
     "sosial": [
       {
-        "label": "Posyandu dan Bidan Desa",
+        "label": "Posyandu (5 unit) dan Bidan Desa",
         "ada": true
       },
       {
@@ -130,5 +130,5 @@
     ]
   },
   "sosial_budaya": "99% warga bersuku Lampung dengan mayoritas memeluk agama Islam — identitas yang terjaga di tengah kehidupan agraris desa.",
-  "pemerintahan": "Meraih piagam 100% pemungutan PBB-P2 Tahun Pajak 2024, dengan PKK dan BPD sebagai lembaga desa yang aktif menjalankan roda pemerintahan."
+  "pemerintahan": "Meraih piagam 100% pemungutan PBB-P2 Tahun Pajak 2024, dengan BPD, LKMD, TP. PKK Desa, dan Karang Taruna sebagai lembaga desa yang aktif."
 }

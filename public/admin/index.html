@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Umbul Limus - Panel Admin Decap CMS</title>
+    <title>Umbul Limus - Panel Admin Sveltia CMS</title>
     <!-- Penggunaan URL absolut /admin/config.yml agar tidak meleset ke /config.yml saat diakses via /admin tanpa slash -->
     <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
     <style>
@@ -99,7 +99,8 @@
           alert('Masukkan token GitHub terlebih dahulu.');
           return;
         }
-        const userObj = { token: token, provider: 'github' };
+        const userObj = { token: token, provider: 'github', backendName: 'github' };
+        localStorage.setItem('sveltia-cms.user', JSON.stringify(userObj));
         localStorage.setItem('decap-cms-user', JSON.stringify(userObj));
         localStorage.setItem('netlify-cms-user', JSON.stringify(userObj));
         logDebug(`Token manual (${token.slice(0, 8)}...) disimpan. Mengalihkan ke dashboard...`, '#38bdf8');
