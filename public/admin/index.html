@@ -13,49 +13,6 @@
         padding: 0;
         background-color: #f4f5f7;
       }
-      #cms-debug-toggle {
-        position: fixed;
-        bottom: 1rem;
-        right: 1rem;
-        z-index: 99999;
-        background: #0f172a;
-        color: #38bdf8;
-        border: 1px solid #334155;
-        border-radius: 50px;
-        padding: 0.5rem 1rem;
-        font-family: monospace;
-        font-size: 12px;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      }
-      #cms-debug-drawer {
-        display: none;
-        position: fixed;
-        bottom: 4rem;
-        right: 1rem;
-        width: 380px;
-        max-width: 90vw;
-        max-height: 480px;
-        background: #0f172a;
-        color: #f8fafc;
-        border: 1px solid #334155;
-        border-radius: 8px;
-        padding: 1rem;
-        z-index: 99999;
-        font-family: monospace;
-        font-size: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-        overflow-y: auto;
-      }
-      .debug-title { font-weight: bold; color: #38bdf8; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
-      .debug-close-btn { background: transparent; border: none; color: #94a3b8; font-size: 14px; cursor: pointer; padding: 2px 6px; }
-      .debug-close-btn:hover { color: #fff; }
-      .debug-logs { background: #1e293b; border-radius: 4px; padding: 0.5rem; max-height: 180px; overflow-y: auto; font-size: 11px; margin-bottom: 0.75rem; }
-      .debug-entry { margin-bottom: 3px; word-break: break-all; }
-      .debug-input { width: 100%; box-sizing: border-box; background: #020617; border: 1px solid #475569; color: #fff; padding: 0.4rem; border-radius: 4px; font-family: inherit; font-size: 11px; margin-bottom: 0.5rem; }
-      .debug-btn { background: #0284c7; color: #fff; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; }
-      .debug-btn:hover { background: #0369a1; }
       .cms-guide-banner {
         position: fixed;
         bottom: 1rem;
@@ -83,62 +40,15 @@
     <div class="cms-guide-banner">
       <span>💡 <strong>Panduan Review:</strong> Sebelum menekan <em>Save/Publish</em>, klik tab <strong>"Changes"</strong> di kanan atas untuk mengecek ulang perubahan data.</span>
     </div>
-    <button type="button" id="cms-debug-toggle">⚡ DevMode Console</button>
-
-    <div id="cms-debug-drawer">
-      <div class="debug-title">
-        <span>⚡ DevMode Debug Console</span>
-        <button type="button" id="cms-debug-close" class="debug-close-btn" aria-label="Tutup Console">✖</button>
-      </div>
-      <div id="debug-logs" class="debug-logs">
-        <div class="debug-entry" style="color:#94a3b8">[INIT] DevMode console aktif. Menunggu sinyal autentikasi...</div>
-      </div>
-      <div style="margin-bottom:0.5rem; font-weight:bold; color:#fbbf24">🔑 Tempel Token Manual:</div>
-      <input type="text" id="manual-token-input" class="debug-input" placeholder="Tempel token GitHub (gho_...)" />
-      <button type="button" id="manual-token-btn" class="debug-btn">Simpan Token & Login</button>
-    </div>
 
     <script>
-      const toggleDebug = () => {
-        const d = document.getElementById('cms-debug-drawer');
-        if (d) d.style.display = d.style.display === 'block' ? 'none' : 'block';
-      };
-
       const logDebug = (msg, color) => {
-        const logs = document.getElementById('debug-logs');
-        if (logs) {
-          const div = document.createElement('div');
-          div.className = 'debug-entry';
-          if (color) div.style.color = color;
-          div.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
-          logs.appendChild(div);
-          logs.scrollTop = logs.scrollHeight;
+        if (color) {
+          console.log(`%c[Sveltia CMS] ${msg}`, `color:${color}; font-weight:bold;`);
+        } else {
+          console.log(`[Sveltia CMS] ${msg}`);
         }
       };
-
-      const saveManualToken = () => {
-        const input = document.getElementById('manual-token-input');
-        const token = input ? input.value.trim() : '';
-        if (!token) {
-          alert('Masukkan token GitHub terlebih dahulu.');
-          return;
-        }
-        const userObj = { token: token, provider: 'github', backendName: 'github' };
-        localStorage.setItem('sveltia-cms.user', JSON.stringify(userObj));
-        localStorage.setItem('decap-cms-user', JSON.stringify(userObj));
-        localStorage.setItem('netlify-cms-user', JSON.stringify(userObj));
-        logDebug(`Token manual (${token.slice(0, 8)}...) disimpan. Mengalihkan ke dashboard...`, '#38bdf8');
-        setTimeout(() => {
-          window.location.hash = '#/';
-          window.location.reload();
-        }, 300);
-      };
-
-      document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('cms-debug-toggle')?.addEventListener('click', toggleDebug);
-        document.getElementById('cms-debug-close')?.addEventListener('click', toggleDebug);
-        document.getElementById('manual-token-btn')?.addEventListener('click', saveManualToken);
-      });
 
       // Catat seluruh error uncaught
       window.addEventListener('error', (e) => {

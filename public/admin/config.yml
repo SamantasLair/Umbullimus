@@ -61,7 +61,7 @@ collections:
           - label: "📝 [Daftar] Butir-Butir Misi Pembangunan"
             name: "misi"
             widget: "list"
-            field: {label: "Butir Misi", widget: "string", hint: "Tuliskan 1 butir langkah nyata pembangunan desa"}
+            field: {name: "misi_item", label: "Butir Misi", widget: "string", hint: "Tuliskan 1 butir langkah nyata pembangunan desa"}
 
   # ====================================================================
   # 👥 HALAMAN 3: STRUKTUR ORGANISASI & TOKOH ADAT
@@ -157,7 +157,7 @@ collections:
               - label: "🏷️ [Daftar] Fasilitas di Lokasi"
                 name: "fasilitas"
                 widget: "list"
-                field: {label: "Fasilitas", widget: "string", hint: "Contoh: Area Parkir, Kamar Mandi, Gazebo, Warung Warga"}
+                field: {name: "fasilitas_item", label: "Fasilitas", widget: "string", hint: "Contoh: Area Parkir, Kamar Mandi, Gazebo, Warung Warga"}
 
   # ====================================================================
   # 📊 HALAMAN 5: INFOGRAFIS & STATISTIK DESA
